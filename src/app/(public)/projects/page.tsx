@@ -1,8 +1,29 @@
+import type { Metadata } from "next";
+
 import { FlashBanner } from "@/components/ui/flash-banner";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { ExploreVariantSwitcher } from "@/components/explore/explore-variant-switcher";
 import { getCurrentProfile } from "@/lib/auth/session";
 import { getExploreData, getViewerState } from "@/lib/services/read-models";
+
+export const metadata: Metadata = {
+  title: "프로젝트 탐색",
+  description: "바이브 코딩 프로젝트를 카테고리, 플랫폼, 태그별로 탐색하세요. 트렌딩, 최신, 피드백 활발한 AI 프로젝트를 한눈에 확인할 수 있습니다.",
+  keywords: ["바이브 코딩 프로젝트", "AI 프로젝트 탐색", "vibe coding projects", "AI 앱 갤러리", "트렌딩 프로젝트"],
+  openGraph: {
+    title: "프로젝트 탐색 | Viber",
+    description: "바이브 코딩으로 만든 다양한 프로젝트를 탐색하고 체험하세요.",
+    type: "website",
+  },
+  twitter: {
+    card: "summary",
+    title: "프로젝트 탐색 | Viber",
+    description: "바이브 코딩으로 만든 다양한 프로젝트를 탐색하고 체험하세요.",
+  },
+  alternates: {
+    canonical: "/projects",
+  },
+};
 
 type ProjectsPageProps = {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
