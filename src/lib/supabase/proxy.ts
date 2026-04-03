@@ -1,7 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { createServerClient } from "@supabase/ssr";
 
-import { getSupabasePublishableKey, getSupabaseUrl, isSupabaseConfigured } from "@/lib/supabase/shared";
+import { getSupabasePublishableKey, getSupabaseUrl, isSupabaseConfigured, shouldUseSecureCookies } from "@/lib/supabase/shared";
 
 export async function updateSupabaseSession(request: NextRequest) {
   if (!isSupabaseConfigured()) {
@@ -13,6 +13,9 @@ export async function updateSupabaseSession(request: NextRequest) {
   });
 
   const supabase = createServerClient(getSupabaseUrl(), getSupabasePublishableKey(), {
+    cookieOptions: {
+      secure: shouldUseSecureCookies()
+    },
     cookies: {
       getAll() {
         return request.cookies.getAll();

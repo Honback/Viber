@@ -51,13 +51,15 @@
 
 원칙:
 
-- `Update`와 `Ask for Feedback`도 독립 검수 대상으로 본다.
+- `Update`와 `feedback`도 독립 검수 대상으로 본다.
 - 초기 운영 기준으로 owner 작성 활동은 즉시 공개를 기본으로 한다.
+- member 작성 `feedback`은 owner 활동보다 더 보수적으로 검수한다.
 
 ### 3-1. 활동 기본 정책
 
 - 프로젝트 첫 `Launch`는 owner 확인 완료 시 `published`를 기본으로 한다.
-- 기존 `published` 프로젝트의 owner가 작성한 `Update`와 `Ask for Feedback`은 기본적으로 즉시 `published` 처리한다.
+- 기존 `published` 프로젝트의 owner가 작성한 `Update`와 owner용 `Ask for Feedback`은 기본적으로 즉시 `published` 처리한다.
+- authenticated member가 작성한 `feedback`은 기본적으로 `pending`으로 생성하고, 운영 기준을 통과하면 `published` 처리한다.
 - 단, 아래 조건 중 하나에 걸리면 활동도 `pending`으로 보낸다.
   - 금칙어 또는 스팸 규칙 탐지
   - 과도한 외부 링크
@@ -82,6 +84,7 @@
 
 - 댓글은 기본적으로 즉시 `active`로 생성한다.
 - 사후 검수로 `hidden` 또는 `deleted` 처리한다.
+- visitor 댓글도 `Turnstile`과 rate limit을 통과하면 기본적으로 `active` 생성 가능하다.
 
 ## 5. 신고 상태 enum
 

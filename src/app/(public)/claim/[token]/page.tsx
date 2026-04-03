@@ -57,7 +57,7 @@ export default async function ClaimPage({ params, searchParams }: ClaimPageProps
                       href={`/auth/sign-in?next=${encodeURIComponent(`/claim/${token}`)}`}
                       className="inline-flex rounded-full border border-line bg-white px-4 py-2 text-sm font-semibold text-foreground"
                     >
-                      이메일 로그인하기
+                      로그인하기
                     </Link>
                   </div>
                 </div>

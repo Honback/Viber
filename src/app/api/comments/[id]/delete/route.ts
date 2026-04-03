@@ -1,8 +1,7 @@
 import { revalidatePath } from "next/cache";
-import { NextResponse } from "next/server";
 
 import { requireCurrentProfile } from "@/lib/auth/session";
-import { buildRedirectPath, parseRequiredString } from "@/lib/http";
+import { createRedirectResponse, parseRequiredString } from "@/lib/http";
 import { softDeleteComment } from "@/lib/services/mutations";
 
 type RouteContext = {
@@ -21,24 +20,12 @@ export async function POST(request: Request, context: RouteContext) {
     });
     revalidatePath(`/p/${result.slug}`);
 
-    return NextResponse.redirect(
-      new URL(
-        buildRedirectPath(parseRequiredString(formData.get("redirectTo")), {
-          notice: "댓글을 삭제했습니다."
-        }),
-        request.url
-      ),
-      { status: 303 }
-    );
+    return createRedirectResponse(parseRequiredString(formData.get("redirectTo")), {
+      notice: "댓글을 삭제했습니다."
+    });
   } catch (error) {
-    return NextResponse.redirect(
-      new URL(
-        buildRedirectPath("/", {
-          error: error instanceof Error ? error.message : "댓글 삭제에 실패했습니다."
-        }),
-        request.url
-      ),
-      { status: 303 }
-    );
+    return createRedirectResponse("/", {
+      error: error instanceof Error ? error.message : "댓글 삭제에 실패했습니다."
+    });
   }
 }

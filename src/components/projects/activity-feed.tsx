@@ -1,4 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
+import { TurnstileField } from "@/components/forms/turnstile-field";
 import { projectPostLabels } from "@/lib/constants";
 import type { ProjectPostModel } from "@/lib/services/read-models";
 import { formatDate } from "@/lib/utils/date";
@@ -9,6 +10,7 @@ type ActivityFeedProps = {
   posts: ProjectPostModel[];
   projectId: string;
   projectSlug: string;
+  turnstileSiteKey: string | null;
 };
 
 function getTone(type: ProjectPostModel["type"]) {
@@ -17,7 +19,15 @@ function getTone(type: ProjectPostModel["type"]) {
   return "default" as const;
 }
 
-export function ActivityFeed({ posts, projectId, projectSlug }: ActivityFeedProps) {
+function getPostHeading(post: ProjectPostModel) {
+  if (post.type !== "feedback") {
+    return projectPostLabels[post.type];
+  }
+
+  return post.author.kind === "member" ? "멤버 피드백" : "피드백 요청";
+}
+
+export function ActivityFeed({ posts, projectId, projectSlug, turnstileSiteKey }: ActivityFeedProps) {
   if (!posts.length) {
     return (
       <div className="rounded-[28px] border border-dashed border-line bg-white/80 px-5 py-8 text-sm text-foreground-muted">
@@ -33,11 +43,14 @@ export function ActivityFeed({ posts, projectId, projectSlug }: ActivityFeedProp
           <div className="flex flex-wrap items-start justify-between gap-3">
             <div className="space-y-2">
               <div className="flex flex-wrap items-center gap-2">
-                <StatusBadge label={projectPostLabels[post.type]} tone={getTone(post.type)} />
+                <StatusBadge label={getPostHeading(post)} tone={getTone(post.type)} />
                 {post.status !== "published" ? <StatusBadge label={post.status === "pending" ? "게시 전" : post.status === "hidden" ? "비공개" : "반려"} tone="warning" /> : null}
               </div>
               <h3 className="text-lg font-bold tracking-tight text-foreground">{post.title}</h3>
               <p className="text-sm leading-6 text-foreground-muted">{post.summary}</p>
+              <div className="text-xs font-semibold uppercase tracking-[0.16em] text-foreground-muted">
+                {post.author.label} · {post.author.displayName}
+              </div>
             </div>
             <div className="text-sm text-foreground-muted">{post.publishedAt ? formatDate(post.publishedAt) : "게시 전"}</div>
           </div>
@@ -47,7 +60,9 @@ export function ActivityFeed({ posts, projectId, projectSlug }: ActivityFeedProp
               <ProseBlock value={post.bodyMd} />
               {post.requestedFeedbackMd ? (
                 <div className="rounded-3xl bg-surface-muted px-4 py-4">
-                  <div className="mb-2 text-sm font-semibold text-foreground">원하는 피드백</div>
+                  <div className="mb-2 text-sm font-semibold text-foreground">
+                    {post.author.kind === "member" ? "핵심 피드백 포인트" : "원하는 피드백"}
+                  </div>
                   <ProseBlock value={post.requestedFeedbackMd} muted />
                 </div>
               ) : null}
@@ -84,6 +99,7 @@ export function ActivityFeed({ posts, projectId, projectSlug }: ActivityFeedProp
                     placeholder="운영자가 참고할 메모를 남길 수 있습니다."
                     className="rounded-2xl border border-line bg-white px-3 py-2 text-sm text-foreground placeholder:text-foreground-muted"
                   />
+                  <TurnstileField siteKey={turnstileSiteKey} />
                   <button className="rounded-full border border-line bg-white px-4 py-2 text-sm font-semibold text-foreground">신고 접수</button>
                 </div>
               </form>

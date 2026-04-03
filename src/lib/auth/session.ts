@@ -17,6 +17,7 @@ export type SessionProfile = typeof profiles.$inferSelect;
 function getProfileDefaults(user: SupabaseUser) {
   const email = user.email?.toLowerCase() ?? null;
   const githubUsername = typeof user.user_metadata?.user_name === "string" ? user.user_metadata.user_name : null;
+  const emailVerifiedAt = user.email_confirmed_at ? new Date(user.email_confirmed_at) : null;
   const displayName =
     (typeof user.user_metadata?.full_name === "string" && user.user_metadata.full_name.trim()) ||
     (typeof user.user_metadata?.name === "string" && user.user_metadata.name.trim()) ||
@@ -30,7 +31,8 @@ function getProfileDefaults(user: SupabaseUser) {
     email,
     displayName,
     githubUsername,
-    role
+    role,
+    emailVerifiedAt
   };
 }
 
@@ -47,6 +49,7 @@ export async function ensureProfileForSupabaseUser(user: SupabaseUser) {
       existingById.email !== defaults.email ||
       existingById.displayName !== defaults.displayName ||
       existingById.githubUsername !== defaults.githubUsername ||
+      (defaults.emailVerifiedAt && !existingById.emailVerifiedAt) ||
       existingById.role !== nextRole
     ) {
       await db
@@ -55,6 +58,7 @@ export async function ensureProfileForSupabaseUser(user: SupabaseUser) {
           email: defaults.email ?? existingById.email,
           displayName: defaults.displayName,
           githubUsername: defaults.githubUsername,
+          emailVerifiedAt: existingById.emailVerifiedAt ?? defaults.emailVerifiedAt,
           role: nextRole,
           updatedAt: new Date()
         })
@@ -85,7 +89,8 @@ export async function ensureProfileForSupabaseUser(user: SupabaseUser) {
       email: defaults.email ?? `${user.id}@supabase.local`,
       displayName: defaults.displayName,
       githubUsername: defaults.githubUsername,
-      role: defaults.role
+      role: defaults.role,
+      emailVerifiedAt: defaults.emailVerifiedAt
     })
     .returning();
 
@@ -96,6 +101,43 @@ export function buildSignInPath(nextPath = "/me/projects", error?: string) {
   return buildRedirectPath("/auth/sign-in", {
     next: ensureAbsoluteUrl(nextPath),
     error
+  });
+}
+
+export function buildPasswordSetupPath(nextPath = "/me/projects", options?: { mode?: "setup" | "recovery"; notice?: string; error?: string }) {
+  return buildRedirectPath("/auth/password/setup", {
+    next: ensureAbsoluteUrl(nextPath),
+    mode: options?.mode ?? "setup",
+    notice: options?.notice,
+    error: options?.error
+  });
+}
+
+export function buildPostVerificationPath(
+  nextPath = "/me/projects",
+  options?: {
+    flow?: "setup" | "recovery" | "login";
+    passwordSetAt?: Date | null;
+  }
+) {
+  const flow = options?.flow ?? "login";
+
+  if (flow === "recovery") {
+    return buildPasswordSetupPath(nextPath, {
+      mode: "recovery",
+      notice: "이메일 인증이 끝났습니다. 새 비밀번호를 입력해 주세요."
+    });
+  }
+
+  if (flow === "setup" || !options?.passwordSetAt) {
+    return buildPasswordSetupPath(nextPath, {
+      mode: "setup",
+      notice: options?.passwordSetAt ? "이미 비밀번호 설정이 완료된 계정입니다." : "이메일 인증이 끝났습니다. 사용할 비밀번호를 설정해 주세요."
+    });
+  }
+
+  return buildRedirectPath(nextPath, {
+    notice: "이메일 인증을 확인하고 로그인했습니다."
   });
 }
 
@@ -140,6 +182,16 @@ export async function requireAdminProfile(nextPath = "/admin/moderation") {
   }
 
   return user;
+}
+
+export async function markProfilePasswordConfigured(userId: string) {
+  await db
+    .update(profiles)
+    .set({
+      passwordSetAt: new Date(),
+      updatedAt: new Date()
+    })
+    .where(eq(profiles.id, userId));
 }
 
 export async function getSupabaseLoginState() {

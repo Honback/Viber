@@ -1,9 +1,9 @@
 import { revalidatePath } from "next/cache";
-import { NextResponse } from "next/server";
 
-import { buildSignInPath, getCurrentProfile } from "@/lib/auth/session";
+import { getCurrentProfile } from "@/lib/auth/session";
 import { getVisitorSessionHash } from "@/lib/auth/visitor";
-import { buildRedirectPath, parseOptionalString, parseRequiredString } from "@/lib/http";
+import { createRedirectResponse, parseOptionalString, parseRequiredString } from "@/lib/http";
+import { verifyTurnstileToken } from "@/lib/security/turnstile";
 import { createComment } from "@/lib/services/mutations";
 import { commentActionSchema } from "@/lib/validations/forms";
 
@@ -14,24 +14,30 @@ type RouteContext = {
 export async function POST(request: Request, context: RouteContext) {
   const { id } = await context.params;
   const formData = await request.formData();
+  const redirectTo = parseRequiredString(formData.get("redirectTo")) || `/p/${id}`;
 
   try {
     const parsed = commentActionSchema.parse({
       bodyMd: parseRequiredString(formData.get("bodyMd")),
       postId: parseOptionalString(formData.get("postId")) ?? "",
       parentId: parseOptionalString(formData.get("parentId")) ?? "",
-      redirectTo: parseRequiredString(formData.get("redirectTo"))
+      guestName: parseOptionalString(formData.get("guestName")) ?? "",
+      turnstileToken: parseOptionalString(formData.get("turnstileToken")) ?? "",
+      redirectTo
     });
     const viewer = await getCurrentProfile();
+    const rateLimitIdentifier = await getVisitorSessionHash(viewer?.id);
 
     if (!viewer) {
-      return NextResponse.redirect(new URL(buildSignInPath(parsed.redirectTo), request.url), { status: 303 });
+      const remoteIp = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? null;
+      await verifyTurnstileToken(parsed.turnstileToken, remoteIp);
     }
 
-    const rateLimitIdentifier = await getVisitorSessionHash(viewer.id);
     const result = await createComment({
       projectId: id,
       user: viewer,
+      guestName: viewer ? null : parsed.guestName || null,
+      guestSessionHash: viewer ? null : rateLimitIdentifier,
       bodyMd: parsed.bodyMd,
       postId: parsed.postId || null,
       parentId: parsed.parentId || null,
@@ -40,16 +46,10 @@ export async function POST(request: Request, context: RouteContext) {
 
     revalidatePath(`/p/${result.slug}`);
 
-    return NextResponse.redirect(new URL(buildRedirectPath(parsed.redirectTo, { notice: "댓글을 등록했습니다." }), request.url), { status: 303 });
+    return createRedirectResponse(parsed.redirectTo, { notice: "댓글을 등록했습니다." });
   } catch (error) {
-    return NextResponse.redirect(
-      new URL(
-        buildRedirectPath("/projects", {
-          error: error instanceof Error ? error.message : "댓글 등록에 실패했습니다."
-        }),
-        request.url
-      ),
-      { status: 303 }
-    );
+    return createRedirectResponse(redirectTo, {
+      error: error instanceof Error ? error.message : "댓글 등록에 실패했습니다."
+    });
   }
 }

@@ -2,7 +2,7 @@ import { revalidatePath } from "next/cache";
 import { NextResponse } from "next/server";
 
 import { requireAdminProfile } from "@/lib/auth/session";
-import { buildRedirectPath, parseOptionalString, parseRequiredString } from "@/lib/http";
+import { createRedirectResponse, parseOptionalString, parseRequiredString } from "@/lib/http";
 import { setProjectFeature } from "@/lib/services/mutations";
 
 type RouteContext = {
@@ -58,15 +58,9 @@ export async function POST(request: Request, context: RouteContext) {
     revalidatePath("/admin/feature");
     revalidatePath("/admin/projects");
 
-    return NextResponse.redirect(
-      new URL(
-        buildRedirectPath(redirectTo, {
-          notice: featured ? "피처드 지정이 반영되었습니다." : "피처드 지정이 해제되었습니다."
-        }),
-        request.url
-      ),
-      { status: 303 }
-    );
+    return createRedirectResponse(redirectTo, {
+      notice: featured ? "피처드 지정이 반영되었습니다." : "피처드 지정이 해제되었습니다."
+    });
   } catch (error) {
     return NextResponse.json(
       {

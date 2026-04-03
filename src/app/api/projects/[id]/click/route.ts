@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
 import { getCurrentProfile } from "@/lib/auth/session";
-import { buildRedirectPath, parseRequiredString } from "@/lib/http";
+import { createRedirectResponse, parseRequiredString } from "@/lib/http";
 import { getVisitorSessionHash } from "@/lib/auth/visitor";
 import { recordProjectClick } from "@/lib/services/mutations";
 import { clickActionSchema } from "@/lib/validations/forms";
@@ -67,14 +67,8 @@ export async function POST(request: Request, context: RouteContext) {
 
     return NextResponse.redirect(result.targetUrl, { status: 303 });
   } catch (error) {
-    return NextResponse.redirect(
-      new URL(
-        buildRedirectPath("/projects", {
-          error: error instanceof Error ? error.message : "링크 이동에 실패했습니다."
-        }),
-        request.url
-      ),
-      { status: 303 }
-    );
+    return createRedirectResponse("/projects", {
+      error: error instanceof Error ? error.message : "링크 이동에 실패했습니다."
+    });
   }
 }

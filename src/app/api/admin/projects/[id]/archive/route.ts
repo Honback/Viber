@@ -2,7 +2,7 @@ import { revalidatePath } from "next/cache";
 import { NextResponse } from "next/server";
 
 import { requireAdminProfile } from "@/lib/auth/session";
-import { buildRedirectPath, parseOptionalString } from "@/lib/http";
+import { createRedirectResponse, parseOptionalString } from "@/lib/http";
 import { moderateProjectStatus } from "@/lib/services/mutations";
 
 type RouteContext = {
@@ -34,15 +34,9 @@ export async function POST(request: Request, context: RouteContext) {
     const formData = await request.formData();
     const redirectTo = parseOptionalString(formData.get("redirectTo")) ?? "/admin/projects";
 
-    return NextResponse.redirect(
-      new URL(
-        buildRedirectPath(redirectTo, {
-          notice: "프로젝트를 보관 상태로 전환했습니다."
-        }),
-        request.url
-      ),
-      { status: 303 }
-    );
+    return createRedirectResponse(redirectTo, {
+      notice: "프로젝트를 보관 상태로 전환했습니다."
+    });
   } catch (error) {
     return NextResponse.json(
       {

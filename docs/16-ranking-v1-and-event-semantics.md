@@ -131,6 +131,7 @@
 - 최근 30일 내 생성된 댓글만 반영한다.
 - 동일 사용자의 과도한 댓글 도배를 약화하기 위해 아래 기준을 적용한다.
   - `comment_signal = min(active_comment_count_30d, unique_commenter_count_30d * 2)`
+- `unique_commenter_count_30d`는 member 댓글은 `user_id`, visitor 댓글은 `guest_session_hash` 기준으로 센다.
 
 ## 9. V1 점수 공식
 

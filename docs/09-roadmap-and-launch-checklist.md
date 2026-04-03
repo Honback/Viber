@@ -119,10 +119,10 @@ Build a project-centric showcase community for vibe-coded apps.
 
 Core concept:
 - The main object is a Project, not a generic forum post.
-- Each project has activity posts of 3 types: Launch, Update, Ask for Feedback.
+- Each project has activity posts of 3 types: Launch, Update, Feedback.
 - Public browsing is allowed without login.
 - Project submission does not require heavy account signup, but ownership verification is required via email magic link or GitHub auth.
-- Comments and saves require lightweight user accounts.
+- Saves and member-authored feedback require lightweight user accounts, while comments are open to visitors with CAPTCHA.
 
 Public routes:
 - /

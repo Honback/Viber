@@ -145,11 +145,13 @@
 5. Activity Feed
    - Launch
    - Update
-   - Ask for Feedback
+   - Ask for Feedback / Feedback
 
-6. Comments
+6. Comments / Community Feedback
    - 프로젝트 전체 댓글
    - 활동 단위 맥락 포함 가능
+   - visitor 댓글은 guest alias + CAPTCHA 기반
+   - 인증 member는 구조화된 feedback 활동 작성 가능
 
 7. Related Projects
    - 같은 태그 또는 카테고리 기반
@@ -181,8 +183,8 @@
 
 - 새 프로젝트 런치
 
-기존 프로젝트의 `Update`와 `Ask for Feedback`는 `/submit`에서 받지 않는다.
-이 두 흐름은 owner가 `/me/projects`에서 시작한다.
+기존 프로젝트의 `Update`는 `/submit`에서 받지 않는다.
+owner의 `Ask for Feedback`는 `/me/projects`에서 시작하고, member의 `Feedback`은 프로젝트 상세에서 시작한다.
 
 #### Step 2. 기본 링크 입력
 
@@ -310,7 +312,40 @@
 - 섹션별 순서 조정
 - 피처드 시작/종료 일정 설정 optional
 
-## 11. 공통 상태 명세
+## 11. 관리자 작업 `/admin/jobs`
+
+### 목적
+
+- 운영 자동화 job을 수동으로 실행하고 결과를 즉시 확인한다.
+
+### 기능
+
+- `check-links`
+- `cleanup-unclaimed`
+- `recompute-ranking`
+- 전체 job 순차 실행
+- 최근 실행 결과 JSON 확인
+- 권장 실행 주기 안내
+
+## 12. 관리자 메일 `/admin/mail`
+
+### 목적
+
+- claim, 댓글 알림, 운영 상태 변경 메일의 최근 발송 기록을 운영자가 바로 확인한다.
+
+### 기능
+
+- 메일 템플릿 종류 표시
+- 발송 상태 표시
+  - queued
+  - sent
+  - failed
+  - simulated
+- 수신자, 제목, 생성 시각, 발송 시각 확인
+- 메일 본문 텍스트 미리보기
+- action URL 바로 열기
+
+## 13. 공통 상태 명세
 
 모든 주요 페이지는 아래 상태를 기본 지원해야 한다.
 

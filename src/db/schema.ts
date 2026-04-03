@@ -28,6 +28,8 @@ export const ownerVerificationValues = ["email", "github"] as const;
 export const reportTargetValues = ["project", "post", "comment"] as const;
 export const reportStatusValues = ["open", "reviewing", "resolved", "rejected"] as const;
 export const linkHealthStatusValues = ["unknown", "healthy", "degraded", "broken"] as const;
+export const emailDeliveryStatusValues = ["queued", "sent", "failed", "simulated"] as const;
+export const domainVerificationStatusValues = ["pending", "verified", "failed", "revoked"] as const;
 
 const roleCheck = sql.raw(`role in ('${roleValues.join("','")}')`);
 const stageCheck = sql.raw(`stage in ('${stageValues.join("','")}')`);
@@ -39,9 +41,14 @@ const ownerVerificationCheck = sql.raw(`verification_method in ('${ownerVerifica
 const postTypeCheck = sql.raw(`type in ('${postTypeValues.join("','")}')`);
 const postStatusCheck = sql.raw(`status in ('${postStatusValues.join("','")}')`);
 const commentStatusCheck = sql.raw(`status in ('${commentStatusValues.join("','")}')`);
+const commentAuthorIdentityCheck = sql.raw(
+  "(user_id is not null and guest_name is null and guest_session_hash is null) or (user_id is null and guest_name is not null and guest_session_hash is not null)"
+);
 const reportTargetCheck = sql.raw(`target_type in ('${reportTargetValues.join("','")}')`);
 const reportStatusCheck = sql.raw(`status in ('${reportStatusValues.join("','")}')`);
 const linkHealthStatusCheck = sql.raw(`status in ('${linkHealthStatusValues.join("','")}')`);
+const emailDeliveryStatusCheck = sql.raw(`status in ('${emailDeliveryStatusValues.join("','")}')`);
+const domainVerificationStatusCheck = sql.raw(`status in ('${domainVerificationStatusValues.join("','")}')`);
 
 export const profiles = pgTable(
   "profiles",
@@ -52,6 +59,8 @@ export const profiles = pgTable(
     avatarUrl: text("avatar_url"),
     githubUsername: text("github_username"),
     role: text("role").notNull().default("member"),
+    emailVerifiedAt: timestamp("email_verified_at", { withTimezone: true }),
+    passwordSetAt: timestamp("password_set_at", { withTimezone: true }),
     createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
     updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow()
   },
@@ -144,6 +153,7 @@ export const projectPosts = pgTable(
     projectId: uuid("project_id")
       .notNull()
       .references(() => projects.id, { onDelete: "cascade" }),
+    authorUserId: uuid("author_user_id").references(() => profiles.id, { onDelete: "restrict" }),
     type: text("type").notNull(),
     title: text("title").notNull(),
     summary: text("summary").notNull(),
@@ -156,6 +166,7 @@ export const projectPosts = pgTable(
   },
   (table) => [
     index("project_posts_project_published_idx").on(table.projectId, table.publishedAt),
+    index("project_posts_author_created_idx").on(table.authorUserId, table.createdAt),
     check("project_posts_type_check", postTypeCheck),
     check("project_posts_status_check", postStatusCheck)
   ]
@@ -170,9 +181,9 @@ export const comments = pgTable(
       .references(() => projects.id, { onDelete: "cascade" }),
     postId: uuid("post_id").references(() => projectPosts.id, { onDelete: "cascade" }),
     parentId: uuid("parent_id").references((): AnyPgColumn => comments.id, { onDelete: "cascade" }),
-    userId: uuid("user_id")
-      .notNull()
-      .references(() => profiles.id, { onDelete: "cascade" }),
+    userId: uuid("user_id").references(() => profiles.id, { onDelete: "cascade" }),
+    guestName: text("guest_name"),
+    guestSessionHash: text("guest_session_hash"),
     bodyMd: text("body_md").notNull(),
     status: text("status").notNull().default("active"),
     createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
@@ -181,6 +192,8 @@ export const comments = pgTable(
   (table) => [
     index("comments_project_created_idx").on(table.projectId, table.createdAt),
     index("comments_post_created_idx").on(table.postId, table.createdAt),
+    index("comments_guest_session_created_idx").on(table.guestSessionHash, table.createdAt),
+    check("comments_author_identity_check", commentAuthorIdentityCheck),
     check("comments_status_check", commentStatusCheck)
   ]
 );
@@ -354,6 +367,56 @@ export const magicLinks = pgTable(
   (table) => [index("magic_links_email_purpose_idx").on(table.email, table.purpose, table.createdAt)]
 );
 
+export const emailDeliveries = pgTable(
+  "email_deliveries",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    provider: text("provider").notNull().default("resend"),
+    template: text("template").notNull(),
+    status: text("status").notNull().default("queued"),
+    recipient: text("recipient").notNull(),
+    subject: text("subject").notNull(),
+    fromEmail: text("from_email").notNull(),
+    htmlBody: text("html_body").notNull(),
+    textBody: text("text_body").notNull().default(""),
+    metadataJson: jsonb("metadata_json").$type<Record<string, unknown>>().notNull().default(sql`'{}'::jsonb`),
+    providerMessageId: text("provider_message_id"),
+    error: text("error"),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    sentAt: timestamp("sent_at", { withTimezone: true })
+  },
+  (table) => [
+    index("email_deliveries_created_idx").on(table.createdAt),
+    index("email_deliveries_recipient_idx").on(table.recipient, table.createdAt),
+    index("email_deliveries_status_idx").on(table.status, table.createdAt),
+    check("email_deliveries_status_check", emailDeliveryStatusCheck)
+  ]
+);
+
+export const domainVerifications = pgTable(
+  "domain_verifications",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    projectId: uuid("project_id")
+      .notNull()
+      .references(() => projects.id, { onDelete: "cascade" }),
+    registrableDomain: text("registrable_domain").notNull(),
+    recordName: text("record_name").notNull(),
+    token: text("token").notNull(),
+    status: text("status").notNull().default("pending"),
+    lastCheckedAt: timestamp("last_checked_at", { withTimezone: true }),
+    verifiedAt: timestamp("verified_at", { withTimezone: true }),
+    lastError: text("last_error"),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow()
+  },
+  (table) => [
+    uniqueIndex("domain_verifications_project_idx").on(table.projectId),
+    index("domain_verifications_domain_status_idx").on(table.registrableDomain, table.status),
+    check("domain_verifications_status_check", domainVerificationStatusCheck)
+  ]
+);
+
 export const sessions = pgTable(
   "sessions",
   {
@@ -370,6 +433,7 @@ export const sessions = pgTable(
 
 export const profilesRelations = relations(profiles, ({ many }) => ({
   projectOwners: many(projectOwners),
+  projectPosts: many(projectPosts),
   comments: many(comments),
   saves: many(projectSaves),
   reports: many(reports),
@@ -386,7 +450,8 @@ export const projectsRelations = relations(projects, ({ many }) => ({
   tagLinks: many(projectTags),
   linkHealthChecks: many(linkHealthChecks),
   rankSnapshots: many(projectRankSnapshots),
-  impressions: many(viewImpressionCounters)
+  impressions: many(viewImpressionCounters),
+  domainVerifications: many(domainVerifications)
 }));
 
 export const projectOwnersRelations = relations(projectOwners, ({ one }) => ({
@@ -404,6 +469,10 @@ export const projectPostsRelations = relations(projectPosts, ({ one, many }) => 
   project: one(projects, {
     fields: [projectPosts.projectId],
     references: [projects.id]
+  }),
+  author: one(profiles, {
+    fields: [projectPosts.authorUserId],
+    references: [profiles.id]
   }),
   comments: many(comments)
 }));
@@ -489,6 +558,13 @@ export const sessionsRelations = relations(sessions, ({ one }) => ({
   })
 }));
 
+export const domainVerificationsRelations = relations(domainVerifications, ({ one }) => ({
+  project: one(projects, {
+    fields: [domainVerifications.projectId],
+    references: [projects.id]
+  })
+}));
+
 export const reportsRelations = relations(reports, ({ one }) => ({
   reporter: one(profiles, {
     fields: [reports.reporterUserId],
@@ -514,3 +590,5 @@ export type ProjectPostStatus = (typeof postStatusValues)[number];
 export type CommentStatus = (typeof commentStatusValues)[number];
 export type ReportTargetType = (typeof reportTargetValues)[number];
 export type ReportStatus = (typeof reportStatusValues)[number];
+export type EmailDeliveryStatus = (typeof emailDeliveryStatusValues)[number];
+export type DomainVerificationStatus = (typeof domainVerificationStatusValues)[number];

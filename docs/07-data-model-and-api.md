@@ -51,7 +51,8 @@ created_at
 
 설명:
 
-- 댓글, 저장, 관리자 액션의 주체다.
+- 저장, member-authored feedback, 관리자 액션의 주체다.
+- 댓글은 인증 사용자와 visitor guest 모두 남길 수 있다.
 - 프로젝트 등록은 비회원도 가능하지만, 상호작용은 사용자 엔티티와 연결된다.
 
 ### 3-2. project_owners
@@ -122,6 +123,7 @@ updated_at
 ```txt
 id
 project_id
+author_user_id
 type(launch/update/feedback)
 title
 summary
@@ -136,7 +138,8 @@ published_at
 설명:
 
 - 프로젝트 하위 활동 이력이다.
-- 피드백 요청도 별도 게시판이 아니라 이 활동 타입으로 관리한다.
+- `author_user_id`는 owner, member, admin 중 실제 작성자를 가리킨다.
+- `feedback`은 owner의 피드백 요청과 member의 구조화 피드백을 모두 이 활동 타입으로 관리한다.
 
 ### 3-5. comments
 
@@ -145,7 +148,9 @@ id
 project_id
 post_id(nullable)
 parent_id(nullable)
-user_id
+user_id(nullable)
+guest_name(nullable)
+guest_session_hash(nullable)
 body_md
 status(active/hidden/deleted)
 created_at
@@ -155,6 +160,8 @@ created_at
 
 - 1단계 대댓글까지만 허용한다.
 - `post_id`는 특정 활동 문맥에 연결할 때 사용한다.
+- member 댓글은 `user_id`를 사용한다.
+- visitor 댓글은 `guest_name`과 `guest_session_hash`를 사용하며, CAPTCHA와 더 강한 rate limit을 전제로 한다.
 
 ### 3-6. project_saves
 
@@ -405,7 +412,8 @@ created_at
 
 ### `POST /api/projects/:id/posts`
 
-- Update 또는 Ask for Feedback 추가
+- `Update`는 owner/admin만 추가
+- `feedback`은 authenticated member 이상이 추가
 
 ## 9. 상호작용 API
 
@@ -419,11 +427,15 @@ created_at
 
 ### `POST /api/projects/:id/comments`
 
+- member 댓글 또는 visitor guest 댓글 생성
+- visitor는 `guestName`과 CAPTCHA 토큰이 필요하다.
+
 예시 요청:
 
 ```json
 {
-  "body": "온보딩 첫 화면이 조금 길게 느껴졌어요."
+  "body": "온보딩 첫 화면이 조금 길게 느껴졌어요.",
+  "guestName": "early-user"
 }
 ```
 

@@ -81,7 +81,9 @@ export async function recomputeProjectRankSnapshots() {
     .map((project) => {
       const uniqueTryClicks7d = new Set(project.clickEvents.map((event) => event.sessionHash)).size;
       const newSaves30d = project.saves.length;
-      const uniqueCommenterCount = new Set(project.comments.map((comment) => comment.userId)).size;
+      const uniqueCommenterCount = new Set(
+        project.comments.map((comment) => comment.userId ?? comment.guestSessionHash).filter((value): value is string => Boolean(value))
+      ).size;
       const commentSignal30d = Math.min(project.comments.length, uniqueCommenterCount * 2);
       const ranking = calculateTrendingScoreV1({
         uniqueTryClicks7d,

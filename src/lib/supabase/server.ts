@@ -1,12 +1,15 @@
 import { cookies } from "next/headers";
 import { createServerClient } from "@supabase/ssr";
 
-import { getSupabasePublishableKey, getSupabaseUrl } from "@/lib/supabase/shared";
+import { getSupabasePublishableKey, getSupabaseUrl, shouldUseSecureCookies } from "@/lib/supabase/shared";
 
 export async function createSupabaseServerClient() {
   const cookieStore = await cookies();
 
   return createServerClient(getSupabaseUrl(), getSupabasePublishableKey(), {
+    cookieOptions: {
+      secure: shouldUseSecureCookies()
+    },
     cookies: {
       getAll() {
         return cookieStore.getAll();

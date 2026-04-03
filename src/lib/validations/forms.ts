@@ -24,12 +24,15 @@ export const reportActionSchema = z.object({
   targetId: z.string().uuid(),
   reason: z.string().trim().min(2).max(64),
   note: z.string().trim().max(500).optional().or(z.literal("")),
+  turnstileToken: z.string().trim().optional().or(z.literal("")),
   redirectTo: z.string().optional().default("/")
 });
 
 export const commentActionSchema = z.object({
   postId: z.string().uuid().optional().or(z.literal("")),
   parentId: z.string().uuid().optional().or(z.literal("")),
+  guestName: z.string().trim().min(2).max(40).optional().or(z.literal("")),
+  turnstileToken: z.string().trim().optional().or(z.literal("")),
   bodyMd: z.string().trim().min(2).max(1000),
   redirectTo: z.string().optional().default("/")
 });
@@ -77,6 +80,7 @@ export const launchSubmissionSchema = z.object({
   tagCsv: z.string().optional().default(""),
   ownerEmail: z.string().email().optional().or(z.literal("")),
   verificationMethod: z.enum(["email", "github"]).default("email"),
+  turnstileToken: z.string().trim().optional().or(z.literal("")),
   isOpenSource: z.boolean().optional().default(false),
   noSignupRequired: z.boolean().optional().default(false),
   isSoloMaker: z.boolean().optional().default(false)
@@ -89,7 +93,8 @@ export const postSubmissionSchema = z.object({
   summary: z.string().trim().min(10).max(240),
   bodyMd: z.string().trim().min(20).max(5000),
   requestedFeedbackMd: z.string().trim().max(5000).optional().or(z.literal("")),
-  mediaCsv: z.string().optional().default("")
+  mediaCsv: z.string().optional().default(""),
+  redirectTo: z.string().optional().default("/me/projects")
 });
 
 export const projectUpdateSchema = z.object({

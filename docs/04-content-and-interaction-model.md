@@ -33,13 +33,14 @@
 
 - `Launch`
 - `Update`
-- `Ask for Feedback`
+- `Feedback`
 
 ### 설계 의도
 
 - 런치 이후 정보가 흩어지지 않게 한다.
 - 사용자 피드백과 변화 기록을 같은 맥락 안에 남긴다.
 - 단순 홍보 게시판처럼 동일 프로젝트가 여러 글로 분산되는 문제를 막는다.
+- `feedback` 타입은 owner의 "Ask for Feedback"과 member의 구조화된 "Feedback"을 함께 수용한다.
 
 ## 4. 댓글 정책
 
@@ -56,6 +57,8 @@
 - 링크 수는 제한한다.
 - 댓글 수정 가능 시간은 제한한다.
 - 삭제는 soft delete로 처리한다.
+- visitor 댓글은 CAPTCHA와 더 강한 rate limit을 전제로 한다.
+- visitor 댓글은 `guest_name + guest_session_hash` 기반으로 저장한다.
 
 ### 하지 않는 것
 
@@ -151,7 +154,8 @@
 - `published`
 - `hidden`
 
-활동은 owner 작성 시 기본적으로 즉시 공개되며, 운영 기준에 따라 사후 제한이 가능해야 한다.
+owner 작성 `Update`와 owner 작성 `Ask for Feedback`은 기본적으로 즉시 공개된다.
+member 작성 `Feedback`은 운영 기준에 따라 즉시 공개 또는 `pending` 검토 대상으로 둘 수 있어야 한다.
 
 ## 11. 알림 정책
 

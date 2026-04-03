@@ -1,7 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { createServerClient } from "@supabase/ssr";
 
-import { buildRedirectPath } from "@/lib/http";
+import { createRedirectResponse } from "@/lib/http";
 import { LEGACY_SESSION_COOKIE_NAME } from "@/lib/auth/session";
 import { getSupabasePublishableKey, getSupabaseUrl, isSupabaseConfigured } from "@/lib/supabase/shared";
 
@@ -25,7 +25,7 @@ export async function POST(request: NextRequest) {
     await supabase.auth.signOut();
   }
 
-  const response = NextResponse.redirect(new URL(buildRedirectPath("/", { notice: "로그아웃했습니다." }), request.url), { status: 303 });
+  const response = createRedirectResponse("/", { notice: "로그아웃했습니다." });
 
   for (const cookie of cookieResponse.cookies.getAll()) {
     response.cookies.set(cookie.name, cookie.value, cookie);

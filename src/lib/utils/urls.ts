@@ -24,6 +24,10 @@ export function ensureAbsoluteUrl(pathname: string) {
   return pathname.startsWith("/") ? pathname : `/${pathname}`;
 }
 
+export function buildAbsoluteAppUrl(baseUrl: string, pathname: string) {
+  return new URL(ensureAbsoluteUrl(pathname), baseUrl).toString();
+}
+
 export function getUrlHostname(value: string | null | undefined) {
   if (!value) return null;
 

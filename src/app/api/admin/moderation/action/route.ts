@@ -1,8 +1,7 @@
 import { revalidatePath } from "next/cache";
-import { NextResponse } from "next/server";
 
 import { requireAdminProfile } from "@/lib/auth/session";
-import { buildRedirectPath, parseOptionalString, parseRequiredString } from "@/lib/http";
+import { createRedirectResponse, parseOptionalString, parseRequiredString } from "@/lib/http";
 import {
   moderatePostStatus,
   moderateProjectStatus,
@@ -102,16 +101,10 @@ export async function POST(request: Request) {
     revalidatePath("/admin/projects");
     revalidatePath("/admin/feature");
 
-    return NextResponse.redirect(new URL(buildRedirectPath(parsed.redirectTo, { notice: "운영 액션을 적용했습니다." }), request.url), { status: 303 });
+    return createRedirectResponse(parsed.redirectTo, { notice: "운영 액션을 적용했습니다." });
   } catch (error) {
-    return NextResponse.redirect(
-      new URL(
-        buildRedirectPath("/admin/moderation", {
-          error: error instanceof Error ? error.message : "운영 액션 적용에 실패했습니다."
-        }),
-        request.url
-      ),
-      { status: 303 }
-    );
+    return createRedirectResponse("/admin/moderation", {
+      error: error instanceof Error ? error.message : "운영 액션 적용에 실패했습니다."
+    });
   }
 }

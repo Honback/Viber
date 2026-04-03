@@ -7,12 +7,15 @@ import { SectionHeading } from "@/components/ui/section-heading";
 import { StatusBadge } from "@/components/ui/status-badge";
 import {
   categoryOptions,
+  domainVerificationStatusLabels,
   platformOptions,
   pricingOptions,
   projectStatusLabels,
-  stageOptions
+  stageOptions,
+  verificationLabels
 } from "@/lib/constants";
 import { requireCurrentProfile } from "@/lib/auth/session";
+import { projectMediaAccept, projectMediaMaxFileSizeLabel } from "@/lib/storage/project-media";
 import { getOwnedProjectManagementData } from "@/lib/services/read-models";
 
 type MyProjectsPageProps = {
@@ -53,6 +56,18 @@ function getStatusGuide(status: string) {
   }
 
   return "공개 중입니다. 수정 후에는 바로 상세 페이지와 탐색 결과에 반영됩니다.";
+}
+
+function getVerificationTone(status: string) {
+  if (status === "domain_verified" || status === "github_verified") return "success" as const;
+  return "default" as const;
+}
+
+function getDomainVerificationTone(status: string | null) {
+  if (status === "verified") return "success" as const;
+  if (status === "failed" || status === "revoked") return "danger" as const;
+  if (status === "pending") return "warning" as const;
+  return "default" as const;
 }
 
 export default async function MyProjectsPage({ searchParams }: MyProjectsPageProps) {
@@ -123,7 +138,11 @@ export default async function MyProjectsPage({ searchParams }: MyProjectsPagePro
                   </div>
                 </div>
 
-                <div className="grid gap-3 rounded-[28px] border border-line bg-white p-5 text-sm text-foreground">
+                  <div className="grid gap-3 rounded-[28px] border border-line bg-white p-5 text-sm text-foreground">
+                  <div className="flex items-center justify-between gap-3">
+                    <span className="text-foreground-muted">검증 배지</span>
+                    <StatusBadge label={verificationLabels[project.verificationState]} tone={getVerificationTone(project.verificationState)} />
+                  </div>
                   <div className="flex items-center justify-between gap-3">
                     <span className="text-foreground-muted">라이브 URL</span>
                     <a href={project.liveUrl} target="_blank" rel="noreferrer" className="max-w-[60%] truncate font-semibold">
@@ -151,9 +170,84 @@ export default async function MyProjectsPage({ searchParams }: MyProjectsPagePro
                 </div>
               </div>
 
+              <details className="rounded-[28px] border border-line bg-white p-5">
+                <summary className="cursor-pointer text-lg font-bold tracking-tight text-foreground">도메인 확인</summary>
+                <div className="mt-5 grid gap-4">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <StatusBadge
+                      label={
+                        project.domainVerification.status
+                          ? domainVerificationStatusLabels[project.domainVerification.status]
+                          : "토큰 없음"
+                      }
+                      tone={getDomainVerificationTone(project.domainVerification.status)}
+                    />
+                    {project.domainVerification.registrableDomain ? (
+                      <span className="text-sm text-foreground-muted">{project.domainVerification.registrableDomain}</span>
+                    ) : null}
+                  </div>
+
+                  {project.domainVerification.eligible ? (
+                    <>
+                      <div className="rounded-[24px] border border-line bg-[rgba(255,253,248,0.96)] p-4 text-sm text-foreground">
+                        <div className="flex items-center justify-between gap-3">
+                          <span className="text-foreground-muted">대상 호스트</span>
+                          <span className="font-semibold">{project.domainVerification.hostname}</span>
+                        </div>
+                        <div className="mt-3 flex items-center justify-between gap-3">
+                          <span className="text-foreground-muted">TXT 레코드 이름</span>
+                          <code className="max-w-[65%] truncate rounded-xl bg-white px-3 py-2 text-xs font-semibold">{project.domainVerification.recordName}</code>
+                        </div>
+                        <div className="mt-3">
+                          <div className="text-foreground-muted">TXT 레코드 값</div>
+                          <code className="mt-2 block overflow-x-auto rounded-2xl bg-white px-4 py-3 text-xs font-semibold">
+                            {project.domainVerification.token ?? "먼저 토큰 발급 버튼을 눌러 주세요."}
+                          </code>
+                        </div>
+                      </div>
+
+                      {project.domainVerification.lastError ? (
+                        <div className="rounded-[24px] border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+                          {project.domainVerification.lastError}
+                        </div>
+                      ) : null}
+
+                      <div className="flex flex-wrap gap-3">
+                        <form action={`/api/projects/${project.id}/domain-verification/issue`} method="post">
+                          <input type="hidden" name="redirectTo" value="/me/projects" />
+                          <button className="rounded-full border border-line bg-white px-4 py-2.5 text-sm font-semibold text-foreground">
+                            {project.domainVerification.token ? "토큰 다시 발급" : "토큰 발급"}
+                          </button>
+                        </form>
+                        <form action={`/api/projects/${project.id}/domain-verification/verify`} method="post">
+                          <input type="hidden" name="redirectTo" value="/me/projects" />
+                          <button className="rounded-full bg-[#111827] px-4 py-2.5 text-sm font-semibold text-white">
+                            지금 검증하기
+                          </button>
+                        </form>
+                      </div>
+
+                      <div className="text-sm leading-7 text-foreground-muted">
+                        DNS에 TXT 레코드를 추가한 뒤 검증 버튼을 누르면 `domain_verified` 배지로 바뀝니다.
+                        {project.domainVerification.verifiedAt ? (
+                          <div className="mt-1">최근 완료 시각: {project.domainVerification.verifiedAt.toLocaleString("ko-KR")}</div>
+                        ) : null}
+                        {project.domainVerification.lastCheckedAt ? (
+                          <div className="mt-1">최근 확인 시각: {project.domainVerification.lastCheckedAt.toLocaleString("ko-KR")}</div>
+                        ) : null}
+                      </div>
+                    </>
+                  ) : (
+                    <div className="rounded-[24px] border border-dashed border-line bg-[rgba(255,253,248,0.96)] px-4 py-3 text-sm text-foreground-muted">
+                      {project.domainVerification.reason ?? "현재 라이브 URL은 도메인 확인 대상이 아닙니다."}
+                    </div>
+                  )}
+                </div>
+              </details>
+
               <details id={`edit-${project.id}`} className="rounded-[28px] border border-line bg-white p-5">
                 <summary className="cursor-pointer text-lg font-bold tracking-tight text-foreground">프로젝트 정보 수정</summary>
-                <form action={`/api/projects/${project.id}`} method="post" className="mt-5 grid gap-4">
+                <form action={`/api/projects/${project.id}`} method="post" encType="multipart/form-data" className="mt-5 grid gap-4">
                   <input type="hidden" name="redirectTo" value="/me/projects" />
 
                   <div className="grid gap-4 md:grid-cols-2">
@@ -262,6 +356,16 @@ export default async function MyProjectsPage({ searchParams }: MyProjectsPagePro
 
                   <div className="grid gap-4 md:grid-cols-2">
                     <label className="grid gap-2 text-sm font-semibold text-foreground">
+                      대표 이미지 파일
+                      <input type="file" name="coverImageFile" accept={projectMediaAccept} className="rounded-2xl border border-line bg-white px-4 py-3 font-normal" />
+                      <span className="text-xs font-normal text-foreground-muted">JPG, PNG, WEBP, GIF · 최대 {projectMediaMaxFileSizeLabel}</span>
+                    </label>
+                    <label className="grid gap-2 text-sm font-semibold text-foreground">
+                      갤러리 이미지 파일들
+                      <input type="file" name="galleryFiles" accept={projectMediaAccept} multiple className="rounded-2xl border border-line bg-white px-4 py-3 font-normal" />
+                      <span className="text-xs font-normal text-foreground-muted">새 파일을 올리면 기존 갤러리 URL 입력값 대신 사용합니다.</span>
+                    </label>
+                    <label className="grid gap-2 text-sm font-semibold text-foreground">
                       대표 이미지 URL
                       <input name="coverImageUrl" defaultValue={project.coverImageUrl} className="rounded-2xl border border-line bg-white px-4 py-3 font-normal" />
                     </label>
@@ -302,7 +406,7 @@ export default async function MyProjectsPage({ searchParams }: MyProjectsPagePro
 
               <details id={`compose-${project.id}`} className="rounded-[28px] border border-line bg-white p-5">
                 <summary className="cursor-pointer text-lg font-bold tracking-tight text-foreground">업데이트 또는 피드백 요청 추가</summary>
-                <form action={`/api/projects/${project.id}/posts`} method="post" className="mt-5 grid gap-3">
+                <form action={`/api/projects/${project.id}/posts`} method="post" encType="multipart/form-data" className="mt-5 grid gap-3">
                   <label className="grid gap-2 text-sm font-semibold text-foreground">
                     활동 유형
                     <select name="kind" className="rounded-2xl border border-line bg-white px-4 py-3 font-normal">
@@ -329,6 +433,11 @@ export default async function MyProjectsPage({ searchParams }: MyProjectsPagePro
                   <label className="grid gap-2 text-sm font-semibold text-foreground">
                     첨부 미디어 URL들
                     <input name="mediaCsv" className="rounded-2xl border border-line bg-white px-4 py-3 font-normal" placeholder="쉼표로 구분" />
+                  </label>
+                  <label className="grid gap-2 text-sm font-semibold text-foreground">
+                    첨부 이미지 파일들
+                    <input type="file" name="mediaFiles" accept={projectMediaAccept} multiple className="rounded-2xl border border-line bg-white px-4 py-3 font-normal" />
+                    <span className="text-xs font-normal text-foreground-muted">최대 5개 · JPG, PNG, WEBP, GIF · 최대 {projectMediaMaxFileSizeLabel}</span>
                   </label>
                   <button className="w-fit rounded-full bg-[#111827] px-4 py-2.5 text-sm font-semibold text-white">활동 저장</button>
                 </form>

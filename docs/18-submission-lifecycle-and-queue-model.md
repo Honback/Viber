@@ -18,7 +18,8 @@ MVP는 아래 결정을 기준으로 구현한다.
 - 별도 `submissions` 테이블을 두지 않는다.
 - `/submit` 성공 시 `projects`, 첫 `project_posts(type=launch)`, `project_owners`를 즉시 생성한다.
 - `/submit`은 신규 `Launch`만 받는다.
-- 기존 프로젝트의 `Update`, `Ask for Feedback`는 owner가 `/me/projects`에서만 시작한다.
+- 기존 프로젝트의 `Update`는 owner가 `/me/projects`에서 시작한다.
+- owner의 `Ask for Feedback`는 `/me/projects`, member의 `Feedback`은 프로젝트 상세에서 시작한다.
 - 관리자는 사전 승인자가 아니라 사후 운영 담당자다.
 
 ## 3. 저장 전 차단 규칙

@@ -100,6 +100,7 @@
 ### Resend
 
 - 발신 도메인 또는 테스트 발신자 준비
+- 필요 시 Supabase `Authentication -> Email -> SMTP Settings` 와 연결할 SMTP 값 준비
 
 ### 배포 환경
 
@@ -131,6 +132,7 @@ UPSTASH_REDIS_REST_TOKEN=
 
 RESEND_API_KEY=
 MAIL_FROM=
+MAIL_FROM_NAME=VibeHub
 ```
 
 추가 권장:
@@ -161,10 +163,12 @@ MAIL_FROM=
 - 로그인/로그아웃 기본 흐름 구현
 - 세션 확인 유틸 작성
 - member/admin role 분기 유틸 작성
+- guest comment identity 생성 규칙 정의
 
 ### 권장
 
 - owner 권한 체크 유틸 작성
+- member feedback 작성 권한 체크 유틸 작성
 - claim token 검증 유틸 작성
 - 7일 미claim 제출 정리 job 명세
 - 인증 필요 라우트 보호 방식 정리
@@ -233,6 +237,7 @@ MAIL_FROM=
 - Zod validation
 - 권한 체크
 - rate limit
+- guest 경로의 CAPTCHA 검사
 - 에러 포맷 통일
 - 감사 로그 또는 운영 로그 처리
 
@@ -241,7 +246,8 @@ MAIL_FROM=
 초기에 빠지면 안 되는 항목:
 
 - submit에 Turnstile
-- comment에 rate limit
+- comment에 Turnstile
+- guest comment에 더 강한 rate limit
 - report에 rate limit
 - auth endpoint abuse 대응
 - 관리자 API 접근 제한
@@ -270,6 +276,8 @@ MAIL_FROM=
 - 프로젝트 제출
 - 저장
 - 댓글
+- visitor 댓글
+- member feedback 활동 작성
 - owner 연결 후 공개
 
 ## 14. 분석과 SEO

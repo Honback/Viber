@@ -50,10 +50,17 @@ export const verificationLabels: Record<VerificationState, string> = {
   domain_verified: "도메인 확인"
 };
 
+export const domainVerificationStatusLabels = {
+  pending: "대기",
+  verified: "검증 완료",
+  failed: "확인 실패",
+  revoked: "무효화"
+} as const;
+
 export const projectPostLabels = {
   launch: "런치",
   update: "업데이트",
-  feedback: "피드백 요청"
+  feedback: "피드백"
 } as const;
 
 export const navLinks = [

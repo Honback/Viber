@@ -157,6 +157,7 @@ create table project_owners (
 create table project_posts (
   id uuid primary key default gen_random_uuid(),
   project_id uuid not null references projects(id) on delete cascade,
+  author_user_id uuid not null references profiles(id) on delete restrict,
   type text not null check (type in ('launch', 'update', 'feedback')),
   title text not null,
   summary text not null,
@@ -170,6 +171,12 @@ create table project_posts (
 );
 ```
 
+설명:
+
+- `author_user_id`는 실제 활동 작성자를 기록한다.
+- `launch`와 `update`는 owner/admin이 작성하고, `feedback`은 owner/admin/member가 작성할 수 있다.
+- owner 작성 `feedback`은 Ask for Feedback, member 작성 `feedback`은 구조화된 제품 피드백으로 해석한다.
+
 ### 4-5. comments
 
 프로젝트 또는 특정 활동에 달리는 댓글이다.
@@ -180,11 +187,17 @@ create table comments (
   project_id uuid not null references projects(id) on delete cascade,
   post_id uuid references project_posts(id) on delete cascade,
   parent_id uuid references comments(id) on delete cascade,
-  user_id uuid not null references profiles(id) on delete cascade,
+  user_id uuid references profiles(id) on delete cascade,
+  guest_name text,
+  guest_session_hash text,
   body_md text not null,
   status text not null default 'active' check (status in ('active', 'hidden', 'deleted')),
   created_at timestamptz not null default now(),
-  updated_at timestamptz not null default now()
+  updated_at timestamptz not null default now(),
+  constraint comments_author_identity_check check (
+    (user_id is not null and guest_name is null and guest_session_hash is null)
+    or (user_id is null and guest_name is not null and guest_session_hash is not null)
+  )
 );
 ```
 
@@ -192,6 +205,8 @@ create table comments (
 
 - 1단계 대댓글 제한은 앱 로직과 DB 제약 검토로 함께 관리한다.
 - soft delete를 위해 `status`를 둔다.
+- member 댓글은 `user_id`와 연결한다.
+- visitor 댓글은 `guest_name`, `guest_session_hash`를 저장하고 CAPTCHA와 더 강한 rate limit을 적용한다.
 
 ### 4-6. project_saves
 
@@ -338,6 +353,7 @@ create index projects_featured_order_idx on projects (featured, featured_order);
 create index project_posts_project_published_idx on project_posts (project_id, published_at desc);
 create index comments_project_created_idx on comments (project_id, created_at desc);
 create index comments_post_created_idx on comments (post_id, created_at desc);
+create index comments_guest_session_created_idx on comments (guest_session_hash, created_at desc) where guest_session_hash is not null;
 create index reports_status_created_idx on reports (status, created_at desc);
 create index moderation_actions_created_idx on moderation_actions (created_at desc);
 create index project_click_events_project_created_idx on project_click_events (project_id, created_at desc);
@@ -395,13 +411,19 @@ create index projects_maker_alias_trgm_idx on projects using gin (maker_alias gi
 ### 인증 사용자 쓰기
 
 - `project_saves` 본인 계정 기준 insert/delete 허용
+- `project_posts`의 member-authored `feedback` insert는 authenticated session 기준으로 서버 레이어에서 허용
 - `comments` 본인 계정 기준 insert 허용
 - `reports` 본인 계정 기준 insert 허용
+
+### guest 쓰기
+
+- visitor 댓글과 visitor 신고는 anon DB 직접 쓰기가 아니라 서버 레이어에서만 허용
+- 이 경로는 `Turnstile`, rate limit, guest fingerprint 검사를 통과해야 한다
 
 ### 소유자
 
 - 본인 소유 프로젝트 수정
-- 본인 소유 프로젝트의 post 생성
+- 본인 소유 프로젝트의 `launch/update/feedback` 생성
 
 ### 관리자
 

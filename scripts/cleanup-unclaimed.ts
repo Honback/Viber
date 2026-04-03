@@ -1,13 +1,15 @@
-import { sql } from "../src/db";
-import { cleanupExpiredPendingProjects } from "../src/lib/services/maintenance";
+import { runJobCli } from "./run-job";
 
-async function main() {
-  const result = await cleanupExpiredPendingProjects();
-  console.log(`expired pending projects deleted=${result.deletedProjects}`);
-  await sql.end();
-}
-
-main().catch((error) => {
-  console.error(error);
+runJobCli(["cleanup-unclaimed"]).catch((error) => {
+  console.error(
+    JSON.stringify(
+      {
+        ok: false,
+        error: error instanceof Error ? error.message : "작업 실행에 실패했습니다."
+      },
+      null,
+      2
+    )
+  );
   process.exit(1);
 });

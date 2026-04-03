@@ -22,6 +22,34 @@
       "when": 1774602000000,
       "tag": "0002_ranking_snapshots_refresh",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1774621000000,
+      "tag": "0003_auth_password_status",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1774622000000,
+      "tag": "0004_guest_comment_feedback_authors",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1774692000000,
+      "tag": "0005_resend_email_deliveries",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1774693200000,
+      "tag": "0006_domain_verifications",
+      "breakpoints": true
     }
   ]
 }

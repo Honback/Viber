@@ -4,7 +4,7 @@ import { FlashBanner } from "@/components/ui/flash-banner";
 import { PageShell } from "@/components/ui/page-shell";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { StatusBadge } from "@/components/ui/status-badge";
-import { projectStatusLabels, verificationLabels } from "@/lib/constants";
+import { domainVerificationStatusLabels, projectStatusLabels, verificationLabels } from "@/lib/constants";
 import { requireAdminProfile } from "@/lib/auth/session";
 import { getAdminProjectListData } from "@/lib/services/read-models";
 
@@ -112,6 +112,9 @@ export default async function AdminProjectsPage({ searchParams }: AdminProjectsP
                 <div className="flex flex-wrap gap-2">
                   <StatusBadge label={projectStatusLabels[project.status]} tone={getTone(project.status)} />
                   <StatusBadge label={verificationLabels[project.verificationState]} tone="default" />
+                  {project.domainVerification.status ? (
+                    <StatusBadge label={`DNS ${domainVerificationStatusLabels[project.domainVerification.status]}`} tone={project.domainVerification.status === "verified" ? "success" : project.domainVerification.status === "pending" ? "warning" : "danger"} />
+                  ) : null}
                   {project.linkHealth ? <StatusBadge label={project.linkHealth.label} tone={project.linkHealth.status === "broken" ? "danger" : "default"} /> : null}
                   {project.claimPending ? <StatusBadge label="claim 대기" tone="warning" /> : null}
                 </div>
@@ -151,8 +154,19 @@ export default async function AdminProjectsPage({ searchParams }: AdminProjectsP
                     {project.ownersSummary.claimed}/{project.ownersSummary.total} 연결됨 · {project.ownersSummary.primaryMethod ?? "없음"}
                   </span>
                 </div>
+                <div className="flex items-center justify-between gap-3">
+                  <span className="text-foreground-muted">도메인 확인</span>
+                  <span className="max-w-[65%] truncate font-semibold">
+                    {project.domainVerification.registrableDomain
+                      ? `${project.domainVerification.registrableDomain} / ${project.domainVerification.status ?? "토큰 없음"}`
+                      : "없음"}
+                  </span>
+                </div>
                 {project.linkHealth?.note ? (
                   <div className="rounded-2xl border border-line bg-white px-4 py-3 text-sm text-foreground-muted">{project.linkHealth.note}</div>
+                ) : null}
+                {project.domainVerification.lastError ? (
+                  <div className="rounded-2xl border border-line bg-white px-4 py-3 text-sm text-foreground-muted">{project.domainVerification.lastError}</div>
                 ) : null}
               </div>
 

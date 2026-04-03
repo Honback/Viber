@@ -2,7 +2,8 @@ import { revalidatePath } from "next/cache";
 import { NextResponse } from "next/server";
 
 import { requireCurrentProfile } from "@/lib/auth/session";
-import { buildRedirectPath, parseCheckbox, parseRequiredString } from "@/lib/http";
+import { createRedirectResponse, parseCheckbox, parseRequiredString } from "@/lib/http";
+import { getMultipleFiles, getSingleFile, uploadProjectImageSet } from "@/lib/storage/project-media";
 import { getProjectDetailBySlug } from "@/lib/services/read-models";
 import { updateProject } from "@/lib/services/mutations";
 import { projectUpdateSchema } from "@/lib/validations/forms";
@@ -62,6 +63,17 @@ export async function POST(request: Request, context: RouteContext) {
   const formData = await request.formData();
 
   try {
+    const coverImageFile = getSingleFile(formData, "coverImageFile");
+    const galleryFiles = getMultipleFiles(formData, "galleryFiles");
+    const uploadedImages =
+      coverImageFile || galleryFiles.length
+        ? await uploadProjectImageSet({
+            scopeKey: `project-${id}`,
+            coverFile: coverImageFile,
+            galleryFiles
+          })
+        : null;
+
     const parsed = projectUpdateSchema.parse({
       title: parseRequiredString(formData.get("title")),
       tagline: parseRequiredString(formData.get("tagline")),
@@ -80,8 +92,8 @@ export async function POST(request: Request, context: RouteContext) {
       demoUrl: parseRequiredString(formData.get("demoUrl")),
       docsUrl: parseRequiredString(formData.get("docsUrl")),
       makerAlias: parseRequiredString(formData.get("makerAlias")),
-      coverImageUrl: parseRequiredString(formData.get("coverImageUrl")),
-      galleryCsv: parseRequiredString(formData.get("galleryCsv")),
+      coverImageUrl: uploadedImages?.coverImageUrl ?? parseRequiredString(formData.get("coverImageUrl")),
+      galleryCsv: uploadedImages?.galleryUrls.length ? uploadedImages.galleryUrls.join(", ") : parseRequiredString(formData.get("galleryCsv")),
       aiToolsCsv: parseRequiredString(formData.get("aiToolsCsv")),
       tagCsv: parseRequiredString(formData.get("tagCsv")),
       isOpenSource: parseCheckbox(formData.get("isOpenSource")),
@@ -101,24 +113,12 @@ export async function POST(request: Request, context: RouteContext) {
     revalidatePath("/me/projects");
     revalidatePath("/admin/projects");
 
-    return NextResponse.redirect(
-      new URL(
-        buildRedirectPath(parsed.redirectTo, {
-          notice: "프로젝트 정보를 저장했습니다."
-        }),
-        request.url
-      ),
-      { status: 303 }
-    );
+    return createRedirectResponse(parsed.redirectTo, {
+      notice: "프로젝트 정보를 저장했습니다."
+    });
   } catch (error) {
-    return NextResponse.redirect(
-      new URL(
-        buildRedirectPath("/me/projects", {
-          error: error instanceof Error ? error.message : "프로젝트 수정에 실패했습니다."
-        }),
-        request.url
-      ),
-      { status: 303 }
-    );
+    return createRedirectResponse("/me/projects", {
+      error: error instanceof Error ? error.message : "프로젝트 수정에 실패했습니다."
+    });
   }
 }

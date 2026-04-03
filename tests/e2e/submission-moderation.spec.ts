@@ -1,6 +1,18 @@
-import { expect, test, type Page } from "@playwright/test";
+import { expect, test, type Locator, type Page } from "@playwright/test";
 
-import { loginWithMagicLink, logout, TEST_ADMIN_EMAIL, TEST_MEMBER_EMAIL } from "./supabase-auth";
+import { completeInitialPasswordSetup, ensurePasswordUser, loginWithPassword, logout, openSetupFlow, TEST_ADMIN_EMAIL, TEST_MEMBER_EMAIL, TEST_PASSWORD } from "./supabase-auth";
+
+const FOCUS_FLOW_PROJECT_ID = "00000000-0000-4000-8000-000000000101";
+const FOCUS_FLOW_SLUG = "focus-flow";
+
+async function waitForTurnstileToken(scope: Page | Locator) {
+  const tokenInput = scope.locator("input[name='turnstileToken']").first();
+  await expect
+    .poll(async () => tokenInput.inputValue(), {
+      timeout: 30_000
+    })
+    .not.toBe("");
+}
 
 async function fillLaunchForm(page: Page, input: { title: string; liveUrl: string; githubUrl: string; ownerEmail?: string }) {
   await page.getByLabel("프로젝트 이름").fill(input.title);
@@ -35,6 +47,39 @@ async function fillLaunchForm(page: Page, input: { title: string; liveUrl: strin
 }
 
 test.describe("문서 기준 제출/소유권 흐름", () => {
+  test("메일 없이도 action_link를 열면 /auth/callback 해시가 비밀번호 설정 화면으로 이어진다", async ({ page }) => {
+    test.setTimeout(120_000);
+
+    const email = `callback-only-${Date.now()}@example.com`;
+    await openSetupFlow(page, email, "/me/projects");
+
+    await expect(page).toHaveURL(/\/auth\/password\/setup/);
+    await expect(page.getByRole("heading", { name: "비밀번호 설정", exact: true })).toBeVisible();
+    await expect(page.getByText(email)).toBeVisible();
+  });
+
+  test("이메일 인증 후 비밀번호를 설정하고 이후에는 이메일과 비밀번호로 로그인한다", async ({ page }) => {
+    test.setTimeout(120_000);
+
+    const email = `starter-${Date.now()}@example.com`;
+    const password = `Starter!${Date.now()}`;
+
+    await page.goto("/auth/sign-in?next=%2Fme%2Fprojects");
+    await expect(page.getByRole("heading", { name: "로그인", exact: true })).toBeVisible();
+
+    await completeInitialPasswordSetup(page, {
+      email,
+      password,
+      next: "/me/projects"
+    });
+
+    await expect(page.getByRole("button", { name: "로그아웃" })).toBeVisible();
+
+    await logout(page);
+    await loginWithPassword(page, email, password, "/me/projects");
+    await expect(page.getByRole("button", { name: "로그아웃" })).toBeVisible();
+  });
+
   test("로그인 owner의 신규 런치는 즉시 공개되고 update도 바로 붙는다", async ({ page }) => {
     test.setTimeout(120_000);
 
@@ -43,10 +88,12 @@ test.describe("문서 기준 제출/소유권 흐름", () => {
     const liveUrl = `https://loop-pilot-${suffix}.local.test`;
     const githubUrl = `https://github.com/local/loop-pilot-${suffix}`;
 
-    await loginWithMagicLink(page, TEST_MEMBER_EMAIL, "/me/projects");
+    await ensurePasswordUser(TEST_MEMBER_EMAIL, TEST_PASSWORD);
+    await loginWithPassword(page, TEST_MEMBER_EMAIL, TEST_PASSWORD, "/me/projects");
     await expect(page.getByRole("button", { name: "로그아웃" })).toBeVisible();
     await page.goto("/submit");
     await fillLaunchForm(page, { title, liveUrl, githubUrl });
+    await waitForTurnstileToken(page.locator("form[action='/api/submissions/project']"));
     await page.getByRole("button", { name: "런치 제출" }).click();
 
     await expect(page).toHaveURL(/\/me\/projects/);
@@ -59,6 +106,10 @@ test.describe("문서 기준 제출/소유권 흐름", () => {
     await projectSection.getByLabel("요약").fill("첫 진입의 흐름을 줄이고 바로 추가 버튼을 더 명확하게 정리했습니다.");
     await projectSection.getByLabel("본문").fill("모바일에서 빠르게 눌러보는 경험을 위해 quick add와 오늘 할 일 영역을 먼저 보이게 조정했습니다.");
     await projectSection.getByRole("button", { name: "활동 저장" }).click();
+
+    await expect(page).toHaveURL(/\/me\/projects/);
+    await expect(page.getByText("활동을 바로 공개했습니다.")).toBeVisible();
+    await projectSection.getByRole("link", { name: "공개 페이지 보기" }).click();
 
     await expect(page).toHaveURL(/\/p\/[^/?#]+/);
     const detailPath = new URL(page.url()).pathname;
@@ -88,6 +139,7 @@ test.describe("문서 기준 제출/소유권 흐름", () => {
       githubUrl,
       ownerEmail: TEST_MEMBER_EMAIL
     });
+    await waitForTurnstileToken(page.locator("form[action='/api/submissions/project']"));
     await page.getByRole("button", { name: "런치 제출" }).click();
 
     await expect(page).toHaveURL(/\/claim\/[^/?#]+/);
@@ -101,7 +153,8 @@ test.describe("문서 기준 제출/소유권 흐름", () => {
     await page.goto(previewHref!);
     await expect(page.getByRole("heading", { name: "페이지를 찾을 수 없습니다." })).toBeVisible();
 
-    await loginWithMagicLink(page, TEST_MEMBER_EMAIL, claimPath);
+    await ensurePasswordUser(TEST_MEMBER_EMAIL, TEST_PASSWORD);
+    await loginWithPassword(page, TEST_MEMBER_EMAIL, TEST_PASSWORD, claimPath);
     await page.getByRole("button", { name: "이 계정으로 소유권 연결" }).click();
 
     await expect(page).toHaveURL(/\/me\/projects/);
@@ -114,13 +167,77 @@ test.describe("문서 기준 제출/소유권 흐름", () => {
     await expect(page.locator("h1")).toHaveText(title);
   });
 
+  test("visitor도 닉네임으로 댓글을 남길 수 있다", async ({ page }) => {
+    test.setTimeout(120_000);
+
+    const guestComment = `비회원 의견 ${Date.now()}`;
+    await page.goto(`/p/${FOCUS_FLOW_SLUG}#comments`);
+
+    const commentForm = page.locator(`form[action='/api/projects/${FOCUS_FLOW_PROJECT_ID}/comments']`).first();
+    await commentForm.getByLabel("닉네임").fill("게스트 테스터");
+    await commentForm.locator("textarea[name='bodyMd']").fill(guestComment);
+    await waitForTurnstileToken(commentForm);
+    await commentForm.getByRole("button", { name: "댓글 등록" }).click();
+
+    await expect(page).toHaveURL(new RegExp(`/p/${FOCUS_FLOW_SLUG}`));
+    await expect(page.getByText("댓글을 등록했습니다.")).toBeVisible();
+    await expect(page.getByText(guestComment)).toBeVisible();
+    await expect(page.getByText("게스트 테스터")).toBeVisible();
+  });
+
+  test("로그인한 member는 구조화된 feedback를 남기고 관리자 큐에서 확인할 수 있다", async ({ page }) => {
+    test.setTimeout(120_000);
+
+    const feedbackEmail = `feedbacker-${Date.now()}@example.com`;
+    const feedbackTitle = `첫 사용 후기 ${Date.now()}`;
+
+    await ensurePasswordUser(feedbackEmail, TEST_PASSWORD);
+    await loginWithPassword(page, feedbackEmail, TEST_PASSWORD, `/p/${FOCUS_FLOW_SLUG}#write-feedback`);
+
+    const feedbackForm = page.locator(`form[action='/api/projects/${FOCUS_FLOW_PROJECT_ID}/posts']`).first();
+    await feedbackForm.getByLabel("제목").fill(feedbackTitle);
+    await feedbackForm.getByLabel("요약").fill("첫 인상은 좋았지만 어떤 순서로 눌러야 하는지 조금 더 안내가 있으면 좋겠습니다.");
+    await feedbackForm.getByLabel("상세 피드백").fill(
+      "첫 카드가 왜 추천됐는지 설명이 조금 더 있으면 좋겠습니다. 그래도 실제 데이터를 바로 보여 주는 점은 확실히 강점이었습니다."
+    );
+    await feedbackForm.getByLabel("특히 전달하고 싶은 포인트").fill("첫 진입 맥락 설명 한 줄만 더 있으면 훨씬 자연스럽게 이해될 것 같습니다.");
+    await feedbackForm.getByRole("button", { name: "피드백 등록" }).click();
+
+    await expect(page).toHaveURL(new RegExp(`/p/${FOCUS_FLOW_SLUG}`));
+    await expect(page.getByText("피드백을 등록했고 검토 대기 상태로 저장했습니다.")).toBeVisible();
+
+    await logout(page);
+    await ensurePasswordUser(TEST_ADMIN_EMAIL, TEST_PASSWORD);
+    await loginWithPassword(page, TEST_ADMIN_EMAIL, TEST_PASSWORD, "/admin/moderation");
+    await expect(page.getByText(feedbackTitle)).toBeVisible();
+  });
+
+  test("프로젝트 신고 폼도 Turnstile을 거쳐 정상 접수된다", async ({ page }) => {
+    test.setTimeout(120_000);
+
+    await page.goto(`/p/${FOCUS_FLOW_SLUG}`);
+
+    const projectReportForm = page
+      .locator("form[action='/api/reports']")
+      .filter({ has: page.locator("input[name='targetType'][value='project']") })
+      .first();
+
+    await projectReportForm.getByRole("combobox").selectOption("broken-link");
+    await projectReportForm.getByRole("textbox").fill(`신고 테스트 ${Date.now()}`);
+    await waitForTurnstileToken(projectReportForm);
+    await projectReportForm.getByRole("button", { name: "신고 접수" }).click();
+
+    await expect(page.getByText("신고가 접수되었습니다.")).toBeVisible();
+  });
+
   test("관리자 로그인으로 운영 페이지에 접근할 수 있다", async ({ page }) => {
     test.setTimeout(120_000);
 
-    await loginWithMagicLink(page, TEST_ADMIN_EMAIL, "/admin/moderation");
+    await ensurePasswordUser(TEST_ADMIN_EMAIL, TEST_PASSWORD);
+    await loginWithPassword(page, TEST_ADMIN_EMAIL, TEST_PASSWORD, "/admin/moderation");
 
     await expect(page).toHaveURL(/\/admin\/moderation/);
     await expect(page.getByRole("heading", { name: "운영 큐" })).toBeVisible();
-    await expect(page.getByText("소유권 연결 대기")).toBeVisible();
+    await expect(page.getByRole("heading", { name: "소유권 연결 대기" })).toBeVisible();
   });
 });

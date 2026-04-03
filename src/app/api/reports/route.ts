@@ -1,9 +1,9 @@
 import { revalidatePath } from "next/cache";
-import { NextResponse } from "next/server";
 
 import { getCurrentProfile } from "@/lib/auth/session";
 import { getVisitorSessionHash } from "@/lib/auth/visitor";
-import { buildRedirectPath, parseOptionalString, parseRequiredString } from "@/lib/http";
+import { createRedirectResponse, parseOptionalString, parseRequiredString } from "@/lib/http";
+import { verifyTurnstileToken } from "@/lib/security/turnstile";
 import { createReport } from "@/lib/services/mutations";
 import { reportActionSchema } from "@/lib/validations/forms";
 
@@ -17,8 +17,13 @@ export async function POST(request: Request) {
       targetId: parseRequiredString(formData.get("targetId")),
       reason: parseRequiredString(formData.get("reason")),
       note: parseOptionalString(formData.get("note")) ?? "",
+      turnstileToken: parseOptionalString(formData.get("turnstileToken")) ?? "",
       redirectTo: parseRequiredString(formData.get("redirectTo"))
     });
+
+    const remoteIp = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? null;
+    await verifyTurnstileToken(parsed.turnstileToken, remoteIp);
+
     const rateLimitIdentifier = await getVisitorSessionHash(viewer?.id);
     await createReport({
       reporterUserId: viewer?.id,
@@ -31,16 +36,10 @@ export async function POST(request: Request) {
 
     revalidatePath(parsed.redirectTo);
 
-    return NextResponse.redirect(new URL(buildRedirectPath(parsed.redirectTo, { notice: "신고가 접수되었습니다." }), request.url), { status: 303 });
+    return createRedirectResponse(parsed.redirectTo, { notice: "신고가 접수되었습니다." });
   } catch (error) {
-    return NextResponse.redirect(
-      new URL(
-        buildRedirectPath("/", {
-          error: error instanceof Error ? error.message : "신고 접수에 실패했습니다."
-        }),
-        request.url
-      ),
-      { status: 303 }
-    );
+    return createRedirectResponse("/", {
+      error: error instanceof Error ? error.message : "신고 접수에 실패했습니다."
+    });
   }
 }

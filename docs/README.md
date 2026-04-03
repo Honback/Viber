@@ -5,7 +5,7 @@
 이 문서 세트는 2026-03-26 기준으로 합의된 제품 방향을 구현 가능한 수준까지 정리한 1차 개발 사양서다.
 
 - 일반 커뮤니티가 아니라 프로젝트 중심 쇼케이스 서비스로 정의한다.
-- 읽기와 탐색은 무계정 허용, 등록은 소유권 검증 포함, 반응은 가벼운 계정 기반으로 설계한다.
+- 읽기와 탐색은 무계정 허용, 등록은 소유권 검증 포함, 저장과 계정 기반 활동은 가벼운 계정 기반으로 설계하고 댓글/신고는 CAPTCHA 기반 visitor 참여를 허용한다.
 - 논의용 메모가 아니라 실제 구현 착수용 기준 문서로 사용한다.
 
 브랜드명은 아직 확정되지 않았으므로, 문서에서는 설명형 표현인 "바이브코딩 쇼케이스 커뮤니티"를 사용한다.
@@ -13,7 +13,7 @@
 ## 핵심 요약
 
 - 핵심 단위는 게시글이 아니라 `Project`다.
-- 프로젝트 아래에 `Launch`, `Update`, `Ask for Feedback` 활동이 쌓인다.
+- 프로젝트 아래에 `Launch`, `Update`, `Feedback` 활동이 쌓인다.
 - 홈은 자유게시판이 아니라 카드형 쇼케이스 화면이다.
 - 주요 CTA는 `Details`보다 `Try`가 우선이다.
 - 초반에는 DM, 팔로우, 자유게시판, 레벨 시스템, 복잡한 추천 알고리즘을 넣지 않는다.
@@ -40,6 +40,11 @@
 17. [17-content-rendering-and-sanitization.md](./17-content-rendering-and-sanitization.md)
 18. [18-submission-lifecycle-and-queue-model.md](./18-submission-lifecycle-and-queue-model.md)
 19. [19-external-dependencies-implementation-plan.md](./19-external-dependencies-implementation-plan.md)
+20. [20-external-dependencies-execution-checklist.md](./20-external-dependencies-execution-checklist.md)
+21. [21-supabase-custom-smtp-runbook.md](./21-supabase-custom-smtp-runbook.md)
+22. [22-operational-db-cutover-checklist.md](./22-operational-db-cutover-checklist.md)
+23. [23-domain-verification-runbook.md](./23-domain-verification-runbook.md)
+24. [24-vercel-deployment-runbook.md](./24-vercel-deployment-runbook.md)
 
 ## 문서 맵
 
@@ -162,6 +167,36 @@
   - GitHub OAuth 제외 범위 고정
   - 필요한 값과 사용자 준비 작업
   - 상용 연동 우선순위
+
+- [20-external-dependencies-execution-checklist.md](./20-external-dependencies-execution-checklist.md)
+  - 현재 구현 상태 기준 완료/부분 완료/미구현 분류
+  - 지금 바로 시작 가능한 작업
+  - 외부 준비물이 필요한 작업
+  - 다음 구현 순서 고정
+
+- [21-supabase-custom-smtp-runbook.md](./21-supabase-custom-smtp-runbook.md)
+  - Supabase 인증 메일 SMTP 전환 절차
+  - Resend SMTP 입력값
+  - 저장 후 검증 흐름
+  - 실패 시 점검 포인트
+
+- [22-operational-db-cutover-checklist.md](./22-operational-db-cutover-checklist.md)
+  - 운영 DB 전환 절차
+  - migration / seed 기준
+  - 컷오버 전후 smoke test
+  - 배포 환경변수 체크리스트
+
+- [23-domain-verification-runbook.md](./23-domain-verification-runbook.md)
+  - TXT 기반 도메인 확인 절차
+  - `_viber-verify` 레코드 규칙
+  - live URL 변경 시 무효화 규칙
+  - 로컬 검증 보조 명령
+
+- [24-vercel-deployment-runbook.md](./24-vercel-deployment-runbook.md)
+  - Vercel 프로젝트 설정 순서
+  - 환경변수 입력 항목
+  - 도메인 연결과 운영 URL 반영
+  - 배포 직후 smoke test 준비
 
 ## 현재 상태
 

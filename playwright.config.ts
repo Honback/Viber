@@ -6,7 +6,7 @@ loadLocalEnv();
 
 const port = 3100;
 const baseURL = process.env.PLAYWRIGHT_BASE_URL ?? `http://127.0.0.1:${port}`;
-const adminBootstrapEmails = [process.env.ADMIN_BOOTSTRAP_EMAILS, "playwright-admin@local.test"]
+const adminBootstrapEmails = [process.env.ADMIN_BOOTSTRAP_EMAILS, "playwright-admin@example.com"]
   .filter(Boolean)
   .join(",");
 const sharedEnv = {

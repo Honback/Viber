@@ -20,7 +20,8 @@
 - 초기 로그인 수단은 아래 두 가지만 연다.
   - 이메일 매직링크
   - GitHub OAuth
-- 댓글, 저장, 내 프로젝트 접근은 반드시 인증 세션이 필요하다.
+- 저장, member-authored `feedback`, 내 프로젝트 접근은 반드시 인증 세션이 필요하다.
+- 댓글은 visitor도 허용하되 CAPTCHA와 guest identity가 필요하다.
 - 브라우저가 직접 DB에 쓰지 않고, 모든 쓰기 요청은 서버를 통과한다.
 
 ### 2-2. 비회원 제출 허용 범위
@@ -31,11 +32,14 @@
   - GitHub 인증
 - 즉, "무거운 가입은 강제하지 않되, 소유권 없는 공개 제출은 허용하지 않는다"를 기준으로 한다.
 
-### 2-3. Update / Ask for Feedback 작성 권한
+### 2-3. Update / Feedback 작성 권한
 
-- 기존 프로젝트의 `Update`와 `Ask for Feedback`은 익명 제출을 허용하지 않는다.
-- 해당 프로젝트의 owner 또는 admin만 작성할 수 있다.
-- 따라서 `/submit`은 진입 가능하더라도, 기존 프로젝트를 대상으로 한 쓰기 경로는 인증된 owner 세션이 있어야 완료된다.
+- 기존 프로젝트의 `Update`는 익명 제출을 허용하지 않는다.
+- `Update`는 해당 프로젝트의 owner 또는 admin만 작성할 수 있다.
+- `feedback` 타입 활동은 익명 제출을 허용하지 않는다.
+- `feedback`은 authenticated member, owner, admin이 작성할 수 있다.
+- owner/admin이 작성한 `feedback`은 "Ask for Feedback", 일반 member가 작성한 `feedback`은 구조화된 사용 피드백으로 해석한다.
+- 따라서 기존 프로젝트를 대상으로 한 쓰기 경로는 `update`와 `feedback`을 구분해 권한 판정을 수행해야 한다.
 
 ### 2-4. 멀티 오너 정책
 
@@ -51,19 +55,20 @@
 - 로그인하지 않은 사용자
 - 공개 탐색 가능
 - 신규 런치 제출 시작 가능
-- 댓글, 저장, 기존 프로젝트 수정 불가
+- CAPTCHA 통과 시 댓글과 신고 가능
+- 저장, feedback 활동 작성, 기존 프로젝트 수정 불가
 
 ### 3-2. Member
 
 - 인증된 일반 사용자
-- 댓글, 저장, 신고 가능
+- 댓글, 저장, 신고, `feedback` 활동 작성 가능
 - 자신의 claim 링크를 통해 프로젝트 owner로 승격될 수 있다
 
 ### 3-3. Project Owner
 
 - `project_owners.user_id`로 프로젝트와 연결된 인증 사용자
 - 본인 프로젝트 수정 가능
-- `Update`와 `Ask for Feedback` 작성 가능
+- `Update`와 owner용 `Ask for Feedback` 작성 가능
 - 공개 상태 확인 가능
 
 ### 3-4. Admin
@@ -185,15 +190,18 @@ MVP 기준:
 - Visitor
   - 공개 조회
   - 신규 런치 시작
+  - CAPTCHA 통과 시 댓글
   - CAPTCHA 통과 시 신고
 - Member
   - 댓글
   - 저장
   - 신고
+  - `feedback` 활동 작성
   - 자신의 claim 처리
 - Owner
   - 본인 프로젝트 수정
-  - 본인 프로젝트 활동 추가
+  - 본인 프로젝트 `update` 추가
+  - 본인 프로젝트 owner용 `feedback` 추가
   - 본인 프로젝트 공개 상태 조회
 - Admin
   - 운영 이슈 처리 및 상태 변경
@@ -207,12 +215,16 @@ MVP 기준:
 - `project_owners.revoked_at`
 - `project_owners.github_user_id(nullable)`
 - `projects.owner_verified_at(nullable)`
+- `project_posts.author_user_id`
+- `comments.guest_name(nullable)`
+- `comments.guest_session_hash(nullable)`
 
 이 필드들은 권한과 claim 만료 처리, 검증 이력 추적에 필요하다.
 
 ## 9. 구현 메모
 
-- 댓글과 저장용 가벼운 회원도 동일 Auth 시스템을 사용한다.
+- 저장과 member-authored `feedback`용 가벼운 회원은 동일 Auth 시스템을 사용한다.
+- visitor 댓글은 Auth가 아니라 guest identity + CAPTCHA로 처리한다.
 - owner 권한은 `profiles.role`이 아니라 `project_owners` 연결로 판정한다.
 - 공개 배지와 내부 소유권을 혼동하지 않는다.
 - owner 초대, 팀 권한, 세분화된 역할 편집은 초기 범위에서 제외한다.

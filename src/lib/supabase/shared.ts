@@ -22,6 +22,10 @@ export function getSupabasePublishableKey() {
   return env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 }
 
+export function shouldUseSecureCookies() {
+  return env.NEXT_PUBLIC_APP_URL.startsWith("https://");
+}
+
 export function createPublicSupabaseClient() {
   return createClient(getSupabaseUrl(), getSupabasePublishableKey(), {
     auth: {

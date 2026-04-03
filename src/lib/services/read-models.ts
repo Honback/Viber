@@ -3,6 +3,8 @@ import { desc, eq, inArray } from "drizzle-orm";
 import { db } from "@/db";
 import type {
   CommentStatus,
+  DomainVerificationStatus,
+  EmailDeliveryStatus,
   ProjectPostStatus,
   ProjectPostType,
   ProjectStatus,
@@ -10,6 +12,8 @@ import type {
 } from "@/db/schema";
 import {
   comments,
+  domainVerifications,
+  emailDeliveries,
   linkHealthChecks,
   projectOwners,
   projectPosts,
@@ -21,6 +25,7 @@ import {
 import { projectPostLabels, projectStatusLabels, verificationLabels } from "@/lib/constants";
 import { calculateTrendingScoreV1, rankingClickSources } from "@/lib/utils/ranking";
 import { getUrlHostname } from "@/lib/utils/urls";
+import { getDomainVerificationTarget } from "@/lib/domain-verification";
 
 const homeStatuses: ProjectStatus[] = ["published"];
 const exploreStatuses: ProjectStatus[] = ["published", "limited", "archived"];
@@ -76,8 +81,9 @@ export type ProjectCommentModel = {
   createdAt: Date;
   updatedAt: Date;
   author: {
-    id: string;
+    id: string | null;
     displayName: string;
+    kind: "member" | "guest" | "deleted";
   };
 };
 
@@ -99,6 +105,12 @@ export type ProjectPostModel = {
   media: string[];
   status: ProjectPostStatus;
   publishedAt: Date | null;
+  author: {
+    id: string | null;
+    displayName: string;
+    kind: "owner" | "member" | "admin" | "unclaimed";
+    label: string;
+  };
 };
 
 export type ProjectDetailModel = ProjectCardModel & {
@@ -150,6 +162,18 @@ export type OwnedProjectManagementModel = ProjectCardModel & {
   galleryCsv: string;
   aiToolsCsv: string;
   claimPending: boolean;
+  domainVerification: {
+    eligible: boolean;
+    reason: string | null;
+    hostname: string | null;
+    registrableDomain: string | null;
+    recordName: string | null;
+    token: string | null;
+    status: DomainVerificationStatus | null;
+    verifiedAt: Date | null;
+    lastCheckedAt: Date | null;
+    lastError: string | null;
+  };
 };
 
 export type AdminProjectListItemModel = ProjectCardModel & {
@@ -162,6 +186,26 @@ export type AdminProjectListItemModel = ProjectCardModel & {
   };
   claimPending: boolean;
   duplicateCandidates: ProjectDuplicateCandidateModel[];
+  domainVerification: {
+    registrableDomain: string | null;
+    status: DomainVerificationStatus | null;
+    verifiedAt: Date | null;
+    lastError: string | null;
+  };
+};
+
+export type AdminEmailDeliveryModel = {
+  id: string;
+  template: string;
+  status: EmailDeliveryStatus;
+  recipient: string;
+  subject: string;
+  fromEmail: string;
+  createdAt: Date;
+  sentAt: Date | null;
+  error: string | null;
+  textBody: string;
+  metadata: Record<string, unknown>;
 };
 
 export type ExploreFilters = {
@@ -191,7 +235,10 @@ async function fetchProjectsWithRelations(statuses?: ProjectStatus[]) {
         }
       },
       posts: {
-        orderBy: [desc(projectPosts.publishedAt), desc(projectPosts.createdAt)]
+        orderBy: [desc(projectPosts.publishedAt), desc(projectPosts.createdAt)],
+        with: {
+          author: true
+        }
       },
       comments: {
         where: inArray(comments.status, activeCommentStatuses),
@@ -213,6 +260,10 @@ async function fetchProjectsWithRelations(statuses?: ProjectStatus[]) {
       },
       rankSnapshots: {
         orderBy: [desc(projectRankSnapshots.computedAt)],
+        limit: 1
+      },
+      domainVerifications: {
+        orderBy: [desc(domainVerifications.updatedAt)],
         limit: 1
       }
     }
@@ -254,6 +305,70 @@ function getLatestPublishedPost(project: ProjectRecord, type?: ProjectPostType) 
       return post.type === type;
     }) ?? null
   );
+}
+
+function isOwnerAuthoredPost(project: ProjectRecord, authorUserId: string | null) {
+  if (!authorUserId) {
+    return false;
+  }
+
+  return project.owners.some((owner) => owner.userId === authorUserId);
+}
+
+function isFeedbackRequestPost(project: ProjectRecord, post: ProjectRecord["posts"][number]) {
+  if (post.type !== "feedback" || post.status !== "published") {
+    return false;
+  }
+
+  if (post.author?.role === "admin") {
+    return true;
+  }
+
+  return isOwnerAuthoredPost(project, post.authorUserId);
+}
+
+function getLatestFeedbackRequestPost(project: ProjectRecord | null | undefined) {
+  if (!project) {
+    return null;
+  }
+
+  return project.posts.find((post) => isFeedbackRequestPost(project, post)) ?? null;
+}
+
+function mapPostAuthor(project: ProjectRecord, post: ProjectRecord["posts"][number]): ProjectPostModel["author"] {
+  if (post.author?.role === "admin") {
+    return {
+      id: post.author.id,
+      displayName: post.author.displayName,
+      kind: "admin",
+      label: "관리자"
+    };
+  }
+
+  if (post.author && isOwnerAuthoredPost(project, post.author.id)) {
+    return {
+      id: post.author.id,
+      displayName: post.author.displayName,
+      kind: "owner",
+      label: "메이커"
+    };
+  }
+
+  if (post.author) {
+    return {
+      id: post.author.id,
+      displayName: post.author.displayName,
+      kind: "member",
+      label: "멤버"
+    };
+  }
+
+  return {
+    id: null,
+    displayName: project.makerAlias,
+    kind: "unclaimed",
+    label: "제출자"
+  };
 }
 
 function tokenizeTitle(title: string) {
@@ -326,7 +441,9 @@ function buildFallbackScore(project: ProjectRecord) {
   const recentComments = project.comments.filter(
     (comment) => comment.status === "active" && new Date(comment.createdAt).getTime() >= commentCutoff
   );
-  const uniqueCommenterCount = new Set(recentComments.map((comment) => comment.userId)).size;
+  const uniqueCommenterCount = new Set(
+    recentComments.map((comment) => comment.userId ?? comment.guestSessionHash).filter((value): value is string => Boolean(value))
+  ).size;
   const commentSignal30d = Math.min(recentComments.length, uniqueCommenterCount * 2);
   const ranking = calculateTrendingScoreV1({
     uniqueTryClicks7d,
@@ -395,6 +512,16 @@ function mapProjectCard(project: ProjectRecord): ProjectCardModel {
 function mapOwnedProjectManagement(project: ProjectRecord): OwnedProjectManagementModel {
   const card = mapProjectCard(project);
   const ownerRows = project.owners;
+  const currentVerification = project.domainVerifications[0] ?? null;
+  const domainTarget = (() => {
+    try {
+      return getDomainVerificationTarget(project.liveUrl);
+    } catch (error) {
+      return {
+        error: error instanceof Error ? error.message : "도메인 검증 대상을 해석하지 못했습니다."
+      };
+    }
+  })();
 
   return {
     ...card,
@@ -415,7 +542,32 @@ function mapOwnedProjectManagement(project: ProjectRecord): OwnedProjectManageme
     tagsCsv: project.tagLinks.map((link) => link.tag.name).join(", "),
     galleryCsv: (project.galleryJson as string[]).join(", "),
     aiToolsCsv: (project.aiToolsJson as string[]).join(", "),
-    claimPending: ownerRows.some((owner) => !owner.userId && Boolean(owner.claimTokenHash))
+    claimPending: ownerRows.some((owner) => !owner.userId && Boolean(owner.claimTokenHash)),
+    domainVerification: "error" in domainTarget
+      ? {
+          eligible: false,
+          reason: domainTarget.error,
+          hostname: getUrlHostname(project.liveUrl),
+          registrableDomain: null,
+          recordName: null,
+          token: null,
+          status: (currentVerification?.status as DomainVerificationStatus | undefined) ?? null,
+          verifiedAt: currentVerification?.verifiedAt ?? null,
+          lastCheckedAt: currentVerification?.lastCheckedAt ?? null,
+          lastError: currentVerification?.lastError ?? null
+        }
+      : {
+          eligible: true,
+          reason: null,
+          hostname: domainTarget.hostname,
+          registrableDomain: currentVerification?.registrableDomain ?? domainTarget.registrableDomain,
+          recordName: currentVerification?.recordName ?? domainTarget.recordName,
+          token: currentVerification?.token ?? null,
+          status: (currentVerification?.status as DomainVerificationStatus | undefined) ?? null,
+          verifiedAt: currentVerification?.verifiedAt ?? null,
+          lastCheckedAt: currentVerification?.lastCheckedAt ?? null,
+          lastError: currentVerification?.lastError ?? null
+        }
   };
 }
 
@@ -437,7 +589,13 @@ function mapAdminProjectListItem(
       primaryMethod: primaryOwner?.verificationMethod ?? null
     },
     claimPending: project.owners.some((owner) => !owner.userId && Boolean(owner.claimTokenHash)),
-    duplicateCandidates
+    duplicateCandidates,
+    domainVerification: {
+      registrableDomain: project.domainVerifications[0]?.registrableDomain ?? null,
+      status: (project.domainVerifications[0]?.status as DomainVerificationStatus | undefined) ?? null,
+      verifiedAt: project.domainVerifications[0]?.verifiedAt ?? null,
+      lastError: project.domainVerifications[0]?.lastError ?? null
+    }
   };
 }
 
@@ -544,14 +702,14 @@ export async function getHomepageData() {
     feedback: [...cards]
       .filter((project) => {
         const record = recordById.get(project.id);
-        const feedbackPost = record ? getLatestPublishedPost(record, "feedback") : null;
+        const feedbackPost = getLatestFeedbackRequestPost(record);
         return isWithin(feedbackPost?.publishedAt ?? null, FOURTEEN_DAYS_MS);
       })
       .sort((left, right) => {
         const leftRecord = recordById.get(left.id);
         const rightRecord = recordById.get(right.id);
-        const leftDate = getLatestPublishedPost(leftRecord!, "feedback")?.publishedAt?.getTime() ?? 0;
-        const rightDate = getLatestPublishedPost(rightRecord!, "feedback")?.publishedAt?.getTime() ?? 0;
+        const leftDate = getLatestFeedbackRequestPost(leftRecord)?.publishedAt?.getTime() ?? 0;
+        const rightDate = getLatestFeedbackRequestPost(rightRecord)?.publishedAt?.getTime() ?? 0;
         return rightDate - leftDate;
       })
       .slice(0, 6),
@@ -614,7 +772,12 @@ export async function getProjectDetailBySlug(slug: string) {
     where: eq(projects.slug, slug),
     with: {
       tagLinks: { with: { tag: true } },
-      posts: { orderBy: [desc(projectPosts.publishedAt), desc(projectPosts.createdAt)] },
+      posts: {
+        orderBy: [desc(projectPosts.publishedAt), desc(projectPosts.createdAt)],
+        with: {
+          author: true
+        }
+      },
       comments: {
         orderBy: [desc(comments.createdAt)],
         with: { author: true }
@@ -623,7 +786,8 @@ export async function getProjectDetailBySlug(slug: string) {
       clickEvents: true,
       owners: { with: { user: true } },
       linkHealthChecks: { orderBy: [desc(linkHealthChecks.checkedAt)], limit: 1 },
-      rankSnapshots: { orderBy: [desc(projectRankSnapshots.computedAt)], limit: 1 }
+      rankSnapshots: { orderBy: [desc(projectRankSnapshots.computedAt)], limit: 1 },
+      domainVerifications: { orderBy: [desc(domainVerifications.updatedAt)], limit: 1 }
     }
   });
 
@@ -674,7 +838,8 @@ export async function getProjectDetailBySlug(slug: string) {
       requestedFeedbackMd: post.requestedFeedbackMd,
       media: post.mediaJson as string[],
       status: post.status as ProjectPostStatus,
-      publishedAt: post.publishedAt
+      publishedAt: post.publishedAt,
+      author: mapPostAuthor(project, post)
     })),
     comments: project.comments.map((comment) => ({
       id: comment.id,
@@ -685,8 +850,9 @@ export async function getProjectDetailBySlug(slug: string) {
       createdAt: comment.createdAt,
       updatedAt: comment.updatedAt,
       author: {
-        id: comment.author.id,
-        displayName: comment.author.displayName
+        id: comment.author?.id ?? null,
+        displayName: comment.author?.displayName ?? comment.guestName ?? "탈퇴한 사용자",
+        kind: comment.author ? "member" : comment.guestName ? "guest" : "deleted"
       }
     })),
     relatedProjects
@@ -705,7 +871,12 @@ export async function getOwnedProjects(userId: string) {
     orderBy: [desc(projects.updatedAt)],
     with: {
       tagLinks: { with: { tag: true } },
-      posts: { orderBy: [desc(projectPosts.createdAt)] },
+      posts: {
+        orderBy: [desc(projectPosts.createdAt)],
+        with: {
+          author: true
+        }
+      },
       comments: { with: { author: true } },
       saves: true,
       clickEvents: true,
@@ -716,7 +887,8 @@ export async function getOwnedProjects(userId: string) {
         }
       },
       linkHealthChecks: { orderBy: [desc(linkHealthChecks.checkedAt)], limit: 1 },
-      rankSnapshots: { orderBy: [desc(projectRankSnapshots.computedAt)], limit: 1 }
+      rankSnapshots: { orderBy: [desc(projectRankSnapshots.computedAt)], limit: 1 },
+      domainVerifications: { orderBy: [desc(domainVerifications.updatedAt)], limit: 1 }
     }
   });
 
@@ -728,7 +900,12 @@ export async function getOwnedProjectManagementData(userId: string) {
     orderBy: [desc(projects.updatedAt)],
     with: {
       tagLinks: { with: { tag: true } },
-      posts: { orderBy: [desc(projectPosts.createdAt)] },
+      posts: {
+        orderBy: [desc(projectPosts.createdAt)],
+        with: {
+          author: true
+        }
+      },
       comments: { with: { author: true } },
       saves: true,
       clickEvents: true,
@@ -739,7 +916,8 @@ export async function getOwnedProjectManagementData(userId: string) {
         }
       },
       linkHealthChecks: { orderBy: [desc(linkHealthChecks.checkedAt)], limit: 1 },
-      rankSnapshots: { orderBy: [desc(projectRankSnapshots.computedAt)], limit: 1 }
+      rankSnapshots: { orderBy: [desc(projectRankSnapshots.computedAt)], limit: 1 },
+      domainVerifications: { orderBy: [desc(domainVerifications.updatedAt)], limit: 1 }
     }
   });
 
@@ -850,6 +1028,27 @@ export async function getAdminProjectListData(filters?: {
 
       return right.latestActivityAt.getTime() - left.latestActivityAt.getTime();
     });
+}
+
+export async function getAdminEmailDeliveries(limit = 40) {
+  const rows = await db.query.emailDeliveries.findMany({
+    orderBy: [desc(emailDeliveries.createdAt)],
+    limit
+  });
+
+  return rows.map((row) => ({
+    id: row.id,
+    template: row.template,
+    status: row.status,
+    recipient: row.recipient,
+    subject: row.subject,
+    fromEmail: row.fromEmail,
+    createdAt: row.createdAt,
+    sentAt: row.sentAt,
+    error: row.error,
+    textBody: row.textBody,
+    metadata: row.metadataJson ?? {}
+  }));
 }
 
 export function getProjectStatusLabel(status: ProjectStatus) {

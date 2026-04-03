@@ -261,11 +261,14 @@
 산출물:
 
 - `POST /api/projects/:id/posts`
-- owner 권한 검사
+- post author 저장
+- update/feedback 권한 분기
 
 완료 기준:
 
-- update, feedback 활동 생성 가능
+- `update`는 owner/admin만 생성 가능
+- `feedback`은 authenticated member 이상이 생성 가능
+- 작성자가 `author_user_id`에 기록됨
 
 ### T-404 제출 안티스팸
 
@@ -311,10 +314,13 @@
 - `POST /api/projects/:id/comments`
 - `POST /api/comments/:id/replies`
 - comment thread UI
+- guest comment alias 입력
+- Turnstile 검증
 
 완료 기준:
 
 - 1단계 대댓글 제한 동작
+- visitor 댓글과 member 댓글 모두 생성 가능
 
 ### T-503 신고 기능
 

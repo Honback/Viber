@@ -5,7 +5,7 @@ import { loadLocalEnv } from "./load-env";
 loadLocalEnv();
 
 const workspaceDir = process.cwd();
-const adminBootstrapEmails = [process.env.ADMIN_BOOTSTRAP_EMAILS, "playwright-admin@local.test"]
+const adminBootstrapEmails = [process.env.ADMIN_BOOTSTRAP_EMAILS, "playwright-admin@example.com"]
   .filter(Boolean)
   .join(",");
 const sharedEnv = {

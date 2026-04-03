@@ -9,6 +9,7 @@ import type {
 } from "@/db/schema";
 import {
   comments,
+  domainVerifications,
   linkHealthChecks,
   magicLinks,
   moderationActions,
@@ -25,6 +26,12 @@ import {
 } from "@/db/schema";
 import type { SessionProfile } from "@/lib/auth/session";
 import { prepareMarkdownField, preparePlainTextField } from "@/lib/content/markdown";
+import {
+  sendProjectClaimLinkEmail,
+  sendProjectCommentNotifications,
+  sendProjectModerationNotifications
+} from "@/lib/services/mail-notifications";
+import { getDomainVerificationTarget, lookupDomainVerificationTokens } from "@/lib/domain-verification";
 import { policyContent } from "@/lib/policies";
 import { countLinks, parseCsvList } from "@/lib/http";
 import { createOpaqueToken, hashValue } from "@/lib/utils/crypto";
@@ -39,6 +46,12 @@ const POST_BURST_WINDOW_MS = 1000 * 60 * 60 * 12;
 const MODERATION_COOLDOWN_WINDOW_MS = 1000 * 60 * 60 * 24 * 30;
 
 const blockedTermList = ["casino", "bet", "porn", "adult", "loan", "torrent"];
+
+type ProjectWriteAccess = {
+  isAdmin: boolean;
+  isOwner: boolean;
+  canManage: boolean;
+};
 
 function buildPosterDataUrl(title: string, label: string) {
   const safeTitle = truncate(title, 24);
@@ -112,18 +125,37 @@ async function getProjectById(projectId: string) {
   return project;
 }
 
-async function requireOwnerOrAdmin(projectId: string, user: SessionProfile) {
+async function getProjectWriteAccess(projectId: string, user: SessionProfile): Promise<ProjectWriteAccess> {
   if (user.role === "admin") {
-    return;
+    return {
+      isAdmin: true,
+      isOwner: false,
+      canManage: true
+    };
   }
 
   const owner = await db.query.projectOwners.findFirst({
-    where: and(eq(projectOwners.projectId, projectId), eq(projectOwners.userId, user.id))
+    where: and(eq(projectOwners.projectId, projectId), eq(projectOwners.userId, user.id)),
+    columns: {
+      id: true
+    }
   });
 
-  if (!owner) {
+  return {
+    isAdmin: false,
+    isOwner: Boolean(owner),
+    canManage: Boolean(owner)
+  };
+}
+
+async function requireOwnerOrAdmin(projectId: string, user: SessionProfile) {
+  const access = await getProjectWriteAccess(projectId, user);
+
+  if (!access.canManage) {
     throw new Error("프로젝트 소유자만 접근할 수 있습니다.");
   }
+
+  return access;
 }
 
 async function generateUniqueSlug(title: string) {
@@ -235,6 +267,10 @@ function determineVerificationState(input: {
   }
 
   return "unverified";
+}
+
+function getFallbackVerificationState(githubUrl?: string | null, user?: SessionProfile | null): VerificationState {
+  return githubUrl && user?.githubUsername ? "github_verified" : "unverified";
 }
 
 function shouldFlagForModeration(values: string[]) {
@@ -472,13 +508,32 @@ export async function recordProjectAnalysisEvent(input: {
 
 export async function createComment(input: {
   projectId: string;
-  user: SessionProfile;
+  user?: SessionProfile | null;
+  guestName?: string | null;
+  guestSessionHash?: string | null;
   bodyMd: string;
   postId?: string | null;
   parentId?: string | null;
   rateLimitIdentifier: string;
 }) {
-  await consumeRateLimit("comment:create", input.rateLimitIdentifier, 8, 60);
+  const isGuest = !input.user;
+  const guestName = input.guestName
+    ? preparePlainTextField(input.guestName, {
+        label: "닉네임",
+        minLength: 2,
+        maxLength: 40
+      })
+    : null;
+
+  if (isGuest && (!guestName || !input.guestSessionHash)) {
+    throw new Error("비회원 댓글에는 닉네임과 방문자 세션 정보가 필요합니다.");
+  }
+
+  if (!isGuest && (guestName || input.guestSessionHash)) {
+    throw new Error("로그인 댓글과 비회원 댓글 정보를 함께 사용할 수 없습니다.");
+  }
+
+  await consumeRateLimit("comment:create", input.rateLimitIdentifier, isGuest ? 4 : 8, 60);
 
   const normalizedBody = prepareMarkdownField(input.bodyMd, {
     label: "댓글",
@@ -494,6 +549,7 @@ export async function createComment(input: {
     where: eq(projects.id, input.projectId),
     columns: {
       id: true,
+      title: true,
       slug: true,
       status: true
     }
@@ -503,15 +559,19 @@ export async function createComment(input: {
     throw new Error("댓글을 작성할 수 없는 프로젝트입니다.");
   }
 
+  let linkedPostTitle: string | null = null;
+
   if (input.postId) {
     const post = await db.query.projectPosts.findFirst({
       where: and(eq(projectPosts.id, input.postId), eq(projectPosts.projectId, input.projectId)),
-      columns: { id: true }
+      columns: { id: true, title: true }
     });
 
     if (!post) {
       throw new Error("연결된 활동을 찾을 수 없습니다.");
     }
+
+    linkedPostTitle = post.title;
   }
 
   if (input.parentId) {
@@ -534,13 +594,25 @@ export async function createComment(input: {
       projectId: input.projectId,
       postId: input.postId ?? null,
       parentId: input.parentId ?? null,
-      userId: input.user.id,
+      userId: input.user?.id ?? null,
+      guestName,
+      guestSessionHash: input.user ? null : input.guestSessionHash ?? null,
       bodyMd: normalizedBody,
       status: "active"
     })
     .returning({
       id: comments.id
     });
+
+  await sendProjectCommentNotifications({
+    projectId: project.id,
+    projectSlug: project.slug,
+    projectTitle: project.title,
+    actorName: input.user?.displayName ?? guestName ?? "비회원",
+    actorEmail: input.user?.email ?? null,
+    commentBody: normalizedBody,
+    postTitle: linkedPostTitle
+  });
 
   return {
     commentId: created.id,
@@ -797,6 +869,7 @@ export async function submitLaunchProject(input: {
 
     await tx.insert(projectPosts).values({
       projectId: project.id,
+      authorUserId: input.viewer?.id ?? null,
       type: "launch",
       title: `${title} 공개`,
       summary: truncate(shortDescription, 140),
@@ -841,11 +914,22 @@ export async function submitLaunchProject(input: {
     return project;
   });
 
+  const claimEmailDelivery =
+    !input.viewer && input.ownerEmail && claimToken
+      ? await sendProjectClaimLinkEmail({
+          recipient: input.ownerEmail,
+          rawToken: claimToken,
+          projectTitle: title,
+          slug: result.slug
+        })
+      : null;
+
   return {
     projectId: result.id,
     slug: result.slug,
     claimToken,
-    status: projectStatus
+    status: projectStatus,
+    claimEmailDelivery
   };
 }
 
@@ -887,6 +971,12 @@ export async function updateProject(input: {
       liveUrlNormalized: true,
       verificationState: true,
       coverImageUrl: true
+    },
+    with: {
+      domainVerifications: {
+        orderBy: [desc(domainVerifications.updatedAt)],
+        limit: 1
+      }
     }
   });
 
@@ -948,13 +1038,30 @@ export async function updateProject(input: {
   const tagCandidates = sanitizeCsvList(input.tagCsv);
   const coverImageUrl =
     input.coverImageUrl?.trim() || existingProject.coverImageUrl || buildPosterDataUrl(title, input.category);
-  const verificationState: VerificationState =
-    existingProject.verificationState === "domain_verified"
-      ? "domain_verified"
-      : input.githubUrl && input.user.githubUsername
-        ? "github_verified"
-        : "unverified";
   const liveUrlChanged = existingProject.liveUrlNormalized !== liveUrlNormalized;
+  const previousDomainVerification = existingProject.domainVerifications[0] ?? null;
+  const fallbackVerificationState = getFallbackVerificationState(input.githubUrl, input.user);
+  const previousTarget = (() => {
+    try {
+      return getDomainVerificationTarget(existingProject.liveUrlNormalized);
+    } catch {
+      return null;
+    }
+  })();
+  const nextTarget = (() => {
+    try {
+      return getDomainVerificationTarget(input.liveUrl);
+    } catch {
+      return null;
+    }
+  })();
+  const canKeepDomainVerification =
+    existingProject.verificationState === "domain_verified" &&
+    previousDomainVerification?.status === "verified" &&
+    previousTarget?.registrableDomain &&
+    nextTarget?.registrableDomain &&
+    previousTarget.registrableDomain === nextTarget.registrableDomain;
+  const verificationState: VerificationState = canKeepDomainVerification ? "domain_verified" : fallbackVerificationState;
 
   await db.transaction(async (tx) => {
     await tx
@@ -999,6 +1106,17 @@ export async function updateProject(input: {
         status: "unknown",
         note: "라이브 URL이 변경되어 링크 상태를 다시 확인해야 합니다."
       });
+
+      if (!canKeepDomainVerification && previousDomainVerification) {
+        await tx
+          .update(domainVerifications)
+          .set({
+            status: "revoked",
+            lastError: "라이브 URL 또는 검증 대상 도메인이 변경되어 기존 도메인 검증을 무효화했습니다.",
+            updatedAt: new Date()
+          })
+          .where(eq(domainVerifications.id, previousDomainVerification.id));
+      }
     }
   });
 
@@ -1017,9 +1135,18 @@ export async function submitProjectPost(input: {
   mediaCsv?: string;
   user: SessionProfile;
 }) {
-  await requireOwnerOrAdmin(input.projectId, input.user);
-
   const project = await getProjectById(input.projectId);
+  const access = await getProjectWriteAccess(input.projectId, input.user);
+  const isMemberFeedback = input.kind === "feedback" && !access.canManage;
+
+  if (input.kind === "update" && !access.canManage) {
+    throw new Error("업데이트는 프로젝트 소유자만 작성할 수 있습니다.");
+  }
+
+  if (isMemberFeedback && !["published", "limited", "archived"].includes(project.status)) {
+    throw new Error("구조화된 피드백은 현재 공개 중인 프로젝트에서만 작성할 수 있습니다.");
+  }
+
   const title = preparePlainTextField(input.title, {
     label: "활동 제목",
     minLength: 2,
@@ -1037,12 +1164,12 @@ export async function submitProjectPost(input: {
   });
   const requestedFeedbackMd = normalizeOptionalMarkdown(input.requestedFeedbackMd, "원하는 피드백", 5000, 5);
 
-  if (input.kind === "feedback" && !requestedFeedbackMd) {
+  if (input.kind === "feedback" && access.canManage && !requestedFeedbackMd) {
     throw new Error("피드백 요청 활동에는 원하는 피드백 내용을 함께 입력해 주세요.");
   }
 
   const values = [title, summary, bodyMd, requestedFeedbackMd ?? ""];
-  const autoPublish = await shouldAutoPublishProjectPost(input.projectId, values);
+  const autoPublish = isMemberFeedback ? false : await shouldAutoPublishProjectPost(input.projectId, values);
   const status: ProjectPostStatus = autoPublish ? "published" : "pending";
   const publishedAt = autoPublish ? new Date() : null;
   const media = sanitizeCsvList(input.mediaCsv);
@@ -1051,6 +1178,7 @@ export async function submitProjectPost(input: {
     .insert(projectPosts)
     .values({
       projectId: input.projectId,
+      authorUserId: input.user.id,
       type: input.kind,
       title,
       summary,
@@ -1155,6 +1283,13 @@ export async function claimProjectOwnership(rawToken: string, user: SessionProfi
       .where(eq(magicLinks.tokenHash, tokenHash));
 
     await tx
+      .update(projectPosts)
+      .set({
+        authorUserId: user.id
+      })
+      .where(and(eq(projectPosts.projectId, owner.project.id), sql`${projectPosts.authorUserId} is null`));
+
+    await tx
       .update(projects)
       .set({
         verificationState,
@@ -1179,6 +1314,149 @@ export async function claimProjectOwnership(rawToken: string, user: SessionProfi
   };
 }
 
+export async function issueProjectDomainVerification(input: {
+  projectId: string;
+  user: SessionProfile;
+}) {
+  await requireOwnerOrAdmin(input.projectId, input.user);
+
+  const project = await db.query.projects.findFirst({
+    where: eq(projects.id, input.projectId),
+    columns: {
+      id: true,
+      slug: true,
+      title: true,
+      liveUrl: true
+    }
+  });
+
+  if (!project) {
+    throw new Error("프로젝트를 찾을 수 없습니다.");
+  }
+
+  const target = getDomainVerificationTarget(project.liveUrl);
+  const token = createOpaqueToken(20);
+  const now = new Date();
+
+  await db
+    .insert(domainVerifications)
+    .values({
+      projectId: project.id,
+      registrableDomain: target.registrableDomain,
+      recordName: target.recordName,
+      token,
+      status: "pending",
+      lastCheckedAt: null,
+      verifiedAt: null,
+      lastError: null,
+      updatedAt: now
+    })
+    .onConflictDoUpdate({
+      target: domainVerifications.projectId,
+      set: {
+        registrableDomain: target.registrableDomain,
+        recordName: target.recordName,
+        token,
+        status: "pending",
+        lastCheckedAt: null,
+        verifiedAt: null,
+        lastError: null,
+        updatedAt: now
+      }
+    });
+
+  return {
+    slug: project.slug,
+    title: project.title,
+    registrableDomain: target.registrableDomain,
+    recordName: target.recordName,
+    token
+  };
+}
+
+export async function verifyProjectDomainVerification(input: {
+  projectId: string;
+  user: SessionProfile;
+}) {
+  await requireOwnerOrAdmin(input.projectId, input.user);
+
+  const project = await db.query.projects.findFirst({
+    where: eq(projects.id, input.projectId),
+    columns: {
+      id: true,
+      slug: true,
+      title: true,
+      liveUrl: true,
+      githubUrl: true
+    },
+    with: {
+      domainVerifications: {
+        orderBy: [desc(domainVerifications.updatedAt)],
+        limit: 1
+      }
+    }
+  });
+
+  if (!project) {
+    throw new Error("프로젝트를 찾을 수 없습니다.");
+  }
+
+  const current = project.domainVerifications[0] ?? null;
+
+  if (!current) {
+    throw new Error("먼저 도메인 검증 토큰을 발급해 주세요.");
+  }
+
+  const target = getDomainVerificationTarget(project.liveUrl);
+
+  if (current.registrableDomain !== target.registrableDomain || current.recordName !== target.recordName) {
+    throw new Error("라이브 URL이 변경되어 기존 토큰이 맞지 않습니다. 새 토큰을 다시 발급해 주세요.");
+  }
+
+  const values = await lookupDomainVerificationTokens(current.recordName);
+  const now = new Date();
+
+  if (!values.includes(current.token)) {
+    await db
+      .update(domainVerifications)
+      .set({
+        status: "failed",
+        lastCheckedAt: now,
+        lastError: "DNS TXT 레코드에서 현재 토큰을 찾지 못했습니다. DNS 전파 후 다시 확인해 주세요.",
+        updatedAt: now
+      })
+      .where(eq(domainVerifications.id, current.id));
+
+    throw new Error("DNS TXT 레코드에서 현재 토큰을 찾지 못했습니다. DNS 전파 후 다시 확인해 주세요.");
+  }
+
+  await db.transaction(async (tx) => {
+    await tx
+      .update(domainVerifications)
+      .set({
+        status: "verified",
+        lastCheckedAt: now,
+        verifiedAt: now,
+        lastError: null,
+        updatedAt: now
+      })
+      .where(eq(domainVerifications.id, current.id));
+
+    await tx
+      .update(projects)
+      .set({
+        verificationState: "domain_verified",
+        updatedAt: now
+      })
+      .where(eq(projects.id, project.id));
+  });
+
+  return {
+    slug: project.slug,
+    registrableDomain: current.registrableDomain
+  };
+}
+
 export async function moderateProjectStatus(input: {
   projectId: string;
   nextStatus: ProjectStatus;
@@ -1189,6 +1467,7 @@ export async function moderateProjectStatus(input: {
     where: eq(projects.id, input.projectId),
     columns: {
       id: true,
+      title: true,
       slug: true,
       status: true,
       publishedAt: true,
@@ -1242,6 +1521,15 @@ export async function moderateProjectStatus(input: {
     });
   });
 
+  await sendProjectModerationNotifications({
+    projectId: project.id,
+    projectSlug: project.slug,
+    projectTitle: project.title,
+    nextStatus: input.nextStatus,
+    reason: input.reason ?? null,
+    contextType: "project"
+  });
+
   return {
     slug: project.slug
   };
@@ -1259,6 +1547,7 @@ export async function moderatePostStatus(input: {
       project: {
         columns: {
           id: true,
+          title: true,
           slug: true,
           status: true,
           publishedAt: true
@@ -1303,6 +1592,16 @@ export async function moderatePostStatus(input: {
         to: input.nextStatus
       }
     });
+  });
+
+  await sendProjectModerationNotifications({
+    projectId: post.project.id,
+    projectSlug: post.project.slug,
+    projectTitle: post.project.title,
+    nextStatus: input.nextStatus,
+    reason: input.reason ?? null,
+    contextTitle: post.title,
+    contextType: "post"
   });
 
   return {

@@ -113,6 +113,12 @@
 - 갤러리 이미지
 - 활동 업데이트용 미디어
 
+현재 구현 원칙:
+
+- 버킷은 `project-media` 공개 버킷을 기본으로 사용한다.
+- 업로드는 브라우저 직업로드가 아니라 서버를 통과한 member 요청에서만 처리한다.
+- 비회원은 이미지 URL 입력은 가능하지만 파일 업로드는 허용하지 않는다.
+
 ### 4-7. 검색과 랭킹
 
 - `Postgres Full Text Search`
@@ -147,6 +153,11 @@
 - 운영 상태 변경 안내
 - 새 댓글 알림
 - 운영 알림
+
+운영 메모:
+
+- 로컬에서는 `MAIL_DELIVERY_MODE=simulate` 로 실제 발송 대신 메일 로그를 저장한다.
+- 운영에서는 `MAIL_DELIVERY_MODE=live` 와 `RESEND_API_KEY`, `MAIL_FROM` 을 함께 사용한다.
 
 ### 4-10. 배치 작업
 
@@ -185,6 +196,8 @@
 /admin/moderation
 /admin/projects
 /admin/feature
+/admin/jobs
+/admin/mail
 ```
 
 권장 Route Group 구조:
@@ -269,7 +282,7 @@ tests/
 설계 원칙:
 
 - `projects`는 공개의 최상위 단위다.
-- `project_posts`는 Launch, Update, Ask for Feedback 활동 이력이다.
+- `project_posts`는 Launch, Update, Feedback 활동 이력이다.
 - `project_owners`는 비회원 제출과 소유권 연결을 위한 핵심 테이블이다.
 - `moderation_actions`는 모든 운영 조치의 감사 로그다.
 
@@ -280,19 +293,22 @@ tests/
 - published 프로젝트와 활동 조회
 - 태그 탐색
 - 정책 문서 조회
+- CAPTCHA 통과 시 댓글 작성
 - 신고는 허용 가능하되 rate limit과 CAPTCHA 적용
 
 ### 인증 사용자
 
 - 저장
 - 댓글
+- feedback 활동 작성
 - 신고
 - 내 저장 목록 조회
 
 ### 프로젝트 소유자
 
 - 본인 프로젝트 수정
-- Update 또는 Ask for Feedback 등록
+- Update 등록
+- owner용 Ask for Feedback 등록
 - 프로젝트별 공개 상태 조회
 
 ### 관리자
@@ -324,11 +340,12 @@ tests/
 
 ### 9-3. 저장/댓글/신고
 
-1. 인증 사용자 확인
-2. rate limit과 CAPTCHA 검사
-3. 입력 검증
-4. DB 기록
-5. 필요 시 알림 또는 운영 큐 적재
+1. 저장과 feedback 활동은 인증 사용자 세션 확인
+2. visitor 댓글과 visitor 신고는 guest alias 또는 fingerprint 수집
+3. rate limit과 CAPTCHA 검사
+4. 입력 검증
+5. DB 기록
+6. 필요 시 알림 또는 운영 큐 적재
 
 ### 9-4. 관리자 운영 처리
 
@@ -415,5 +432,6 @@ tests/
 - 봇 방어는 `Turnstile + Rate Limit`
 - 배치는 `Vercel Cron`
 - 메일은 `Resend`
+- 로컬 검증은 `simulate` 메일 로그와 `/admin/mail` 로 닫고, live 전환은 도메인 준비 후 진행한다.
 
 이 조합이면 현재 문서가 요구하는 제품 구조, 운영성, 검색, 소유권, 관리자 도구를 과도한 복잡도 없이 소화할 수 있다.

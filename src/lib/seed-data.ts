@@ -53,16 +53,32 @@ type SeedProject = {
     media: string[];
     status: "pending" | "published" | "hidden";
     publishedAt: Date;
+    authorUserId?: string | null;
   }[];
-  comments: {
-    id: string;
-    userId: string;
-    bodyMd: string;
-    postId?: string | null;
-    parentId?: string | null;
-    status?: "active" | "hidden" | "deleted";
-    createdAt: Date;
-  }[];
+  comments: Array<
+    | {
+        id: string;
+        userId: string;
+        guestName?: never;
+        guestSessionHash?: never;
+        bodyMd: string;
+        postId?: string | null;
+        parentId?: string | null;
+        status?: "active" | "hidden" | "deleted";
+        createdAt: Date;
+      }
+    | {
+        id: string;
+        userId?: null;
+        guestName: string;
+        guestSessionHash: string;
+        bodyMd: string;
+        postId?: string | null;
+        parentId?: string | null;
+        status?: "active" | "hidden" | "deleted";
+        createdAt: Date;
+      }
+  >;
   linkHealth: {
     status: "unknown" | "healthy" | "degraded" | "broken";
     httpStatus?: number | null;
@@ -196,6 +212,13 @@ const baseProjects: SeedProject[] = [
         bodyMd: "온보딩 첫 단계가 가볍고, Try 클릭 이후 바로 카드 샘플이 보이는 점이 좋습니다.",
         postId: "00000000-0000-4000-8000-000000000302",
         createdAt: subHours(new Date(), 5)
+      },
+      {
+        id: "00000000-0000-4000-8000-000000000602",
+        guestName: "첫 방문 사용자",
+        guestSessionHash: "seed-guest-focus-flow",
+        bodyMd: "비회원으로도 둘러볼 수 있어서 좋았지만, 첫 카드가 왜 추천됐는지 짧은 설명이 있으면 더 이해하기 쉬울 것 같습니다.",
+        createdAt: subHours(new Date(), 4)
       }
     ],
     linkHealth: {
@@ -263,7 +286,7 @@ const baseProjects: SeedProject[] = [
     ],
     comments: [
       {
-        id: "00000000-0000-4000-8000-000000000602",
+        id: "00000000-0000-4000-8000-000000000603",
         userId: adminId,
         bodyMd: "상태 라벨은 지금보다 조금 더 일상적인 표현이 좋을 것 같습니다.",
         postId: "00000000-0000-4000-8000-000000000304",

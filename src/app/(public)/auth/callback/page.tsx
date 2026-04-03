@@ -1,109 +1,102 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
+import { useSearchParams } from "next/navigation";
 
 import { PageShell } from "@/components/ui/page-shell";
 import { SectionHeading } from "@/components/ui/section-heading";
-import { createSupabaseBrowserClient } from "@/lib/supabase/browser";
+import { ensureAbsoluteUrl } from "@/lib/utils/urls";
 
-function ensureRelativePath(value: string | null, fallback = "/me/projects") {
-  if (!value) {
-    return fallback;
-  }
+type CallbackStatus = "idle" | "processing" | "error";
 
-  return value.startsWith("/") ? value : `/${value}`;
-}
-
-function buildTargetHref(pathname: string, notice: string) {
-  const url = new URL(pathname, window.location.origin);
-  url.searchParams.set("notice", notice);
-  return `${url.pathname}${url.search}${url.hash}`;
+function buildSignInPath(nextPath: string, error: string) {
+  const url = new URL("/auth/sign-in", "http://local.origin");
+  url.searchParams.set("next", ensureAbsoluteUrl(nextPath));
+  url.searchParams.set("error", error);
+  return `${url.pathname}${url.search}`;
 }
 
 export default function AuthCallbackPage() {
-  const router = useRouter();
   const searchParams = useSearchParams();
-  const [message, setMessage] = useState("로그인 세션을 확인하고 있습니다.");
-  const [error, setError] = useState<string | null>(null);
-
-  const nextPath = useMemo(() => ensureRelativePath(searchParams.get("next")), [searchParams]);
+  const startedRef = useRef(false);
+  const [status, setStatus] = useState<CallbackStatus>("idle");
+  const [message, setMessage] = useState("이메일에서 돌아온 인증 정보를 확인하고 있습니다.");
 
   useEffect(() => {
-    let cancelled = false;
-    const supabase = createSupabaseBrowserClient();
-    const code = searchParams.get("code");
-    const tokenHash = searchParams.get("token_hash") ?? searchParams.get("token");
-    const type = searchParams.get("type");
-    const redirectError = searchParams.get("error_description") ?? searchParams.get("error");
+    if (startedRef.current) {
+      return;
+    }
 
-    async function finishLogin() {
-      try {
-        if (redirectError) {
-          throw new Error(redirectError);
-        }
+    startedRef.current = true;
 
-        if (code) {
-          setMessage("로그인 코드를 교환하고 있습니다.");
-          const { error: exchangeError } = await supabase.auth.exchangeCodeForSession(code);
+    const run = async () => {
+      const nextPath = ensureAbsoluteUrl(searchParams.get("next") ?? "/me/projects");
+      const flowValue = searchParams.get("flow");
+      const flow = flowValue === "setup" || flowValue === "recovery" ? flowValue : "login";
+      const query = searchParams.toString();
+      const hash = window.location.hash.startsWith("#") ? window.location.hash.slice(1) : window.location.hash;
+      const hashParams = new URLSearchParams(hash);
+      const accessToken = hashParams.get("access_token");
+      const refreshToken = hashParams.get("refresh_token");
+      const hashError = hashParams.get("error_description") ?? hashParams.get("error");
 
-          if (exchangeError) {
-            throw exchangeError;
-          }
-        } else if (tokenHash && type) {
-          setMessage("이메일 인증 토큰을 확인하고 있습니다.");
-          const { error: verifyError } = await supabase.auth.verifyOtp({
-            token_hash: tokenHash,
-            type: type as "signup" | "invite" | "magiclink" | "recovery" | "email_change"
+      setStatus("processing");
+
+      if (accessToken && refreshToken) {
+        setMessage("인증 세션을 확인하고 있습니다.");
+
+        try {
+          const response = await fetch("/api/auth/callback/session", {
+            method: "POST",
+            headers: {
+              "content-type": "application/json"
+            },
+            body: JSON.stringify({
+              accessToken,
+              refreshToken,
+              flow,
+              next: nextPath
+            })
           });
 
-          if (verifyError) {
-            throw verifyError;
-          }
-        }
+          const payload = (await response.json().catch(() => null)) as { error?: string; destination?: string } | null;
 
-        setMessage("로그인 상태를 마무리하고 있습니다.");
-
-        for (let attempt = 0; attempt < 15; attempt += 1) {
-          const {
-            data: { session }
-          } = await supabase.auth.getSession();
-
-          if (session) {
-            router.replace(buildTargetHref(nextPath, "이메일 로그인에 성공했습니다."));
+          if (!response.ok || !payload?.destination) {
+            window.location.replace(buildSignInPath(nextPath, payload?.error ?? "인증 세션을 저장하지 못했습니다."));
             return;
           }
 
-          await new Promise((resolve) => setTimeout(resolve, 200));
-        }
-
-        throw new Error("로그인 세션을 확인하지 못했습니다. 다시 시도해 주세요.");
-      } catch (authError) {
-        if (cancelled) {
+          window.location.replace(payload.destination);
+          return;
+        } catch (error) {
+          window.location.replace(
+            buildSignInPath(nextPath, error instanceof Error ? error.message : "인증 세션을 저장하지 못했습니다.")
+          );
           return;
         }
-
-        setError(authError instanceof Error ? authError.message : "로그인 처리에 실패했습니다.");
-        setMessage("로그인에 실패했습니다.");
       }
-    }
 
-    void finishLogin();
+      if (query && (searchParams.get("code") || searchParams.get("token_hash") || searchParams.get("token"))) {
+        window.location.replace(`/auth/confirm?${query}`);
+        return;
+      }
 
-    return () => {
-      cancelled = true;
+      setStatus("error");
+      setMessage(hashError ?? "유효한 이메일 인증 토큰이 없습니다. 이메일 링크를 다시 열어 주세요.");
+      window.location.replace(buildSignInPath(nextPath, hashError ?? "유효한 이메일 인증 토큰이 없습니다."));
     };
-  }, [nextPath, router, searchParams]);
+
+    void run();
+  }, [searchParams]);
 
   return (
     <PageShell className="max-w-[760px]">
       <section className="rounded-[36px] border border-line bg-[rgba(255,253,248,0.96)] p-6 shadow-soft">
-        <SectionHeading eyebrow="Auth" title="로그인 확인 중" description="이메일에서 돌아온 인증 정보를 처리하고 있습니다." />
+        <SectionHeading eyebrow="Auth" title="인증 확인 중" description={message} />
 
         <div className="mt-6 grid gap-4 rounded-[28px] border border-line bg-white p-5 text-sm leading-7 text-foreground-muted">
-          <p>{message}</p>
-          {error ? <p className="font-semibold text-[color:#b45309]">{error}</p> : null}
+          <p>{status === "error" ? "인증 정보가 올바르지 않아 로그인 화면으로 이동합니다." : "잠시만 기다려 주세요. 인증 결과를 확인한 뒤 적절한 화면으로 이동합니다."}</p>
         </div>
 
         <div className="mt-5 flex flex-wrap gap-3">
