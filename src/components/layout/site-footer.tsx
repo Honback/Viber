@@ -7,6 +7,7 @@ export function SiteFooter() {
           <p>바이브코딩 프로젝트를 발견하고, 피드백하고, 함께 성장하는 커뮤니티</p>
         </div>
         <div className="flex flex-wrap items-center gap-4">
+          <a href="/blog">블로그</a>
           <a href="/policy/content">운영 정책</a>
           <a href="/policy/privacy">개인정보 안내</a>
           <a href="/submit">프로젝트 등록</a>

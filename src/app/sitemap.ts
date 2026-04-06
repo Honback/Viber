@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 
 import { db } from "@/db";
+import { getAllPosts } from "@/lib/blog/posts";
 import { getAdminProjectsData } from "@/lib/services/read-models";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
@@ -34,5 +35,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.5,
   }));
 
-  return [...staticRoutes, ...projectRoutes, ...tagRoutes];
+  const blogPosts = getAllPosts();
+  const blogRoutes: MetadataRoute.Sitemap = [
+    { url: `${baseUrl}/blog`, lastModified: new Date(), changeFrequency: "weekly" as const, priority: 0.7 },
+    ...blogPosts.map((post) => ({
+      url: `${baseUrl}/blog/${post.slug}`,
+      lastModified: new Date(post.date),
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    })),
+  ];
+
+  return [...staticRoutes, ...projectRoutes, ...tagRoutes, ...blogRoutes];
 }
