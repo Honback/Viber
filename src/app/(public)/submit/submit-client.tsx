@@ -71,7 +71,7 @@ export function SubmitPageClient({
       <header className="sticky top-0 z-50 border-b border-neutral-800 bg-[#0A0A0A]/90 backdrop-blur">
         <div className="mx-auto flex h-14 max-w-5xl items-center gap-4 px-4 sm:px-6">
           <Link href="/" className="flex items-center gap-1.5 text-lg font-bold" style={{ color: ACCENT }}>
-            🚀 Viber
+            Viber
           </Link>
           <nav className="flex items-center gap-1">
             {NAV.map((item) => (
@@ -390,7 +390,7 @@ export function SubmitPageClient({
         <div className="mx-auto grid max-w-5xl gap-8 sm:grid-cols-4">
           <div>
             <p className="flex items-center gap-1.5 text-lg font-bold">
-              <span style={{ color: ACCENT }}>🚀</span> Viber
+              Viber
             </p>
             <p className="mt-2 text-xs leading-5 text-neutral-500">
               바이브코딩 프로젝트 쇼케이스 플랫폼.
@@ -400,7 +400,7 @@ export function SubmitPageClient({
             <div className="mt-4 flex items-center gap-3">
               <Github className="h-4 w-4 cursor-pointer text-neutral-500 transition hover:text-white" />
               <Twitter className="h-4 w-4 cursor-pointer text-neutral-500 transition hover:text-white" />
-              <span className="cursor-pointer text-sm text-neutral-500 transition hover:text-white">💬</span>
+              <span className="cursor-pointer text-sm text-neutral-500 transition hover:text-white"></span>
             </div>
           </div>
           <div>
@@ -442,7 +442,7 @@ export function SubmitPageClient({
         </div>
         <div className="mx-auto mt-10 flex max-w-5xl items-center justify-between border-t border-neutral-800 pt-6">
           <span className="text-xs text-neutral-500">&copy; 2026 Viber. All rights reserved.</span>
-          <span className="text-xs text-neutral-500">Made with ❤️ by the Vibe Coding Community</span>
+          <span className="text-xs text-neutral-500">Made by the Vibe Coding Community</span>
         </div>
       </footer>
     </div>

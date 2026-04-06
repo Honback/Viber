@@ -70,12 +70,12 @@ function useScrollAnimation(threshold = 0.15) {
 
 /* ── category config ── */
 const CATEGORY_TABS = [
-  { key: "all", label: "All", emoji: "🔥" },
-  { key: "ai", label: "AI", emoji: "🤖" },
-  { key: "tool", label: "Tool", emoji: "🛠️" },
-  { key: "web", label: "Web", emoji: "🌐" },
-  { key: "game", label: "Game", emoji: "🎮" },
-  { key: "api", label: "API", emoji: "⚡" },
+  { key: "all", label: "All", emoji: "" },
+  { key: "ai", label: "AI", emoji: "" },
+  { key: "tool", label: "Tool", emoji: "" },
+  { key: "web", label: "Web", emoji: "" },
+  { key: "game", label: "Game", emoji: "" },
+  { key: "api", label: "API", emoji: "" },
 ];
 
 const CATEGORY_COLORS: Record<string, string> = {
@@ -93,23 +93,23 @@ const CATEGORY_COLORS: Record<string, string> = {
 
 /* ── 17 dummy projects ── */
 const DUMMY_PROJECTS = [
-  { title: "VibeAI", icon: "🤖", category: "ai", tagline: "자연어로 대화하며 아이디어를 코드로 변환하는 AI 페어 프로그래머", tries: 3420, votes: 892, score: 4.8, feedback: "AI 응답 속도와 코드 품질에 대한 의견을 주세요" },
-  { title: "SnapDeploy", icon: "🚀", category: "tool", tagline: "Git push 한 번으로 자동 빌드/배포까지 완료하는 원클릭 CI/CD", tries: 2180, votes: 654, score: 4.6, feedback: "배포 파이프라인 설정 UX가 직관적인지 테스트해주세요" },
-  { title: "PixelForge", icon: "🎨", category: "web", tagline: "브라우저에서 바로 픽셀아트를 그리고 공유하는 온라인 에디터", tries: 1890, votes: 523, score: 4.5, feedback: "레이어 기능과 내보내기 품질에 대한 피드백 부탁드립니다" },
-  { title: "DataPulse", icon: "📊", category: "data", tagline: "실시간 데이터 스트림을 시각화하는 대시보드 빌더", tries: 1650, votes: 487, score: 4.4, feedback: "" },
-  { title: "IndieCraft", icon: "🎮", category: "game", tagline: "노코드로 2D 인디 게임을 만들고 웹에 퍼블리싱하는 플랫폼", tries: 1420, votes: 412, score: 4.3, feedback: "" },
-  { title: "FormFlow", icon: "📝", category: "tool", tagline: "드래그앤드롭으로 폼을 만들고 자동 검증까지 처리하는 폼 빌더", tries: 1380, votes: 398, score: 4.2, feedback: "" },
-  { title: "NightOwl", icon: "🦉", category: "web", tagline: "다크모드 전용 컴포넌트 라이브러리와 테마 미리보기 도구", tries: 1210, votes: 356, score: 4.1, feedback: "" },
-  { title: "CodeBridge", icon: "🌉", category: "devtool", tagline: "프론트/백엔드 API 스키마를 자동 동기화하는 타입세이프 브릿지", tries: 1150, votes: 334, score: 4.0, feedback: "" },
-  { title: "MarkdownPro", icon: "📄", category: "tool", tagline: "실시간 협업이 가능한 마크다운 에디터 + 미리보기 + 내보내기", tries: 1080, votes: 312, score: 3.9, feedback: "" },
-  { title: "BotFactory", icon: "🤖", category: "ai", tagline: "챗봇을 5분 만에 만들어 슬랙/디스코드에 배포하는 봇 빌더", tries: 980, votes: 289, score: 3.8, feedback: "" },
-  { title: "TinyAnalytics", icon: "📈", category: "saas", tagline: "가볍고 프라이버시 친화적인 웹 분석 도구 (쿠키 없음)", tries: 920, votes: 267, score: 3.7, feedback: "" },
-  { title: "SoundScape", icon: "🎵", category: "music", tagline: "AI가 분위기에 맞는 배경음악을 생성해주는 사운드 디자인 앱", tries: 870, votes: 245, score: 3.6, feedback: "" },
-  { title: "QuizMaker", icon: "❓", category: "web", tagline: "인터랙티브 퀴즈를 만들고 결과를 공유하는 퀴즈 플랫폼", tries: 810, votes: 234, score: 3.5, feedback: "" },
-  { title: "LogStream", icon: "📋", category: "devtool", tagline: "서버 로그를 실시간 스트리밍하고 필터링하는 모니터링 대시보드", tries: 760, votes: 212, score: 3.4, feedback: "" },
-  { title: "GitNotify", icon: "🔔", category: "tool", tagline: "GitHub 이벤트를 슬랙/텔레그램으로 실시간 알림해주는 봇", tries: 720, votes: 198, score: 3.3, feedback: "" },
-  { title: "PaletteAI", icon: "🎨", category: "ai", tagline: "브랜드 키워드를 입력하면 AI가 완벽한 컬러 팔레트를 생성", tries: 680, votes: 187, score: 3.2, feedback: "" },
-  { title: "MicroSaaS", icon: "💡", category: "saas", tagline: "마이크로 SaaS 아이디어 검증부터 랜딩페이지 생성까지 올인원 도구", tries: 640, votes: 176, score: 3.1, feedback: "" },
+  { title: "VibeAI", icon: "", category: "ai", tagline: "자연어로 대화하며 아이디어를 코드로 변환하는 AI 페어 프로그래머", tries: 3420, votes: 892, score: 4.8, feedback: "AI 응답 속도와 코드 품질에 대한 의견을 주세요" },
+  { title: "SnapDeploy", icon: "", category: "tool", tagline: "Git push 한 번으로 자동 빌드/배포까지 완료하는 원클릭 CI/CD", tries: 2180, votes: 654, score: 4.6, feedback: "배포 파이프라인 설정 UX가 직관적인지 테스트해주세요" },
+  { title: "PixelForge", icon: "", category: "web", tagline: "브라우저에서 바로 픽셀아트를 그리고 공유하는 온라인 에디터", tries: 1890, votes: 523, score: 4.5, feedback: "레이어 기능과 내보내기 품질에 대한 피드백 부탁드립니다" },
+  { title: "DataPulse", icon: "", category: "data", tagline: "실시간 데이터 스트림을 시각화하는 대시보드 빌더", tries: 1650, votes: 487, score: 4.4, feedback: "" },
+  { title: "IndieCraft", icon: "", category: "game", tagline: "노코드로 2D 인디 게임을 만들고 웹에 퍼블리싱하는 플랫폼", tries: 1420, votes: 412, score: 4.3, feedback: "" },
+  { title: "FormFlow", icon: "", category: "tool", tagline: "드래그앤드롭으로 폼을 만들고 자동 검증까지 처리하는 폼 빌더", tries: 1380, votes: 398, score: 4.2, feedback: "" },
+  { title: "NightOwl", icon: "", category: "web", tagline: "다크모드 전용 컴포넌트 라이브러리와 테마 미리보기 도구", tries: 1210, votes: 356, score: 4.1, feedback: "" },
+  { title: "CodeBridge", icon: "", category: "devtool", tagline: "프론트/백엔드 API 스키마를 자동 동기화하는 타입세이프 브릿지", tries: 1150, votes: 334, score: 4.0, feedback: "" },
+  { title: "MarkdownPro", icon: "", category: "tool", tagline: "실시간 협업이 가능한 마크다운 에디터 + 미리보기 + 내보내기", tries: 1080, votes: 312, score: 3.9, feedback: "" },
+  { title: "BotFactory", icon: "", category: "ai", tagline: "챗봇을 5분 만에 만들어 슬랙/디스코드에 배포하는 봇 빌더", tries: 980, votes: 289, score: 3.8, feedback: "" },
+  { title: "TinyAnalytics", icon: "", category: "saas", tagline: "가볍고 프라이버시 친화적인 웹 분석 도구 (쿠키 없음)", tries: 920, votes: 267, score: 3.7, feedback: "" },
+  { title: "SoundScape", icon: "", category: "music", tagline: "AI가 분위기에 맞는 배경음악을 생성해주는 사운드 디자인 앱", tries: 870, votes: 245, score: 3.6, feedback: "" },
+  { title: "QuizMaker", icon: "", category: "web", tagline: "인터랙티브 퀴즈를 만들고 결과를 공유하는 퀴즈 플랫폼", tries: 810, votes: 234, score: 3.5, feedback: "" },
+  { title: "LogStream", icon: "", category: "devtool", tagline: "서버 로그를 실시간 스트리밍하고 필터링하는 모니터링 대시보드", tries: 760, votes: 212, score: 3.4, feedback: "" },
+  { title: "GitNotify", icon: "", category: "tool", tagline: "GitHub 이벤트를 슬랙/텔레그램으로 실시간 알림해주는 봇", tries: 720, votes: 198, score: 3.3, feedback: "" },
+  { title: "PaletteAI", icon: "", category: "ai", tagline: "브랜드 키워드를 입력하면 AI가 완벽한 컬러 팔레트를 생성", tries: 680, votes: 187, score: 3.2, feedback: "" },
+  { title: "MicroSaaS", icon: "", category: "saas", tagline: "마이크로 SaaS 아이디어 검증부터 랜딩페이지 생성까지 올인원 도구", tries: 640, votes: 176, score: 3.1, feedback: "" },
 ];
 
 const DUMMY_FEATURED = DUMMY_PROJECTS[0];
@@ -201,7 +201,7 @@ export function VariantFeature({ data, viewer }: LandingVariantProps) {
       <header className="sticky top-0 z-50 border-b border-neutral-800 bg-[#0A0A0A]/90 backdrop-blur">
         <div className="mx-auto flex h-14 max-w-5xl items-center gap-4 px-4 sm:px-6">
           <button onClick={() => navigate("home")} className="flex items-center gap-1.5 text-lg font-bold" style={{ color: ACCENT }}>
-            🚀 Viber
+            Viber
           </button>
           <nav className="flex items-center gap-1">
             {V2_NAV.map((item) => (
@@ -284,7 +284,7 @@ export function VariantFeature({ data, viewer }: LandingVariantProps) {
               className="inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-semibold text-white transition hover:opacity-90"
               style={{ backgroundColor: ACCENT }}
             >
-              ✨ 프로젝트 등록하기 (무료)
+              프로젝트 등록하기 (무료)
             </Link>
             <Link
               href="/feature/products"
@@ -366,7 +366,7 @@ export function VariantFeature({ data, viewer }: LandingVariantProps) {
         >
           <div className="flex items-end justify-between">
             <h2 className="flex items-center gap-2 text-2xl font-bold tracking-tight sm:text-3xl">
-              🆕 New Projects
+              New Projects
             </h2>
             <div className="flex items-center gap-2">
               <span className="rounded-full bg-neutral-800 px-3 py-1 text-xs font-medium text-neutral-400">이번주</span>
@@ -390,7 +390,7 @@ export function VariantFeature({ data, viewer }: LandingVariantProps) {
           }`}
         >
           <h2 className="flex items-center gap-2 text-2xl font-bold tracking-tight sm:text-3xl">
-            💬 피드백 요청 중
+            피드백 요청 중
           </h2>
           <p className="mt-2 text-sm text-neutral-400">
             제작자가 여러분의 의견을 기다리고 있어요.
@@ -463,7 +463,7 @@ export function VariantFeature({ data, viewer }: LandingVariantProps) {
                 className="inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-semibold text-white transition hover:opacity-90"
                 style={{ backgroundColor: ACCENT }}
               >
-                ✨ 프로젝트 등록하기 (무료)
+                프로젝트 등록하기 (무료)
               </Link>
               <Link
                 href="/feature/products"
@@ -473,7 +473,7 @@ export function VariantFeature({ data, viewer }: LandingVariantProps) {
               </Link>
             </div>
             <p className="mt-6 text-xs text-neutral-500">
-              지금 1,240개의 프로젝트가 Viber에 등록되고 있어요 ✨
+              지금 1,240개의 프로젝트가 Viber에 등록되고 있어요
             </p>
           </div>
         </div>
@@ -485,7 +485,7 @@ export function VariantFeature({ data, viewer }: LandingVariantProps) {
           {/* col 1: logo + desc + social */}
           <div>
             <p className="flex items-center gap-1.5 text-lg font-bold">
-              <span style={{ color: ACCENT }}>🚀</span> Viber
+              Viber
             </p>
             <p className="mt-2 text-xs leading-5 text-neutral-500">
               바이브코딩 프로젝트 쇼케이스 플랫폼.
@@ -495,7 +495,7 @@ export function VariantFeature({ data, viewer }: LandingVariantProps) {
             <div className="mt-4 flex items-center gap-3">
               <Github className="h-4 w-4 cursor-pointer text-neutral-500 transition hover:text-white" />
               <Twitter className="h-4 w-4 cursor-pointer text-neutral-500 transition hover:text-white" />
-              <span className="cursor-pointer text-sm text-neutral-500 transition hover:text-white">💬</span>
+              <span className="cursor-pointer text-sm text-neutral-500 transition hover:text-white"></span>
             </div>
           </div>
 
@@ -553,7 +553,7 @@ export function VariantFeature({ data, viewer }: LandingVariantProps) {
         <div className="mx-auto mt-10 flex max-w-5xl items-center justify-between border-t border-neutral-800 pt-6">
           <span className="text-xs text-neutral-500">&copy; 2026 Viber. All rights reserved.</span>
           <span className="text-xs text-neutral-500">
-            Made with ❤️ by the Vibe Coding Community
+            Made by the Vibe Coding Community
           </span>
         </div>
       </footer>
@@ -777,7 +777,6 @@ function NewProjectRow({ project }: { project: SerializedProjectCard }) {
         <img src={project.coverImageUrl} alt="" className="h-10 w-10 shrink-0 rounded-xl object-cover" />
       ) : (
         <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-neutral-800 text-lg">
-          📦
         </div>
       )}
       <div className="min-w-0 flex-1">
@@ -843,7 +842,7 @@ function FeedbackCard({ project }: { project: SerializedProjectCard }) {
           <p className="text-sm font-bold">{project.title}</p>
           <CategoryBadge category={project.category} />
           <span className="rounded-full bg-green-900/30 px-2 py-0.5 text-[10px] font-semibold text-green-400">
-            🟢 피드백 요청
+            피드백 요청
           </span>
         </div>
         <p className="mt-2 text-xs text-neutral-400">{project.tagline}</p>
@@ -854,7 +853,7 @@ function FeedbackCard({ project }: { project: SerializedProjectCard }) {
           className="flex-1 rounded-full py-2 text-center text-xs font-semibold text-white transition hover:opacity-90"
           style={{ backgroundColor: "#22C55E" }}
         >
-          Give Feedback 💬
+          Give Feedback
         </Link>
         <OutboundLink
           projectId={project.id}
@@ -886,7 +885,7 @@ function DummyFeedbackCard({ title, icon, category, tagline, feedback }: {
           <p className="text-sm font-bold">{title}</p>
           <CategoryBadge category={category} />
           <span className="rounded-full bg-green-900/30 px-2 py-0.5 text-[10px] font-semibold text-green-400">
-            🟢 피드백 요청
+            피드백 요청
           </span>
         </div>
         <p className="mt-2 text-xs text-neutral-400">{tagline}</p>
@@ -899,7 +898,7 @@ function DummyFeedbackCard({ title, icon, category, tagline, feedback }: {
           className="flex-1 rounded-full py-2 text-center text-xs font-semibold text-white transition hover:opacity-90"
           style={{ backgroundColor: "#22C55E" }}
         >
-          Give Feedback 💬
+          Give Feedback
         </button>
         <button className="rounded-full border border-neutral-700 px-4 py-2 text-xs font-semibold text-neutral-300 transition hover:border-neutral-500">
           Try

@@ -24,7 +24,7 @@ export function SiteHeader({ viewer }: SiteHeaderProps) {
 
         {/* 로고 */}
         <Link href="/" className="flex items-center gap-1.5 text-lg font-bold" style={{ color: ACCENT }}>
-          🚀 Viber
+          Viber
         </Link>
 
         {/* 네비게이션 — 랜딩과 동일 구조 */}

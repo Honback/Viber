@@ -93,11 +93,11 @@ export function VariantClassic({ data, viewer }: LandingVariantProps) {
       </section>
       </HeroBackground>
 
-      {/* 🔥 트렌딩 */}
+      {/* 트렌딩 */}
       {data.featured.length > 0 && (
         <section className="border-y border-line bg-surface/70">
           <div className="mx-auto max-w-[1180px] px-4 py-16 sm:px-6 lg:px-8">
-            <FeedHeader emoji="🔥" title="트렌딩" href="/projects" />
+            <FeedHeader emoji="" title="트렌딩" href="/projects" />
             <div className="mt-8 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
               {data.featured.map((p) => <ClassicCard key={p.id} project={p} />)}
             </div>
@@ -105,21 +105,21 @@ export function VariantClassic({ data, viewer }: LandingVariantProps) {
         </section>
       )}
 
-      {/* 🆕 신규 공개 */}
+      {/* 신규 공개 */}
       {data.launches.length > 0 && (
         <section className="mx-auto max-w-[1180px] px-4 py-16 sm:px-6 lg:px-8">
-          <FeedHeader emoji="🆕" title="신규 공개" href="/projects?sort=latest" />
+          <FeedHeader emoji="" title="신규 공개" href="/projects?sort=latest" />
           <div className="mt-8 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
             {data.launches.map((p) => <ClassicCard key={p.id} project={p} />)}
           </div>
         </section>
       )}
 
-      {/* 💬 열띤 피드백 */}
+      {/* 열띤 피드백 */}
       {data.feedback.length > 0 && (
         <section className="border-y border-line bg-surface/70">
           <div className="mx-auto max-w-[1180px] px-4 py-16 sm:px-6 lg:px-8">
-            <FeedHeader emoji="💬" title="열띤 피드백" subtitle="지금 피드백이 활발한 프로젝트" href="/projects?activity=feedback" linkLabel="더 보기" />
+            <FeedHeader emoji="" title="열띤 피드백" subtitle="지금 피드백이 활발한 프로젝트" href="/projects?activity=feedback" linkLabel="더 보기" />
             <div className="mt-8 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
               {data.feedback.map((p) => <ClassicCard key={p.id} project={p} />)}
             </div>
