@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { FolderKanban, Mail, Shield, Sparkles, TimerReset } from "lucide-react";
+import { FileText, FolderKanban, Mail, Shield, Sparkles, TimerReset } from "lucide-react";
 
 import type { SessionProfile } from "@/lib/auth/session";
 import { navLinks } from "@/lib/constants";
@@ -94,6 +94,13 @@ export function SiteHeader({ viewer }: SiteHeaderProps) {
                     >
                       <FolderKanban className="size-4" />
                       프로젝트 관리
+                    </Link>
+                    <Link
+                      href="/admin/blog"
+                      className="inline-flex items-center gap-2 rounded-full border border-line bg-white px-4 py-2 text-sm font-semibold text-foreground transition hover:-translate-y-0.5"
+                    >
+                      <FileText className="size-4" />
+                      블로그 관리
                     </Link>
                     <Link
                       href="/admin/jobs"
