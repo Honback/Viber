@@ -253,7 +253,7 @@ export default async function ProjectDetailPage({ params, searchParams }: Projec
             projectId={project.id}
             source="detail_try"
             href={project.liveUrl}
-            className="flex w-full items-center justify-center rounded-xl bg-white py-3 text-sm font-bold text-foreground border border-line hover:bg-surface-muted transition"
+            className="flex w-full items-center justify-center rounded-xl bg-surface py-3 text-sm font-bold text-foreground border border-line hover:bg-surface-muted transition"
           >
             Visit Site
           </OutboundLink>
