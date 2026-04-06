@@ -59,6 +59,7 @@ export const projectPostLabels = {
 export const navLinks = [
   { href: "/", label: "홈" },
   { href: "/projects", label: "탐색" },
+  { href: "/blog", label: "블로그" },
   { href: "/submit", label: "등록하기" }
 ] as const;
 

@@ -67,8 +67,26 @@ function buildFaqItems(data: SerializedHomepageData): FaqItem[] {
 export function GeoFaqSection({ data }: { data: SerializedHomepageData }) {
   const faqs = buildFaqItems(data);
 
+  const faqJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map((faq) => ({
+      "@type": "Question",
+      name: faq.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: faq.answer,
+      },
+    })),
+  };
+
   return (
     <section className="mx-auto max-w-[1180px] px-4 py-16 sm:px-6 lg:px-8">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
+
       <div className="text-center">
         <h2 className="text-2xl font-bold text-foreground">자주 묻는 질문</h2>
         <p className="mt-2 text-sm text-foreground-muted">
@@ -76,37 +94,18 @@ export function GeoFaqSection({ data }: { data: SerializedHomepageData }) {
         </p>
       </div>
 
-      <div
-        className="mt-10 grid gap-4 md:grid-cols-2"
-        itemScope
-        itemType="https://schema.org/FAQPage"
-      >
+      <div className="mt-10 grid gap-4 md:grid-cols-2">
         {faqs.map((faq, i) => (
           <div
             key={i}
             className="rounded-2xl border border-line bg-surface p-6"
-            itemScope
-            itemProp="mainEntity"
-            itemType="https://schema.org/Question"
           >
-            <h3
-              className="text-base font-bold text-foreground"
-              itemProp="name"
-            >
+            <h3 className="text-base font-bold text-foreground">
               {faq.question}
             </h3>
-            <div
-              itemScope
-              itemProp="acceptedAnswer"
-              itemType="https://schema.org/Answer"
-            >
-              <p
-                className="mt-3 text-sm leading-relaxed text-foreground-muted"
-                itemProp="text"
-              >
-                {faq.answer}
-              </p>
-            </div>
+            <p className="mt-3 text-sm leading-relaxed text-foreground-muted">
+              {faq.answer}
+            </p>
           </div>
         ))}
       </div>
