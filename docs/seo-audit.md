@@ -1,22 +1,26 @@
 # Viber SEO/GEO 전체 감사 보고서
 
-> 감사일: 2026-04-03
+> 최초 감사일: 2026-04-03
+> 업데이트: 2026-04-06
 > 감사 범위: 전체 페이지 (공개 라우트)
 
 ---
 
-## 종합 점수: 32/100
+## 종합 점수: 72/100 (이전: 32/100, +40점)
 
 | 항목 | 점수 | 상태 |
 |------|------|------|
-| 메타데이터 (title/description) | 15/25 | 루트만 있음, 페이지별 없음 |
-| OpenGraph / Twitter Card | 0/15 | 완전 누락 |
-| 구조화 데이터 (JSON-LD) | 5/15 | FAQ Microdata만 있음 |
-| 사이트맵 & Robots | 7/10 | 기본 구현, changeFrequency/priority 누락 |
-| Canonical & URL 구조 | 3/10 | Next.js 자동 생성만 의존 |
+| 메타데이터 (title/description) | 25/25 | 전체 페이지 완료 ✅ (04/03 작업) |
+| OpenGraph / Twitter Card | 8/15 | 텍스트 완료, **이미지 미완** |
+| 구조화 데이터 (JSON-LD) | 10/15 | WebSite/Org/Software/Breadcrumb ✅, FAQ 전환 필요 |
+| 사이트맵 & Robots | 10/10 | 완전 구현 ✅ (04/03 작업) |
+| Canonical & URL 구조 | 10/10 | 전체 설정 ✅ (04/03 작업) |
 | 시맨틱 HTML & 접근성 | 5/10 | alt 태그 있으나 heading 계층 미흡 |
-| 기술 SEO (next.config) | 0/10 | 완전 비어있음 |
-| GEO 최적화 | 2/5 | FAQ만 일부 대응 |
+| 기술 SEO (next.config) | 0/10 | 여전히 비어있음 ❌ |
+| GEO 최적화 | 4/5 | FAQ + JSON-LD + SearchAction ✅, Speakable 미완 |
+
+> 상세 최적화 가이드: `docs/seo-geo-optimization-guide.md`
+> 배포 전 체크리스트: `docs/deployment-checklist.md`
 
 ---
 
