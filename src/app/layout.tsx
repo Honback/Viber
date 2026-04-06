@@ -3,6 +3,8 @@ import "./globals.css";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
 import { ThemeProvider } from "@/components/theme-provider";
+import { LocaleProvider } from "@/lib/i18n/locale-context";
+import { getLocale } from "@/lib/i18n/get-locale";
 import { getCurrentProfile } from "@/lib/auth/session";
 
 const appUrl = process.env.NEXT_PUBLIC_APP_URL || "http://127.0.0.1:3000";
@@ -50,19 +52,21 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const viewer = await getCurrentProfile();
+  const [viewer, locale] = await Promise.all([getCurrentProfile(), getLocale()]);
 
   return (
-    <html lang="ko" data-theme="dark">
+    <html lang={locale} data-theme="dark">
       <head />
       <body className="min-h-screen text-foreground antialiased">
-        <ThemeProvider>
-          <div className="min-h-screen">
-            <SiteHeader viewer={viewer} />
-            <main>{children}</main>
-            <SiteFooter />
-          </div>
-        </ThemeProvider>
+        <LocaleProvider initialLocale={locale}>
+          <ThemeProvider>
+            <div className="min-h-screen">
+              <SiteHeader viewer={viewer} />
+              <main>{children}</main>
+              <SiteFooter />
+            </div>
+          </ThemeProvider>
+        </LocaleProvider>
         {/* 랜딩 페이지에서 공통 헤더/푸터 숨기기 */}
         <style dangerouslySetInnerHTML={{ __html: `
           .landing-fullpage { margin-top: -56px; }

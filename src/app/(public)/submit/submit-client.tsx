@@ -3,16 +3,11 @@
 import { useRef, useState, useEffect } from "react";
 import Link from "next/link";
 import { Github, Twitter, ArrowRight, Rocket } from "lucide-react";
+import { useLocale } from "@/lib/i18n/locale-context";
 
 const ACCENT = "#d76542";
 
-const NAV = [
-  { label: "Home", href: "/" },
-  { label: "Products", href: "/feature/products" },
-  { label: "Trending", href: "/feature/trending" },
-  { label: "New", href: "/feature/new" },
-  { label: "Feedback", href: "/feature/feedback" },
-];
+/* NAV moved inside component for i18n */
 
 /* ── scroll animation hook ── */
 function useScrollAnimation(threshold = 0.15) {
@@ -57,6 +52,16 @@ export function SubmitPageClient({
   pricingOptions,
   stageOptions,
 }: SubmitPageClientProps) {
+  const { t } = useLocale();
+
+  const NAV = [
+    { label: t.nav.home, href: "/" },
+    { label: t.nav.products, href: "/feature/products" },
+    { label: t.nav.trending, href: "/feature/trending" },
+    { label: t.nav.new, href: "/feature/new" },
+    { label: t.nav.feedback, href: "/feature/feedback" },
+  ];
+
   const heroAnim = useScrollAnimation(0.1);
   const infoAnim = useScrollAnimation();
   const basicAnim = useScrollAnimation();
@@ -84,7 +89,7 @@ export function SubmitPageClient({
               </Link>
             ))}
             <span className="rounded-full px-3.5 py-1.5 text-sm font-semibold text-white" style={{ backgroundColor: ACCENT }}>
-              등록하기
+              {t.nav.submit}
             </span>
           </nav>
           <div className="flex-1" />
@@ -92,7 +97,7 @@ export function SubmitPageClient({
             {viewer ? (
               <span className="rounded-full bg-neutral-800 px-3 py-1.5 text-sm font-semibold" style={{ color: ACCENT }}>{viewer.displayName}</span>
             ) : (
-              <Link href="/auth/sign-in" className="rounded-full px-4 py-2 text-sm font-semibold text-white" style={{ backgroundColor: ACCENT }}>로그인</Link>
+              <Link href="/auth/sign-in" className="rounded-full px-4 py-2 text-sm font-semibold text-white" style={{ backgroundColor: ACCENT }}>{t.nav.login}</Link>
             )}
           </div>
         </div>
@@ -393,9 +398,9 @@ export function SubmitPageClient({
               Viber
             </p>
             <p className="mt-2 text-xs leading-5 text-neutral-500">
-              바이브코딩 프로젝트 쇼케이스 플랫폼.
+              {t.footer.platform}
               <br />
-              만든 것을 세상에 보여주세요.
+              {t.footer.slogan}
             </p>
             <div className="mt-4 flex items-center gap-3">
               <Github className="h-4 w-4 cursor-pointer text-neutral-500 transition hover:text-white" />
@@ -404,24 +409,24 @@ export function SubmitPageClient({
             </div>
           </div>
           <div>
-            <p className="text-sm font-semibold">탐색</p>
+            <p className="text-sm font-semibold">{t.footer.explore}</p>
             <div className="mt-3 flex flex-col gap-2">
               {[
-                { label: "Trending", href: "/feature/trending" },
-                { label: "New Projects", href: "/feature/new" },
-                { label: "Categories", href: "/feature/products" },
+                { label: t.nav.trending, href: "/feature/trending" },
+                { label: t.footer.newProjects, href: "/feature/new" },
+                { label: t.footer.categories, href: "/feature/products" },
               ].map((l) => (
                 <Link key={l.label} href={l.href} className="text-xs text-neutral-500 transition hover:text-white">{l.label}</Link>
               ))}
             </div>
           </div>
           <div>
-            <p className="text-sm font-semibold">메이커</p>
+            <p className="text-sm font-semibold">{t.footer.maker}</p>
             <div className="mt-3 flex flex-col gap-2">
               {[
-                { label: "프로젝트 등록", href: "/submit" },
-                { label: "대시보드", href: "/dashboard" },
-                { label: "FAQ", href: "/faq" },
+                { label: t.footer.submitProject, href: "/submit" },
+                { label: t.footer.dashboard, href: "/dashboard" },
+                { label: t.footer.faq, href: "/faq" },
               ].map((l) => (
                 <Link key={l.label} href={l.href} className="text-xs text-neutral-500 transition hover:text-white">{l.label}</Link>
               ))}
@@ -442,7 +447,7 @@ export function SubmitPageClient({
         </div>
         <div className="mx-auto mt-10 flex max-w-5xl items-center justify-between border-t border-neutral-800 pt-6">
           <span className="text-xs text-neutral-500">&copy; 2026 Viber. All rights reserved.</span>
-          <span className="text-xs text-neutral-500">Made by the Vibe Coding Community</span>
+          <span className="text-xs text-neutral-500">{t.footer.copyright}</span>
         </div>
       </footer>
     </div>

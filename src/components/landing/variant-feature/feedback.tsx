@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useVariantNav } from "../landing-variant-switcher";
+import { useLocale } from "@/lib/i18n/locale-context";
 import {
   Search,
   Triangle,
@@ -76,15 +77,6 @@ const DUMMY_PROJECTS = [
   { title: "MicroSaaS", icon: "", category: "saas", tagline: "마이크로 SaaS 아이디어 검증부터 랜딩페이지 생성까지 올인원 도구", tries: 640, votes: 176, score: 3.1, feedbackQuestion: "아이디어 검증 프로세스가 유용한지 테스트해주세요", createdAt: "2026-03-20" },
 ];
 
-/* ── nav ── */
-const V2_NAV = [
-  { page: "home" as const, label: "Home" },
-  { page: "products" as const, label: "Products" },
-  { page: "trending" as const, label: "Trending" },
-  { page: "new" as const, label: "New" },
-  { page: "feedback" as const, label: "Feedback" },
-];
-
 function CategoryBadge({ category }: { category: string }) {
   const color = CATEGORY_COLORS[category] ?? "#6B7280";
   return (
@@ -101,7 +93,16 @@ function CategoryBadge({ category }: { category: string }) {
 
 export function FeatureFeedback() {
   const { subPage, navigate } = useVariantNav();
+  const { t } = useLocale();
   const [searchQuery, setSearchQuery] = useState("");
+
+  const V2_NAV = [
+    { page: "home" as const, label: t.nav.home },
+    { page: "products" as const, label: t.nav.products },
+    { page: "trending" as const, label: t.nav.trending },
+    { page: "new" as const, label: t.nav.new },
+    { page: "feedback" as const, label: t.nav.feedback },
+  ];
 
   const heroAnim = useScrollAnimation(0.1);
   const cardsAnim = useScrollAnimation();
@@ -146,16 +147,16 @@ export function FeatureFeedback() {
               );
             })}
             <Link href="/blog" className="rounded-full px-3.5 py-1.5 text-sm font-semibold transition hover:opacity-80" style={{ color: "#ccc" }}>
-              블로그
+              {t.nav.blog}
             </Link>
             <Link href="/submit" className="rounded-full px-3.5 py-1.5 text-sm font-semibold text-white transition hover:opacity-90" style={{ backgroundColor: ACCENT }}>
-              등록하기
+              {t.nav.submit}
             </Link>
           </nav>
           <div className="flex-1" />
           <div className="flex items-center gap-2">
             <Link href="/auth/sign-in" className="rounded-full px-4 py-2 text-sm font-semibold text-white" style={{ backgroundColor: ACCENT }}>
-              로그인
+              {t.nav.login}
             </Link>
           </div>
         </div>
@@ -353,9 +354,9 @@ export function FeatureFeedback() {
               Viber
             </p>
             <p className="mt-2 text-xs leading-5 text-neutral-500">
-              바이브코딩 프로젝트 쇼케이스 플랫폼.
+              {t.footer.platform}
               <br />
-              만든 것을 세상에 보여주세요.
+              {t.footer.slogan}
             </p>
             <div className="mt-4 flex items-center gap-3">
               <Github className="h-4 w-4 cursor-pointer text-neutral-400 transition hover:text-white" />
@@ -364,13 +365,13 @@ export function FeatureFeedback() {
             </div>
           </div>
           <div>
-            <p className="text-sm font-semibold">탐색</p>
+            <p className="text-sm font-semibold">{t.footer.explore}</p>
             <div className="mt-3 flex flex-col gap-2">
               {[
-                { label: "Trending", href: "/trending" },
-                { label: "New Projects", href: "/new" },
-                { label: "Categories", href: "/products" },
-                { label: "Tags", href: "/products" },
+                { label: t.nav.trending, href: "/trending" },
+                { label: t.footer.newProjects, href: "/new" },
+                { label: t.footer.categories, href: "/products" },
+                { label: t.nav.blog, href: "/products" },
               ].map((l) => (
                 <Link key={l.label} href={l.href} className="text-xs text-neutral-500 transition hover:text-white">
                   {l.label}
@@ -379,13 +380,13 @@ export function FeatureFeedback() {
             </div>
           </div>
           <div>
-            <p className="text-sm font-semibold">메이커</p>
+            <p className="text-sm font-semibold">{t.footer.maker}</p>
             <div className="mt-3 flex flex-col gap-2">
               {[
-                { label: "프로젝트 등록", href: "/submit" },
-                { label: "대시보드", href: "/dashboard" },
-                { label: "등록 가이드", href: "/guide" },
-                { label: "FAQ", href: "/faq" },
+                { label: t.footer.submitProject, href: "/submit" },
+                { label: t.footer.dashboard, href: "/dashboard" },
+                { label: t.footer.guide, href: "/guide" },
+                { label: t.footer.faq, href: "/faq" },
               ].map((l) => (
                 <Link key={l.label} href={l.href} className="text-xs text-neutral-500 transition hover:text-white">
                   {l.label}
@@ -411,7 +412,7 @@ export function FeatureFeedback() {
         </div>
         <div className="mx-auto mt-10 flex max-w-5xl items-center justify-between border-t border-neutral-800 pt-6">
           <span className="text-xs text-neutral-500">&copy; 2026 Viber. All rights reserved.</span>
-          <span className="text-xs text-neutral-500">Made by the Vibe Coding Community</span>
+          <span className="text-xs text-neutral-500">{t.footer.copyright}</span>
         </div>
       </footer>
     </div>

@@ -124,19 +124,21 @@ const DUMMY_FEEDBACK = [
 const ROTATING_WORDS = ["API", "앱", "SaaS", "게임", "도구", "AI", "웹사이트", "플러그인"];
 
 import { useVariantNav } from "../landing-variant-switcher";
-
-const V2_NAV = [
-  { page: "home" as const, label: "Home" },
-  { page: "products" as const, label: "Products" },
-  { page: "trending" as const, label: "Trending" },
-  { page: "new" as const, label: "New" },
-  { page: "feedback" as const, label: "Feedback" },
-];
+import { useLocale } from "@/lib/i18n/locale-context";
 
 export function VariantFeature({ data, viewer }: LandingVariantProps) {
   const { subPage, navigate } = useVariantNav();
+  const { t } = useLocale();
   const [catTab, setCatTab] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
+
+  const V2_NAV = [
+    { page: "home" as const, label: t.nav.home },
+    { page: "products" as const, label: t.nav.products },
+    { page: "trending" as const, label: t.nav.trending },
+    { page: "new" as const, label: t.nav.new },
+    { page: "feedback" as const, label: t.nav.feedback },
+  ];
   const [rotateIdx, setRotateIdx] = useState(0);
   const [displayText, setDisplayText] = useState(ROTATING_WORDS[0]);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -219,10 +221,10 @@ export function VariantFeature({ data, viewer }: LandingVariantProps) {
               </button>
             ))}
             <Link href="/blog" className="rounded-full px-3.5 py-1.5 text-sm font-semibold transition hover:opacity-80" style={{ color: "#ccc" }}>
-              블로그
+              {t.nav.blog}
             </Link>
             <Link href="/submit" className="rounded-full px-3.5 py-1.5 text-sm font-semibold text-white transition hover:opacity-90" style={{ backgroundColor: ACCENT }}>
-              등록하기
+              {t.nav.submit}
             </Link>
           </nav>
           <div className="flex-1" />
@@ -230,7 +232,7 @@ export function VariantFeature({ data, viewer }: LandingVariantProps) {
             {viewer ? (
               <span className="rounded-full bg-neutral-800 px-3 py-1.5 text-sm font-semibold" style={{ color: ACCENT }}>{viewer.displayName}</span>
             ) : (
-              <Link href="/auth/sign-in" className="rounded-full px-4 py-2 text-sm font-semibold text-white" style={{ backgroundColor: ACCENT }}>로그인</Link>
+              <Link href="/auth/sign-in" className="rounded-full px-4 py-2 text-sm font-semibold text-white" style={{ backgroundColor: ACCENT }}>{t.nav.login}</Link>
             )}
           </div>
         </div>
@@ -488,9 +490,9 @@ export function VariantFeature({ data, viewer }: LandingVariantProps) {
               Viber
             </p>
             <p className="mt-2 text-xs leading-5 text-neutral-500">
-              바이브코딩 프로젝트 쇼케이스 플랫폼.
+              {t.footer.platform}
               <br />
-              만든 것을 세상에 보여주세요.
+              {t.footer.slogan}
             </p>
             <div className="mt-4 flex items-center gap-3">
               <Github className="h-4 w-4 cursor-pointer text-neutral-500 transition hover:text-white" />
@@ -501,13 +503,13 @@ export function VariantFeature({ data, viewer }: LandingVariantProps) {
 
           {/* col 2: 탐색 */}
           <div>
-            <p className="text-sm font-semibold">탐색</p>
+            <p className="text-sm font-semibold">{t.footer.explore}</p>
             <div className="mt-3 flex flex-col gap-2">
               {[
-                { label: "Trending", href: "/trending" },
-                { label: "New Projects", href: "/new" },
-                { label: "Categories", href: "/projects" },
-                { label: "블로그", href: "/blog" },
+                { label: t.nav.trending, href: "/trending" },
+                { label: t.footer.newProjects, href: "/new" },
+                { label: t.footer.categories, href: "/projects" },
+                { label: t.nav.blog, href: "/blog" },
               ].map((l) => (
                 <Link key={l.label} href={l.href} className="text-xs text-neutral-500 transition hover:text-white">
                   {l.label}
@@ -518,13 +520,13 @@ export function VariantFeature({ data, viewer }: LandingVariantProps) {
 
           {/* col 3: 메이커 */}
           <div>
-            <p className="text-sm font-semibold">메이커</p>
+            <p className="text-sm font-semibold">{t.footer.maker}</p>
             <div className="mt-3 flex flex-col gap-2">
               {[
-                { label: "프로젝트 등록", href: "/submit" },
-                { label: "대시보드", href: "/dashboard" },
-                { label: "등록 가이드", href: "/guide" },
-                { label: "FAQ", href: "/faq" },
+                { label: t.footer.submitProject, href: "/submit" },
+                { label: t.footer.dashboard, href: "/dashboard" },
+                { label: t.footer.guide, href: "/guide" },
+                { label: t.footer.faq, href: "/faq" },
               ].map((l) => (
                 <Link key={l.label} href={l.href} className="text-xs text-neutral-500 transition hover:text-white">
                   {l.label}
@@ -553,7 +555,7 @@ export function VariantFeature({ data, viewer }: LandingVariantProps) {
         <div className="mx-auto mt-10 flex max-w-5xl items-center justify-between border-t border-neutral-800 pt-6">
           <span className="text-xs text-neutral-500">&copy; 2026 Viber. All rights reserved.</span>
           <span className="text-xs text-neutral-500">
-            Made by the Vibe Coding Community
+            {t.footer.copyright}
           </span>
         </div>
       </footer>
