@@ -746,6 +746,38 @@ export async function getOwnedProjectManagementData(userId: string) {
   return records.filter((project) => project.owners.length > 0).map(mapOwnedProjectManagement);
 }
 
+export async function getProjectMetaBySlug(slug: string) {
+  const project = await db.query.projects.findFirst({
+    where: eq(projects.slug, slug),
+    columns: {
+      id: true,
+      title: true,
+      tagline: true,
+      shortDescription: true,
+      category: true,
+      platform: true,
+      stage: true,
+      status: true,
+      coverImageUrl: true,
+    },
+    with: {
+      tagLinks: { with: { tag: true } },
+    },
+  });
+  if (!project) return null;
+  return {
+    title: project.title,
+    tagline: project.tagline,
+    shortDescription: project.shortDescription,
+    category: project.category,
+    platform: project.platform,
+    stage: project.stage,
+    status: project.status,
+    coverImageUrl: project.coverImageUrl,
+    tags: project.tagLinks.map((link) => link.tag),
+  };
+}
+
 export async function getTagPageData(tagSlug: string) {
   const records = await fetchProjectsWithRelations(exploreStatuses);
   return records.map(mapProjectCard).filter((project) => project.tags.some((tag) => tag.slug === tagSlug));

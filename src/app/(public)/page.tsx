@@ -38,8 +38,32 @@ export default async function HomePage({ searchParams }: HomePageProps) {
   const viewerState = await getViewerState(viewer?.id);
   const data = await getHomepageData();
 
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL || "http://127.0.0.1:3000";
+  const websiteJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "Viber",
+    url: appUrl,
+    description: "바이브 코딩으로 만든 프로젝트를 발견하고, 체험하고, 피드백하는 커뮤니티",
+    potentialAction: {
+      "@type": "SearchAction",
+      target: { "@type": "EntryPoint", urlTemplate: `${appUrl}/projects?query={search_term_string}` },
+      "query-input": "required name=search_term_string",
+    },
+  };
+
+  const organizationJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: "Viber",
+    url: appUrl,
+    description: "바이브 코딩 프로젝트 쇼케이스 커뮤니티",
+  };
+
   return (
     <div className="landing-fullpage">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }} />
       <FlashBanner notice={getTextParam(params.notice)} error={getTextParam(params.error)} />
       <Suspense>
         <LandingVariantSwitcher

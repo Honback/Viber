@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { FlashBanner } from "@/components/ui/flash-banner";
@@ -6,6 +7,16 @@ import type { SerializedHomepageData } from "@/components/landing/types";
 import { getCurrentProfile } from "@/lib/auth/session";
 import { getHomepageData, getViewerState } from "@/lib/services/read-models";
 import type { ProjectCardModel } from "@/lib/services/read-models";
+
+export const metadata: Metadata = {
+  alternates: {
+    canonical: "/",
+  },
+  robots: {
+    index: false,
+    follow: true,
+  },
+};
 
 const VALID_VARIANTS = ["feature", "minimal"] as const;
 type ValidVariant = (typeof VALID_VARIANTS)[number];

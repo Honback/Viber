@@ -1,4 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
+import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Heart } from "lucide-react";
@@ -22,13 +23,50 @@ import {
   verificationLabels
 } from "@/lib/constants";
 import { getCurrentProfile } from "@/lib/auth/session";
-import { getProjectDetailBySlug, getViewerState } from "@/lib/services/read-models";
+import { turnstileSiteKey } from "@/lib/env";
+import { getProjectDetailBySlug, getProjectMetaBySlug, getViewerState, type ProjectPostModel } from "@/lib/services/read-models";
 import { formatDate, formatRelative } from "@/lib/utils/date";
 
 type ProjectDetailPageProps = {
   params: Promise<{ slug: string }>;
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 };
+
+export async function generateMetadata({ params }: ProjectDetailPageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const project = await getProjectMetaBySlug(slug);
+  if (!project) return {};
+
+  const title = project.title;
+  const description = `${project.tagline} — ${project.shortDescription}`.slice(0, 160);
+  const categoryLabel = categoryLabels[project.category] ?? project.category;
+
+  return {
+    title,
+    description,
+    keywords: [
+      "바이브 코딩",
+      "vibe coding",
+      categoryLabel,
+      ...project.tags.map((t) => t.name),
+    ],
+    openGraph: {
+      title: `${project.title} | Viber`,
+      description,
+      type: "article",
+      images: project.coverImageUrl ? [{ url: project.coverImageUrl, alt: `${project.title} 대표 이미지` }] : [],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${project.title} | Viber`,
+      description,
+      images: project.coverImageUrl ? [project.coverImageUrl] : [],
+    },
+    alternates: {
+      canonical: `/p/${slug}`,
+    },
+  };
+}
 
 function getValue(value: string | string[] | undefined) {
   return Array.isArray(value) ? value[0] : value;
@@ -60,8 +98,49 @@ export default async function ProjectDetailPage({ params, searchParams }: Projec
 
   const isSaved = viewerState.savedProjectIds.includes(project.id);
 
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL || "http://127.0.0.1:3000";
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    name: project.title,
+    description: project.tagline,
+    url: `${appUrl}/p/${project.slug}`,
+    image: project.coverImageUrl,
+    applicationCategory: categoryLabels[project.category] ?? project.category,
+    operatingSystem: platformLabels[project.platform as keyof typeof platformLabels],
+    offers: {
+      "@type": "Offer",
+      price: project.pricingModel === "free" ? "0" : undefined,
+      priceCurrency: "KRW",
+      availability: "https://schema.org/InStock",
+    },
+    author: {
+      "@type": "Person",
+      name: project.makerAlias,
+    },
+    aggregateRating: project.metrics.saves > 0
+      ? {
+          "@type": "AggregateRating",
+          ratingCount: project.metrics.saves,
+          reviewCount: project.metrics.comments,
+        }
+      : undefined,
+  };
+
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "홈", item: appUrl },
+      { "@type": "ListItem", position: 2, name: "프로젝트 탐색", item: `${appUrl}/projects` },
+      { "@type": "ListItem", position: 3, name: project.title, item: `${appUrl}/p/${project.slug}` },
+    ],
+  };
+
   return (
     <PageShell className="gap-8">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
       <ProjectEventBeacon projectId={project.id} kind="project_detail_view" source="detail_page" />
       <FlashBanner notice={getValue(query.notice)} error={getValue(query.error)} />
 
