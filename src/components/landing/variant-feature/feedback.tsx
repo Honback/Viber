@@ -145,6 +145,9 @@ export function FeatureFeedback() {
                 </button>
               );
             })}
+            <Link href="/blog" className="rounded-full px-3.5 py-1.5 text-sm font-semibold transition hover:opacity-80" style={{ color: "#ccc" }}>
+              블로그
+            </Link>
             <Link href="/submit" className="rounded-full px-3.5 py-1.5 text-sm font-semibold text-white transition hover:opacity-90" style={{ backgroundColor: ACCENT }}>
               등록하기
             </Link>
