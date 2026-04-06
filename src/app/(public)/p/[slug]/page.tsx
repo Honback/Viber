@@ -23,7 +23,6 @@ import {
   verificationLabels
 } from "@/lib/constants";
 import { getCurrentProfile } from "@/lib/auth/session";
-import { turnstileSiteKey } from "@/lib/env";
 import { getProjectDetailBySlug, getProjectMetaBySlug, getViewerState, type ProjectPostModel } from "@/lib/services/read-models";
 import { formatDate, formatRelative } from "@/lib/utils/date";
 

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Compass, Flame, FolderKanban, Home, MessageSquareText, Package, PlusCircle, Search, Shield, Sparkles, Zap } from "lucide-react";
+import { Compass, FileText, Flame, FolderKanban, Home, MessageSquareText, Package, PlusCircle, Search, Shield, Sparkles, Zap } from "lucide-react";
 import type { ReactNode } from "react";
 
 import type { SessionProfile } from "@/lib/auth/session";
@@ -83,7 +83,6 @@ export function SiteHeader({ viewer }: SiteHeaderProps) {
 
         {/* 우측 액션 */}
         <div className="flex shrink-0 items-center gap-2">
-
           {viewer ? (
             <>
               <Link href="/me/saved" className="hidden whitespace-nowrap rounded-full border border-line bg-surface px-4 py-2 text-sm font-semibold transition hover:bg-surface-muted sm:inline-flex">
@@ -92,6 +91,16 @@ export function SiteHeader({ viewer }: SiteHeaderProps) {
               <Link href="/me/projects" className="hidden items-center gap-1.5 whitespace-nowrap rounded-full border border-line bg-surface px-4 py-2 text-sm font-semibold transition hover:bg-surface-muted lg:inline-flex">
                 <FolderKanban className="size-3.5" /> 내 프로젝트
               </Link>
+              {viewer.role === "admin" && (
+                <>
+                  <Link href="/admin/moderation" className="hidden items-center gap-1.5 whitespace-nowrap rounded-full border border-line bg-surface px-4 py-2 text-sm font-semibold transition hover:bg-surface-muted lg:inline-flex">
+                    <Shield className="size-3.5" /> 운영
+                  </Link>
+                  <Link href="/admin/blog" className="hidden items-center gap-1.5 whitespace-nowrap rounded-full border border-line bg-surface px-4 py-2 text-sm font-semibold transition hover:bg-surface-muted lg:inline-flex">
+                    <FileText className="size-3.5" /> 블로그
+                  </Link>
+                </>
+              )}
               <span className="hidden whitespace-nowrap rounded-full bg-[rgba(47,106,97,0.1)] px-3.5 py-2 text-sm font-semibold text-green sm:inline-flex items-center gap-1.5">
                 {viewer.displayName}
                 {viewer.role === "admin" && (

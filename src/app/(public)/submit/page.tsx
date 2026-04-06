@@ -29,10 +29,10 @@ export default async function SubmitPage() {
     <SubmitPageClient
       viewer={viewer ? { displayName: viewer.displayName, githubUsername: viewer.githubUsername ?? null } : null}
       verificationMethod={verificationMethod}
-      categoryOptions={categoryOptions}
-      platformOptions={platformOptions}
-      pricingOptions={pricingOptions}
-      stageOptions={stageOptions}
+      categoryOptions={[...categoryOptions]}
+      platformOptions={[...platformOptions]}
+      pricingOptions={[...pricingOptions]}
+      stageOptions={[...stageOptions]}
     />
   );
 }
