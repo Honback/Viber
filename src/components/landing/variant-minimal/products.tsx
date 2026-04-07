@@ -8,6 +8,7 @@ import {
   ArrowRight,
 } from "lucide-react";
 import { useVariantNav } from "../landing-variant-switcher";
+import { Logo } from "@/components/ui/logo";
 
 /* ── scroll animation hook ── */
 function useScrollFadeIn<T extends HTMLElement>(threshold = 0.15) {
@@ -137,8 +138,8 @@ export function MinimalProducts() {
       {/* Header */}
       <header className="sticky top-[38px] z-50 border-b border-neutral-800 bg-[#0A0A0A]/90 backdrop-blur">
         <div className="mx-auto flex h-12 max-w-3xl items-center justify-between px-6">
-          <button onClick={() => navigate("home")} className="text-base font-bold text-white">
-            Vibeollio
+          <button onClick={() => navigate("home")}>
+            <Logo height={20} />
           </button>
           <nav className="flex items-center gap-6">
             {V3_NAV.map((item) => (

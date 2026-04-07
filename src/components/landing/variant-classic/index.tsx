@@ -1,7 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
 import Link from "next/link";
-import { ArrowRight, MessageSquareText, BookMarked, Sparkles, Search, Home, Package, Flame, Zap, Compass, PlusCircle } from "lucide-react";
+import { ArrowRight, MessageSquareText, BookMarked, Search, Home, Package, Flame, Zap, Compass, PlusCircle } from "lucide-react";
 
+import { Logo } from "@/components/ui/logo";
 import { HeroBackground } from "@/components/ui/hero-background";
 import { RotatingText } from "../rotating-text";
 import { GeoFaqSection } from "../geo-faq-section";
@@ -34,10 +35,7 @@ export function VariantClassic({ data, viewer }: LandingVariantProps) {
       <header className="sticky top-[38px] z-50 border-b border-line bg-background/90 backdrop-blur">
         <div className="mx-auto flex h-14 w-full max-w-[1280px] items-center gap-1.5 px-4 sm:gap-3 sm:px-6">
           <Link href="/" className="flex shrink-0 items-center gap-2">
-            <span className="grid size-9 place-items-center rounded-xl bg-foreground text-background">
-              <Sparkles className="size-4" />
-            </span>
-            <span className="hidden whitespace-nowrap text-base font-extrabold tracking-tight sm:block">Vibeollio</span>
+            <Logo height={22} />
           </Link>
           <Link href="/projects" className="hidden h-9 w-44 shrink-0 items-center gap-2 rounded-full border border-line bg-surface-muted px-3 text-sm text-foreground-muted transition hover:bg-line-strong sm:flex">
             <Search className="size-3.5 shrink-0" />

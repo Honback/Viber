@@ -5,6 +5,7 @@ import { FileText, Globe, Shield } from "lucide-react";
 
 import type { SessionProfile } from "@/lib/auth/session";
 import { useLocale } from "@/lib/i18n/locale-context";
+import { Logo } from "@/components/ui/logo";
 
 const ACCENT = "#d76542";
 
@@ -27,8 +28,8 @@ export function SiteHeader({ viewer }: SiteHeaderProps) {
     <header className="sticky top-0 z-50 border-b border-neutral-800 bg-[#0A0A0A]/90 backdrop-blur">
       <div className="mx-auto flex h-14 max-w-5xl items-center gap-4 px-4 sm:px-6">
 
-        <Link href="/" className="flex items-center gap-1.5 text-lg font-bold" style={{ color: ACCENT }}>
-          Vibeollio
+        <Link href="/" className="flex items-center gap-1.5">
+          <Logo height={22} />
         </Link>
 
         <nav className="flex items-center gap-1">

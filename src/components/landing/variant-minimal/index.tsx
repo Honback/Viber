@@ -16,6 +16,7 @@ import {
   Moon,
 } from "lucide-react";
 
+import { Logo } from "@/components/ui/logo";
 import type { LandingVariantProps, SerializedProjectCard } from "../types";
 import { getCategoryLabel } from "../shared";
 
@@ -195,8 +196,8 @@ export function VariantMinimal({ data, viewer }: LandingVariantProps) {
       {/* V3 헤더 — 미니멀 */}
       <header className="sticky top-[38px] z-50 border-b border-neutral-800 bg-[#0A0A0A]/90 backdrop-blur">
         <div className="mx-auto flex h-12 max-w-3xl items-center justify-between px-6">
-          <button onClick={() => navigate("home")} className="text-base font-bold text-white">
-            Vibeollio
+          <button onClick={() => navigate("home")}>
+            <Logo height={20} />
           </button>
           <nav className="flex items-center gap-6">
             {V3_NAV.map((item) => (
