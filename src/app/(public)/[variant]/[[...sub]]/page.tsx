@@ -68,7 +68,7 @@ export default async function VariantPage({ params, searchParams }: VariantPageP
   const data = await getHomepageData();
 
   return (
-    <div className="landing-fullpage">
+    <div>
       <FlashBanner notice={getTextParam(sp.notice)} error={getTextParam(sp.error)} />
       <Suspense>
         <LandingVariantSwitcher

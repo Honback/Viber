@@ -37,7 +37,7 @@ export function VariantClassic({ data, viewer }: LandingVariantProps) {
             <span className="grid size-9 place-items-center rounded-xl bg-foreground text-background">
               <Sparkles className="size-4" />
             </span>
-            <span className="hidden whitespace-nowrap text-base font-extrabold tracking-tight sm:block">Viber</span>
+            <span className="hidden whitespace-nowrap text-base font-extrabold tracking-tight sm:block">Vibeollio</span>
           </Link>
           <Link href="/projects" className="hidden h-9 w-44 shrink-0 items-center gap-2 rounded-full border border-line bg-surface-muted px-3 text-sm text-foreground-muted transition hover:bg-line-strong sm:flex">
             <Search className="size-3.5 shrink-0" />
@@ -66,7 +66,7 @@ export function VariantClassic({ data, viewer }: LandingVariantProps) {
       <HeroBackground>
       <section className="mx-auto max-w-[1180px] px-4 py-16 sm:px-6 sm:py-20 lg:px-8 text-center">
         <h1 className="text-4xl font-extrabold tracking-tight text-foreground sm:text-5xl lg:text-6xl lg:leading-[1.1]">
-          Viber
+          Vibeollio
           <br />
           <RotatingText />
         </h1>

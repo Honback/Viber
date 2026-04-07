@@ -2,12 +2,10 @@
 
 import { useRef, useState, useEffect } from "react";
 import Link from "next/link";
-import { Github, Twitter, ArrowRight, Rocket } from "lucide-react";
+import { ArrowRight, Rocket } from "lucide-react";
 import { useLocale } from "@/lib/i18n/locale-context";
 
 const ACCENT = "#d76542";
-
-/* NAV moved inside component for i18n */
 
 /* ── scroll animation hook ── */
 function useScrollAnimation(threshold = 0.15) {
@@ -54,14 +52,6 @@ export function SubmitPageClient({
 }: SubmitPageClientProps) {
   const { t } = useLocale();
 
-  const NAV = [
-    { label: t.nav.home, href: "/" },
-    { label: t.nav.products, href: "/feature/products" },
-    { label: t.nav.trending, href: "/feature/trending" },
-    { label: t.nav.new, href: "/feature/new" },
-    { label: t.nav.feedback, href: "/feature/feedback" },
-  ];
-
   const heroAnim = useScrollAnimation(0.1);
   const infoAnim = useScrollAnimation();
   const basicAnim = useScrollAnimation();
@@ -71,38 +61,7 @@ export function SubmitPageClient({
   const optionalAnim = useScrollAnimation();
 
   return (
-    <div className="landing-fullpage min-h-screen bg-[#0A0A0A] text-white">
-      {/* ── Header ── */}
-      <header className="sticky top-0 z-50 border-b border-neutral-800 bg-[#0A0A0A]/90 backdrop-blur">
-        <div className="mx-auto flex h-14 max-w-5xl items-center gap-4 px-4 sm:px-6">
-          <Link href="/" className="flex items-center gap-1.5 text-lg font-bold" style={{ color: ACCENT }}>
-            Viber
-          </Link>
-          <nav className="flex items-center gap-1">
-            {NAV.map((item) => (
-              <Link
-                key={item.label}
-                href={item.href}
-                className="rounded-full px-3.5 py-1.5 text-sm font-semibold text-neutral-400 transition hover:bg-neutral-800 hover:text-white"
-              >
-                {item.label}
-              </Link>
-            ))}
-            <span className="rounded-full px-3.5 py-1.5 text-sm font-semibold text-white" style={{ backgroundColor: ACCENT }}>
-              {t.nav.submit}
-            </span>
-          </nav>
-          <div className="flex-1" />
-          <div className="flex items-center gap-2">
-            {viewer ? (
-              <span className="rounded-full bg-neutral-800 px-3 py-1.5 text-sm font-semibold" style={{ color: ACCENT }}>{viewer.displayName}</span>
-            ) : (
-              <Link href="/auth/sign-in" className="rounded-full px-4 py-2 text-sm font-semibold text-white" style={{ backgroundColor: ACCENT }}>{t.nav.login}</Link>
-            )}
-          </div>
-        </div>
-      </header>
-
+    <div className="min-h-screen bg-[#0A0A0A] text-white">
       {/* ── Hero ── */}
       <section className="bg-[#0A0A0A] px-4 pb-10 pt-16 text-center sm:pb-14 sm:pt-20">
         <div
@@ -112,7 +71,7 @@ export function SubmitPageClient({
           }`}
         >
           <h1 className="text-6xl font-extrabold tracking-tight sm:text-7xl lg:text-8xl">
-            Viber
+            Vibeollio
           </h1>
           <div className="mt-6 inline-flex items-center gap-1.5 rounded-full px-4 py-1.5 text-xs font-semibold" style={{ backgroundColor: `${ACCENT}20`, color: ACCENT }}>
             <Rocket className="h-3.5 w-3.5" /> 새 프로젝트 런치
@@ -390,66 +349,6 @@ export function SubmitPageClient({
         </div>
       </section>
 
-      {/* ── Footer ── */}
-      <footer className="border-t border-neutral-800 bg-[#0A0A0A] px-4 py-12 sm:px-6">
-        <div className="mx-auto grid max-w-5xl gap-8 sm:grid-cols-4">
-          <div>
-            <p className="flex items-center gap-1.5 text-lg font-bold">
-              Viber
-            </p>
-            <p className="mt-2 text-xs leading-5 text-neutral-500">
-              {t.footer.platform}
-              <br />
-              {t.footer.slogan}
-            </p>
-            <div className="mt-4 flex items-center gap-3">
-              <Github className="h-4 w-4 cursor-pointer text-neutral-500 transition hover:text-white" />
-              <Twitter className="h-4 w-4 cursor-pointer text-neutral-500 transition hover:text-white" />
-              <span className="cursor-pointer text-sm text-neutral-500 transition hover:text-white"></span>
-            </div>
-          </div>
-          <div>
-            <p className="text-sm font-semibold">{t.footer.explore}</p>
-            <div className="mt-3 flex flex-col gap-2">
-              {[
-                { label: t.nav.trending, href: "/feature/trending" },
-                { label: t.footer.newProjects, href: "/feature/new" },
-                { label: t.footer.categories, href: "/feature/products" },
-              ].map((l) => (
-                <Link key={l.label} href={l.href} className="text-xs text-neutral-500 transition hover:text-white">{l.label}</Link>
-              ))}
-            </div>
-          </div>
-          <div>
-            <p className="text-sm font-semibold">{t.footer.maker}</p>
-            <div className="mt-3 flex flex-col gap-2">
-              {[
-                { label: t.footer.submitProject, href: "/submit" },
-                { label: t.footer.dashboard, href: "/dashboard" },
-                { label: t.footer.faq, href: "/faq" },
-              ].map((l) => (
-                <Link key={l.label} href={l.href} className="text-xs text-neutral-500 transition hover:text-white">{l.label}</Link>
-              ))}
-            </div>
-          </div>
-          <div>
-            <p className="text-sm font-semibold">커뮤니티</p>
-            <div className="mt-3 flex flex-col gap-2">
-              {[
-                { label: "About", href: "/about" },
-                { label: "Terms", href: "/terms" },
-                { label: "Privacy", href: "/privacy" },
-              ].map((l) => (
-                <Link key={l.label} href={l.href} className="text-xs text-neutral-500 transition hover:text-white">{l.label}</Link>
-              ))}
-            </div>
-          </div>
-        </div>
-        <div className="mx-auto mt-10 flex max-w-5xl items-center justify-between border-t border-neutral-800 pt-6">
-          <span className="text-xs text-neutral-500">&copy; 2026 Viber. All rights reserved.</span>
-          <span className="text-xs text-neutral-500">{t.footer.copyright}</span>
-        </div>
-      </footer>
     </div>
   );
 }

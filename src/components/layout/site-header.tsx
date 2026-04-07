@@ -28,7 +28,7 @@ export function SiteHeader({ viewer }: SiteHeaderProps) {
       <div className="mx-auto flex h-14 max-w-5xl items-center gap-4 px-4 sm:px-6">
 
         <Link href="/" className="flex items-center gap-1.5 text-lg font-bold" style={{ color: ACCENT }}>
-          Viber
+          Vibeollio
         </Link>
 
         <nav className="flex items-center gap-1">
@@ -41,6 +41,9 @@ export function SiteHeader({ viewer }: SiteHeaderProps) {
               {item.label}
             </Link>
           ))}
+          <Link href="/discover" className="rounded-full px-3.5 py-1.5 text-sm font-semibold text-neutral-400 transition hover:bg-neutral-800 hover:text-white">
+            {t.nav.discover}
+          </Link>
           <Link href="/blog" className="rounded-full px-3.5 py-1.5 text-sm font-semibold text-neutral-400 transition hover:bg-neutral-800 hover:text-white">
             {t.nav.blog}
           </Link>

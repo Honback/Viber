@@ -42,7 +42,7 @@ export default async function HomePage({ searchParams }: HomePageProps) {
   const websiteJsonLd = {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    name: "Viber",
+    name: "Vibeollio",
     url: appUrl,
     description: "바이브 코딩으로 만든 프로젝트를 발견하고, 체험하고, 피드백하는 커뮤니티",
     potentialAction: {
@@ -55,13 +55,13 @@ export default async function HomePage({ searchParams }: HomePageProps) {
   const organizationJsonLd = {
     "@context": "https://schema.org",
     "@type": "Organization",
-    name: "Viber",
+    name: "Vibeollio",
     url: appUrl,
     description: "바이브 코딩 프로젝트 쇼케이스 커뮤니티",
   };
 
   return (
-    <div className="landing-fullpage">
+    <div>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }} />
       <FlashBanner notice={getTextParam(params.notice)} error={getTextParam(params.error)} />

@@ -130,7 +130,7 @@ const STATS = [
 const PROBLEMS = [
   {
     problem: '"사이드 프로젝트 만들었는데 보여줄 곳이 없어요"',
-    solution: "Viber에 올리세요. 수백 명의 메이커가 봅니다.",
+    solution: "Vibeollio에 올리세요. 수백 명의 메이커가 봅니다.",
   },
   {
     problem: '"피드백이 필요한데 주변에 개발자가 없어요"',
@@ -196,7 +196,7 @@ export function VariantMinimal({ data, viewer }: LandingVariantProps) {
       <header className="sticky top-[38px] z-50 border-b border-neutral-800 bg-[#0A0A0A]/90 backdrop-blur">
         <div className="mx-auto flex h-12 max-w-3xl items-center justify-between px-6">
           <button onClick={() => navigate("home")} className="text-base font-bold text-white">
-            Viber
+            Vibeollio
           </button>
           <nav className="flex items-center gap-6">
             {V3_NAV.map((item) => (
@@ -225,7 +225,7 @@ export function VariantMinimal({ data, viewer }: LandingVariantProps) {
       <section className="flex flex-col items-center bg-[#0A0A0A] px-4 pb-24 pt-20 text-center sm:pt-28">
         <AnimateIn>
           <h1 className="text-6xl font-extrabold tracking-tight sm:text-7xl lg:text-8xl">
-            Viber
+            Vibeollio
           </h1>
         </AnimateIn>
         <AnimateIn delay={80}>
@@ -268,12 +268,12 @@ export function VariantMinimal({ data, viewer }: LandingVariantProps) {
         </AnimateIn>
       </section>
 
-      {/* ── Why Viber ── */}
+      {/* ── Why Vibeollio ── */}
       <section className="bg-[#111111] py-20">
         <div className="mx-auto max-w-3xl px-6">
           <AnimateIn>
             <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-              왜 Viber인가요?
+              왜 Vibeollio인가요?
             </h2>
           </AnimateIn>
           <div className="mt-12">
@@ -392,7 +392,7 @@ export function VariantMinimal({ data, viewer }: LandingVariantProps) {
           <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">
             당신의 프로덕트를 세상에 알리세요.
             <br />
-            <span className="text-neutral-400">Viber가 연결합니다.</span>
+            <span className="text-neutral-400">Vibeollio가 연결합니다.</span>
           </h2>
           <div className="mt-8">
             <Link
@@ -408,7 +408,7 @@ export function VariantMinimal({ data, viewer }: LandingVariantProps) {
       {/* ── Footer ── */}
       <footer className="border-t border-neutral-800 bg-[#111111] px-6 py-8">
         <div className="mx-auto flex max-w-3xl items-center justify-between">
-          <span className="text-xs text-neutral-400">&copy; 2026 Viber</span>
+          <span className="text-xs text-neutral-400">&copy; 2026 Vibeollio</span>
           <div className="flex gap-6">
             <Link
               href="/about"

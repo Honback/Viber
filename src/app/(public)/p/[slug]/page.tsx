@@ -50,14 +50,14 @@ export async function generateMetadata({ params }: ProjectDetailPageProps): Prom
       ...project.tags.map((t) => t.name),
     ],
     openGraph: {
-      title: `${project.title} | Viber`,
+      title: `${project.title} | Vibeollio`,
       description,
       type: "article",
       images: project.coverImageUrl ? [{ url: project.coverImageUrl, alt: `${project.title} 대표 이미지` }] : [],
     },
     twitter: {
       card: "summary_large_image",
-      title: `${project.title} | Viber`,
+      title: `${project.title} | Vibeollio`,
       description,
       images: project.coverImageUrl ? [project.coverImageUrl] : [],
     },

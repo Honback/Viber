@@ -19,20 +19,20 @@
 }
 
 [data-theme="dark"] {
-  --background: #0f1117;
-  --surface: #1a1d27;
-  --surface-muted: #252833;
-  --foreground: #e8eaed;
-  --foreground-muted: #9ba1ad;
-  --line: rgba(255, 255, 255, 0.08);
-  --line-strong: rgba(255, 255, 255, 0.14);
-  --accent: #e07a5a;
-  --accent-strong: #f09070;
+  --background: #0A0A0A;
+  --surface: #141414;
+  --surface-muted: #1f1f1f;
+  --foreground: #ffffff;
+  --foreground-muted: #a3a3a3;
+  --line: #262626;
+  --line-strong: #333333;
+  --accent: #d76542;
+  --accent-strong: #e07a5a;
   --green: #4ecdb5;
   --violet: #8b93cc;
   --warning: #f59e0b;
   --danger: #ef4444;
-  --shadow-soft: 0 16px 40px rgba(0, 0, 0, 0.3);
+  --shadow-soft: 0 8px 24px rgba(0, 0, 0, 0.2);
 }
 
 @theme inline {
@@ -62,9 +62,7 @@ html {
 
 body {
   min-height: 100vh;
-  background:
-    radial-gradient(circle at top right, rgba(224, 122, 90, 0.06), transparent 22rem),
-    linear-gradient(180deg, #151720 0%, var(--background) 100%);
+  background: var(--background);
   color: var(--foreground);
   font-family:
     "Pretendard Variable",

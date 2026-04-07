@@ -8,6 +8,7 @@ export const translations = {
       trending: "트렌딩",
       new: "뉴",
       feedback: "피드백",
+      discover: "Discover",
       blog: "블로그",
       submit: "등록하기",
       login: "로그인",
@@ -41,6 +42,7 @@ export const translations = {
       trending: "Trending",
       new: "New",
       feedback: "Feedback",
+      discover: "Discover",
       blog: "Blog",
       submit: "Submit",
       login: "Login",
@@ -74,4 +76,4 @@ export function t(locale: Locale) {
 }
 
 export const DEFAULT_LOCALE: Locale = "ko";
-export const LOCALE_COOKIE = "viber-locale";
+export const LOCALE_COOKIE = "vibeollio-locale";

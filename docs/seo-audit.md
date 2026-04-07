@@ -1,4 +1,4 @@
-# Viber SEO/GEO 전체 감사 보고서
+# Vibeollio SEO/GEO 전체 감사 보고서
 
 > 최초 감사일: 2026-04-03
 > 업데이트: 2026-04-06
@@ -29,14 +29,14 @@
 ### 1. 홈페이지 `/` — 점수: 35/100
 
 **현재 상태:**
-- title: "Viber" (루트 default)
+- title: "Vibeollio" (루트 default)
 - description: "바이브코딩으로 만든 프로젝트를 발견하고, 피드백하고, 함께 성장하는 커뮤니티"
 - OpenGraph: title + description만 (이미지 없음)
 - 구조화 데이터: FAQ Microdata (geo-faq-section.tsx) ✅
 - generateMetadata: ❌ 없음 (루트 메타 그대로 사용)
 
 **문제점:**
-1. ❌ title이 "Viber"만으로는 검색 의도 매칭 불가 → "Viber - 바이브 코딩 프로젝트 쇼케이스 커뮤니티"
+1. ❌ title이 "Vibeollio"만으로는 검색 의도 매칭 불가 → "Vibeollio - 바이브 코딩 프로젝트 쇼케이스 커뮤니티"
 2. ❌ OG 이미지 없음 → SNS 공유 시 썸네일 없음
 3. ❌ Twitter Card 없음
 4. ❌ Organization JSON-LD 없음
@@ -46,13 +46,13 @@
 ### 2. 탐색 페이지 `/projects` — 점수: 15/100
 
 **현재 상태:**
-- title: "Viber" (루트 default, 페이지 고유 title 없음)
+- title: "Vibeollio" (루트 default, 페이지 고유 title 없음)
 - description: 루트 description 그대로
 - generateMetadata: ❌ 없음
 - 구조화 데이터: ❌ 없음
 
 **문제점:**
-1. ❌ 고유 title 없음 → "프로젝트 탐색 | Viber" 필요
+1. ❌ 고유 title 없음 → "프로젝트 탐색 | Vibeollio" 필요
 2. ❌ 고유 description 없음
 3. ❌ ItemList JSON-LD 없음 (프로젝트 목록 구조화)
 4. ❌ 필터 상태에 따른 canonical URL 미설정 → 중복 콘텐츠 위험
@@ -61,7 +61,7 @@
 ### 3. 프로젝트 상세 `/p/[slug]` — 점수: 10/100 (가장 심각)
 
 **현재 상태:**
-- title: "Viber" (루트 default)
+- title: "Vibeollio" (루트 default)
 - description: 루트 description 그대로
 - generateMetadata: ❌ 완전 누락
 - 구조화 데이터: ❌ 없음
@@ -69,7 +69,7 @@
 
 **문제점:**
 1. ❌ **generateMetadata 완전 누락** — 가장 중요한 SEO 페이지인데 모든 프로젝트가 동일한 메타 정보
-2. ❌ title이 프로젝트명이 아님 → `{project.title} | Viber` 필요
+2. ❌ title이 프로젝트명이 아님 → `{project.title} | Vibeollio` 필요
 3. ❌ description이 프로젝트 tagline이 아님
 4. ❌ OG 이미지로 coverImageUrl 사용 안 함
 5. ❌ SoftwareApplication / Product JSON-LD 없음
@@ -80,24 +80,24 @@
 ### 4. 태그 페이지 `/tags/[slug]` — 점수: 10/100
 
 **현재 상태:**
-- title: "Viber" (루트 default)
+- title: "Vibeollio" (루트 default)
 - description: 루트 description 그대로
 - generateMetadata: ❌ 없음
 - 구조화 데이터: ❌ 없음
 
 **문제점:**
-1. ❌ 고유 title 없음 → `#{tagName} 프로젝트 | Viber` 필요
+1. ❌ 고유 title 없음 → `#{tagName} 프로젝트 | Vibeollio` 필요
 2. ❌ 고유 description 없음
 3. ❌ CollectionPage JSON-LD 없음
 
 ### 5. 등록 페이지 `/submit` — 점수: 20/100
 
 **현재 상태:**
-- title: "Viber" (루트 default)
+- title: "Vibeollio" (루트 default)
 - generateMetadata: ❌ 없음
 
 **문제점:**
-1. ❌ 고유 title 없음 → "프로젝트 등록 | Viber" 필요
+1. ❌ 고유 title 없음 → "프로젝트 등록 | Vibeollio" 필요
 2. ❌ 고유 description 없음
 3. ⚠️ noindex 고려 필요 (폼 페이지)
 

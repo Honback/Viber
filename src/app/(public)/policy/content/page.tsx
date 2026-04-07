@@ -6,7 +6,7 @@ import { getPolicyParagraphs } from "@/lib/services/mutations";
 
 export const metadata: Metadata = {
   title: "콘텐츠 정책",
-  description: "Viber 프로젝트 쇼케이스 플랫폼의 콘텐츠 운영 기준과 정책을 안내합니다.",
+  description: "Vibeollio 프로젝트 쇼케이스 플랫폼의 콘텐츠 운영 기준과 정책을 안내합니다.",
   alternates: { canonical: "/policy/content" },
 };
 

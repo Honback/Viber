@@ -19,8 +19,8 @@ export async function generateMetadata({ params }: TagPageProps): Promise<Metada
   return {
     title,
     description,
-    openGraph: { title: `${title} | Viber`, description, type: "website" },
-    twitter: { card: "summary", title: `${title} | Viber`, description },
+    openGraph: { title: `${title} | Vibeollio`, description, type: "website" },
+    twitter: { card: "summary", title: `${title} | Vibeollio`, description },
     alternates: { canonical: `/tags/${slug}` },
   };
 }

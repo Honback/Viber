@@ -1,4 +1,4 @@
-# Viber UI 컴포넌트 맵
+# Vibeollio UI 컴포넌트 맵
 
 > 캡처 기준: 2026-03-30 / dev 서버 localhost:3002
 > 스크린샷 경로: `screenshots/`
@@ -11,7 +11,7 @@
 
 | 구성 요소 | 설명 |
 |-----------|------|
-| 로고 | Sparkles 아이콘 + "Viber" 텍스트, `/` 링크 |
+| 로고 | Sparkles 아이콘 + "Vibeollio" 텍스트, `/` 링크 |
 | 검색 바 | `⌘K` 단축키 표시, `/projects` 이동 |
 | 네비게이션 | 홈, 제품, 트렌딩, 뉴, 피드백, 탐색, 등록하기 (7개) |
 | 테마 토글 | 다크/라이트 전환 버튼 |
@@ -21,7 +21,7 @@
 
 | 구성 요소 | 설명 |
 |-----------|------|
-| 브랜드 | "Viber" + 커뮤니티 설명 텍스트 |
+| 브랜드 | "Vibeollio" + 커뮤니티 설명 텍스트 |
 | 링크 | 운영 정책, 개인정보 안내, 프로젝트 등록 |
 
 ### UI Version 스위처 (`src/components/landing/landing-variant-switcher.tsx`)
@@ -41,7 +41,7 @@
 
 | # | 섹션 | 컴포넌트 | 설명 |
 |---|------|----------|------|
-| 1 | Hero | `HeroBackground`, `RotatingText` | h1 "Viber" + 회전 텍스트 애니메이션, 태그라인 "무료 등록 · 즉시 노출 · 실시간 피드백", CTA 버튼 2개, 태그 칩 (최대 8개) |
+| 1 | Hero | `HeroBackground`, `RotatingText` | h1 "Vibeollio" + 회전 텍스트 애니메이션, 태그라인 "무료 등록 · 즉시 노출 · 실시간 피드백", CTA 버튼 2개, 태그 칩 (최대 8개) |
 | 2 | Trending | `FeedHeader`, `ClassicCard` | "🔥 트렌딩" 섹션, 3열 그리드 (xl), `data.featured` 매핑 |
 | 3 | New | `FeedHeader`, `ClassicCard` | "🆕 신규 공개" 섹션, `data.launches` 매핑 |
 | 4 | Feedback | `FeedHeader`, `ClassicCard` | "💬 열띤 피드백" 섹션, `data.feedback` 매핑 |
@@ -78,7 +78,7 @@
 
 | 구성 요소 | 설명 |
 |-----------|------|
-| 로고 | "🚀 Viber" (액센트 컬러) |
+| 로고 | "🚀 Vibeollio" (액센트 컬러) |
 | 네비게이션 | Home, Products, Trending, New, Feedback (5개 탭, 활성시 액센트 배경) |
 | 테마 토글 | ☀️ 아이콘 |
 | 인증 | 로그인 버튼 또는 사용자 이름 |
@@ -121,7 +121,7 @@
 
 | 구성 요소 | 설명 |
 |-----------|------|
-| 로고 | "Viber" 텍스트 (화이트) |
+| 로고 | "Vibeollio" 텍스트 (화이트) |
 | 네비게이션 | 프로젝트, 트렌딩, 피드백 (3개, 중앙 정렬) |
 | 테마 | Moon 아이콘 (우측) |
 
@@ -129,12 +129,12 @@
 
 | # | 섹션 | 배경 | 설명 |
 |---|------|------|------|
-| 1 | Hero | #0A0A0A | h1 "Viber" (text-6xl~8xl), 서브타이틀 "인디 메이커의 프로덕트를 발견하고...", CTA 2개 (둘러보기/등록), `AnimateIn` 스태거 애니메이션 |
-| 2 | Why Viber | #111111 | "왜 Viber인가요?", 3개 문제/해결 쌍 (CheckCircle 초록 아이콘), 2열 그리드 |
+| 1 | Hero | #0A0A0A | h1 "Vibeollio" (text-6xl~8xl), 서브타이틀 "인디 메이커의 프로덕트를 발견하고...", CTA 2개 (둘러보기/등록), `AnimateIn` 스태거 애니메이션 |
+| 2 | Why Vibeollio | #111111 | "왜 Vibeollio인가요?", 3개 문제/해결 쌍 (CheckCircle 초록 아이콘), 2열 그리드 |
 | 3 | Trending | #0A0A0A | "지금 뜨는 프로젝트", `ProjectRow` 리스트 (최대 6개), 순위/커버/제목+태그라인/점수 |
 | 4 | Categories | #111111 | "카테고리", 6개 카드 (2~3열), 색상 코딩된 아이콘 (Cpu/Wrench/Globe/Gamepad2/Plug/CloudCog), 개수 표시 |
 | 5 | Stats | #0A0A0A | 4개 통계 (2x2→1x4), 1,240+ Projects / 52K+ 사용자 / 8.4K+ 추천 / 3.2K+ 피드백 |
-| 6 | CTA | #111111 | "당신의 프로덕트를 세상에 알리세요. Viber가 연결합니다." + 시작하기 버튼 |
+| 6 | CTA | #111111 | "당신의 프로덕트를 세상에 알리세요. Vibeollio가 연결합니다." + 시작하기 버튼 |
 | 7 | Footer | #0A0A0A | 미니멀 푸터 (로고 + 링크 + 소셜) |
 
 ### 서브 페이지

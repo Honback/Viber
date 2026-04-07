@@ -19,7 +19,7 @@ const LINK_CHECK_TIMEOUT_MS = 5000;
 
 async function requestLink(url: string) {
   const headers = {
-    "user-agent": "viber-link-check/1.0"
+    "user-agent": "vibeollio-link-check/1.0"
   };
 
   try {

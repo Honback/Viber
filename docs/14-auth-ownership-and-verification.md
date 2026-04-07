@@ -163,7 +163,7 @@
 MVP 기준:
 
 - 도메인 검증 방식은 `DNS TXT`만 지원한다.
-- TXT 레코드 이름은 `_viber-verify.<registrable-domain>` 형식으로 둔다.
+- TXT 레코드 이름은 `_vibeollio-verify.<registrable-domain>` 형식으로 둔다.
 - TXT 레코드 값은 서버가 발급한 단일 토큰이다.
 - 검증 성공 시 `domain_verified`는 `github_verified`보다 우선한다.
 

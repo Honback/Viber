@@ -12,8 +12,6 @@ import {
   ArrowRight,
   Trophy,
   TrendingUp,
-  Github,
-  Twitter,
 } from "lucide-react";
 
 /* ── palette ── */
@@ -132,46 +130,6 @@ export function FeatureTrending() {
 
   return (
     <div className="min-h-screen bg-[#0A0A0A] text-white">
-      {/* ── Header ── */}
-      <header className="sticky top-0 z-50 border-b border-neutral-800 bg-[#0A0A0A]/90 backdrop-blur">
-        <div className="mx-auto flex h-14 max-w-5xl items-center gap-4 px-4 sm:px-6">
-          <button onClick={() => navigate("home")} className="flex items-center gap-1.5 text-lg font-bold" style={{ color: ACCENT }}>
-            Viber
-          </button>
-          <nav className="flex items-center gap-1">
-            {V2_NAV.map((item) => {
-              const isActive = subPage === item.page;
-              return (
-                <button
-                  key={item.page}
-                  onClick={() => navigate(item.page)}
-                  className={`rounded-full px-3.5 py-1.5 text-sm font-semibold transition ${
-                    isActive
-                      ? "text-white"
-                      : "text-neutral-400 hover:bg-neutral-800 hover:text-white"
-                  }`}
-                  style={isActive ? { backgroundColor: ACCENT } : undefined}
-                >
-                  {item.label}
-                </button>
-              );
-            })}
-            <Link href="/blog" className="rounded-full px-3.5 py-1.5 text-sm font-semibold transition hover:opacity-80" style={{ color: "#ccc" }}>
-              {t.nav.blog}
-            </Link>
-            <Link href="/submit" className="rounded-full px-3.5 py-1.5 text-sm font-semibold text-white transition hover:opacity-90" style={{ backgroundColor: ACCENT }}>
-              {t.nav.submit}
-            </Link>
-          </nav>
-          <div className="flex-1" />
-          <div className="flex items-center gap-2">
-            <Link href="/auth/sign-in" className="rounded-full px-4 py-2 text-sm font-semibold text-white" style={{ backgroundColor: ACCENT }}>
-              {t.nav.login}
-            </Link>
-          </div>
-        </div>
-      </header>
-
       {/* ── Gradient Hero ── */}
       <section className="relative overflow-hidden bg-[#0A0A0A] px-4 pb-10 pt-12 text-center sm:pb-14 sm:pt-16">
         <div
@@ -366,75 +324,6 @@ export function FeatureTrending() {
         </div>
       </section>
 
-      {/* ── Footer ── */}
-      <footer className="border-t border-neutral-800 bg-[#0A0A0A] px-4 py-12 sm:px-6">
-        <div className="mx-auto grid max-w-5xl gap-8 sm:grid-cols-4">
-          <div>
-            <p className="flex items-center gap-1.5 text-lg font-bold">
-              Viber
-            </p>
-            <p className="mt-2 text-xs leading-5 text-neutral-500">
-              {t.footer.platform}
-              <br />
-              {t.footer.slogan}
-            </p>
-            <div className="mt-4 flex items-center gap-3">
-              <Github className="h-4 w-4 cursor-pointer text-neutral-400 transition hover:text-white" />
-              <Twitter className="h-4 w-4 cursor-pointer text-neutral-400 transition hover:text-white" />
-              <span className="cursor-pointer text-sm text-neutral-500 transition hover:text-white"></span>
-            </div>
-          </div>
-          <div>
-            <p className="text-sm font-semibold">{t.footer.explore}</p>
-            <div className="mt-3 flex flex-col gap-2">
-              {[
-                { label: t.nav.trending, href: "/trending" },
-                { label: t.footer.newProjects, href: "/new" },
-                { label: t.footer.categories, href: "/products" },
-                { label: t.nav.blog, href: "/products" },
-              ].map((l) => (
-                <Link key={l.label} href={l.href} className="text-xs text-neutral-500 transition hover:text-white">
-                  {l.label}
-                </Link>
-              ))}
-            </div>
-          </div>
-          <div>
-            <p className="text-sm font-semibold">{t.footer.maker}</p>
-            <div className="mt-3 flex flex-col gap-2">
-              {[
-                { label: t.footer.submitProject, href: "/submit" },
-                { label: t.footer.dashboard, href: "/dashboard" },
-                { label: t.footer.guide, href: "/guide" },
-                { label: t.footer.faq, href: "/faq" },
-              ].map((l) => (
-                <Link key={l.label} href={l.href} className="text-xs text-neutral-500 transition hover:text-white">
-                  {l.label}
-                </Link>
-              ))}
-            </div>
-          </div>
-          <div>
-            <p className="text-sm font-semibold">커뮤니티</p>
-            <div className="mt-3 flex flex-col gap-2">
-              {[
-                { label: "About", href: "/about" },
-                { label: "Terms", href: "/terms" },
-                { label: "Privacy", href: "/privacy" },
-                { label: "Discord", href: "#" },
-              ].map((l) => (
-                <Link key={l.label} href={l.href} className="text-xs text-neutral-500 transition hover:text-white">
-                  {l.label}
-                </Link>
-              ))}
-            </div>
-          </div>
-        </div>
-        <div className="mx-auto mt-10 flex max-w-5xl items-center justify-between border-t border-neutral-800 pt-6">
-          <span className="text-xs text-neutral-500">&copy; 2026 Viber. All rights reserved.</span>
-          <span className="text-xs text-neutral-500">{t.footer.copyright}</span>
-        </div>
-      </footer>
     </div>
   );
 }

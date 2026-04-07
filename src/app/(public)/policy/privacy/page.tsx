@@ -6,7 +6,7 @@ import { getPolicyParagraphs } from "@/lib/services/mutations";
 
 export const metadata: Metadata = {
   title: "개인정보처리방침",
-  description: "Viber 플랫폼의 개인정보 수집, 이용, 보관에 관한 정책을 안내합니다.",
+  description: "Vibeollio 플랫폼의 개인정보 수집, 이용, 보관에 관한 정책을 안내합니다.",
   alternates: { canonical: "/policy/privacy" },
 };
 

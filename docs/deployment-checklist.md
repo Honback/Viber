@@ -1,4 +1,4 @@
-# Viber 배포 전 체크리스트
+# Vibeollio 배포 전 체크리스트
 
 > 작성일: 2026-04-06
 > 대상: vibehub.co.kr (Vercel + Supabase)

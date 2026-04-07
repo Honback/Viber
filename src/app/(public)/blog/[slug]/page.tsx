@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
     description: post.description,
     keywords: post.tags,
     openGraph: {
-      title: `${post.title} | Viber 블로그`,
+      title: `${post.title} | Vibeollio 블로그`,
       description: post.description,
       type: "article",
       publishedTime: post.date,
@@ -58,7 +58,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     author: { "@type": "Person", name: post.author },
     publisher: {
       "@type": "Organization",
-      name: "Viber",
+      name: "Vibeollio",
       url: appUrl,
     },
     mainEntityOfPage: `${appUrl}/blog/${slug}`,
@@ -103,34 +103,34 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       <div>
         <Link
           href="/blog"
-          className="inline-flex items-center gap-1 text-sm font-semibold text-foreground-muted hover:text-foreground"
+          className="inline-flex items-center gap-1 text-sm font-semibold text-neutral-400 hover:text-white"
         >
           &larr; 블로그 목록
         </Link>
       </div>
 
-      <article className="rounded-[36px] border border-line bg-surface p-6 shadow-soft md:p-10">
+      <article className="rounded-2xl border border-neutral-800 bg-neutral-900/50 p-6 md:p-10">
         <header className="space-y-4">
           <div className="flex flex-wrap gap-2">
             {post.tags.map((tag) => (
               <span
                 key={tag}
-                className="rounded-full bg-surface-muted px-3 py-1 text-xs font-semibold text-foreground-muted"
+                className="rounded-full bg-neutral-800 px-3 py-1 text-xs font-semibold text-neutral-400"
               >
                 {tag}
               </span>
             ))}
           </div>
 
-          <h1 className="text-[clamp(1.8rem,3.5vw,2.8rem)] font-extrabold leading-tight tracking-tight text-foreground">
+          <h1 className="text-[clamp(1.8rem,3.5vw,2.8rem)] font-extrabold leading-tight tracking-tight text-white">
             {post.title}
           </h1>
 
-          <p className="max-w-3xl text-base leading-relaxed text-foreground-muted md:text-lg">
+          <p className="max-w-3xl text-base leading-relaxed text-neutral-400 md:text-lg">
             {post.description}
           </p>
 
-          <div className="flex items-center gap-3 text-sm text-foreground-muted">
+          <div className="flex items-center gap-3 text-sm text-neutral-500">
             <span className="font-semibold">{post.author}</span>
             <span>-</span>
             <time dateTime={post.date}>
@@ -143,7 +143,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           </div>
         </header>
 
-        <hr className="my-8 border-line" />
+        <hr className="my-8 border-neutral-800" />
 
         <div
           className="blog-prose prose-block"
@@ -154,7 +154,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       <div className="text-center">
         <Link
           href="/blog"
-          className="inline-flex rounded-full border border-line bg-surface px-6 py-3 text-sm font-semibold text-foreground transition hover:bg-surface-muted"
+          className="inline-flex rounded-full border border-neutral-700 px-6 py-3 text-sm font-semibold text-white transition hover:border-neutral-500"
         >
           다른 글 읽기
         </Link>

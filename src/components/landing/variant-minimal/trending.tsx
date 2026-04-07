@@ -117,7 +117,7 @@ export function MinimalTrending() {
       <header className="sticky top-[38px] z-50 border-b border-neutral-800 bg-[#0A0A0A]/90 backdrop-blur">
         <div className="mx-auto flex h-12 max-w-3xl items-center justify-between px-6">
           <button onClick={() => navigate("home")} className="text-base font-bold text-white">
-            Viber
+            Vibeollio
           </button>
           <nav className="flex items-center gap-6">
             {V3_NAV.map((item) => (
@@ -209,7 +209,7 @@ export function MinimalTrending() {
       {/* Footer */}
       <footer className="border-t border-neutral-800 bg-[#111111] px-6 py-8">
         <div className="mx-auto flex max-w-3xl items-center justify-between">
-          <span className="text-xs text-neutral-500">&copy; 2026 Viber</span>
+          <span className="text-xs text-neutral-500">&copy; 2026 Vibeollio</span>
           <div className="flex gap-6">
             <Link href="/about" className="text-xs text-neutral-400 hover:text-white">
               About

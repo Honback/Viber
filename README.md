@@ -124,4 +124,4 @@ npm run jobs:check-links
 
 ## 문서
 
-제품/구현 문서는 [`docs/README.md`](/Users/choh/ideab/viber/docs/README.md) 아래에 정리되어 있습니다.
+제품/구현 문서는 [`docs/README.md`](/Users/choh/ideab/vibeollio/docs/README.md) 아래에 정리되어 있습니다.
