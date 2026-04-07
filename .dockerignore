@@ -1,0 +1,12 @@
+node_modules
+.next
+.git
+.env*
+*.md
+docs
+tests
+e2e
+.harness
+playwright.config.ts
+vitest.config.ts
+screenshots

@@ -119,8 +119,6 @@ const DUMMY_FEEDBACK = [
   DUMMY_PROJECTS[2],
 ];
 
-const ROTATING_WORDS = ["API", "앱", "SaaS", "게임", "도구", "AI", "웹사이트", "플러그인"];
-
 import { useVariantNav } from "../landing-variant-switcher";
 import { useLocale } from "@/lib/i18n/locale-context";
 
@@ -129,6 +127,8 @@ export function VariantFeature({ data, viewer }: LandingVariantProps) {
   const { t } = useLocale();
   const [catTab, setCatTab] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
+
+  const ROTATING_WORDS = t.hero.rotatingWords as unknown as string[];
 
   const V2_NAV = [
     { page: "home" as const, label: t.nav.home },
@@ -210,20 +210,20 @@ export function VariantFeature({ data, viewer }: LandingVariantProps) {
           </h1>
 
           <p className="mt-6 text-2xl font-extrabold tracking-tight sm:text-3xl lg:text-4xl">
-            내가 만든{" "}
+            {t.hero.prefix}{" "}
             <span style={{ color: ACCENT }}>
               {displayText}
               <span className="animate-blink">|</span>
             </span>
             <br />
-            여기서 시작
+            {t.hero.suffix}
           </p>
           <style dangerouslySetInnerHTML={{ __html: `
             @keyframes blink { 0%,50% { opacity: 1; } 51%,100% { opacity: 0; } }
             .animate-blink { animation: blink 1s step-end infinite; font-weight: 300; }
           ` }} />
           <p className="mx-auto mt-4 max-w-lg text-sm leading-6 text-neutral-400 sm:text-base">
-            개발자들이 만든 앱, 툴, 서비스를 직접 체험하고 피드백을 남기세요.
+            {t.hero.description}
           </p>
 
           {/* search */}
@@ -231,7 +231,7 @@ export function VariantFeature({ data, viewer }: LandingVariantProps) {
             <Search className="h-4 w-4 text-neutral-500" />
             <input
               type="text"
-              placeholder="프로젝트 이름 또는 키워드 검색..."
+              placeholder={t.hero.searchPlaceholder}
               className="flex-1 bg-transparent text-sm text-white outline-none placeholder:text-neutral-500"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
@@ -245,13 +245,13 @@ export function VariantFeature({ data, viewer }: LandingVariantProps) {
               className="inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-semibold text-white transition hover:opacity-90"
               style={{ backgroundColor: ACCENT }}
             >
-              프로젝트 등록하기 (무료)
+              {t.hero.submitCta}
             </Link>
             <Link
               href="/feature/products"
               className="inline-flex items-center gap-2 rounded-full border border-neutral-700 px-6 py-3 text-sm font-semibold text-white transition hover:border-neutral-500"
             >
-              프로젝트 탐험하기
+              {t.hero.exploreCta}
             </Link>
           </div>
 
@@ -259,7 +259,7 @@ export function VariantFeature({ data, viewer }: LandingVariantProps) {
           <div className="mt-6 flex items-center justify-center gap-6 text-xs text-neutral-500">
             <span className="inline-flex items-center gap-1">
               <Flame className="h-3.5 w-3.5" style={{ color: ACCENT }} />
-              <strong className="text-white">1,240</strong> 프로젝트
+              <strong className="text-white">1,240</strong> {t.hero.projects}
             </span>
             <span>
               <strong className="text-white">48,800</strong> Try
@@ -330,7 +330,7 @@ export function VariantFeature({ data, viewer }: LandingVariantProps) {
               New Projects
             </h2>
             <div className="flex items-center gap-2">
-              <span className="rounded-full bg-neutral-800 px-3 py-1 text-xs font-medium text-neutral-400">이번주</span>
+              <span className="rounded-full bg-neutral-800 px-3 py-1 text-xs font-medium text-neutral-400">{t.hero.thisWeek}</span>
             </div>
           </div>
 
@@ -351,10 +351,10 @@ export function VariantFeature({ data, viewer }: LandingVariantProps) {
           }`}
         >
           <h2 className="flex items-center gap-2 text-2xl font-bold tracking-tight sm:text-3xl">
-            피드백 요청 중
+            {t.hero.feedbackRequested}
           </h2>
           <p className="mt-2 text-sm text-neutral-400">
-            제작자가 여러분의 의견을 기다리고 있어요.
+            {t.hero.feedbackDesc}
           </p>
 
           <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -375,9 +375,9 @@ export function VariantFeature({ data, viewer }: LandingVariantProps) {
         >
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
             {[
-              { icon: FolderOpen, value: `${hasData ? data.featured.length : "1,240"}+`, label: "등록된 프로젝트" },
-              { icon: MousePointerClick, value: "48,800+", label: "총 Try 횟수" },
-              { icon: MessageSquare, value: "12,500+", label: "누적 피드백" },
+              { icon: FolderOpen, value: `${hasData ? data.featured.length : "1,240"}+`, label: t.hero.registeredProjects },
+              { icon: MousePointerClick, value: "48,800+", label: t.hero.totalTries },
+              { icon: MessageSquare, value: "12,500+", label: t.hero.totalFeedback },
             ].map((s) => (
               <div
                 key={s.label}
@@ -409,14 +409,12 @@ export function VariantFeature({ data, viewer }: LandingVariantProps) {
         >
           <div className="rounded-3xl border border-neutral-800 bg-[#0A0A0A] px-6 py-16 text-center sm:px-12">
             <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">
-              당신의 프로젝트를
+              {t.hero.ctaTitle1}
               <br />
-              <span style={{ color: ACCENT }}>세상에 선보이세요</span>
+              <span style={{ color: ACCENT }}>{t.hero.ctaTitle2}</span>
             </h2>
-            <p className="mx-auto mt-4 max-w-md text-sm leading-6 text-neutral-400">
-              등록 무료, 실사용자 피드백 획득, 롱테일 트래픽까지.
-              <br />
-              바이브코딩 커뮤니티가 당신의 프로젝트를 응원합니다.
+            <p className="mx-auto mt-4 max-w-md text-sm leading-6 text-neutral-400 whitespace-pre-line">
+              {t.hero.ctaDesc}
             </p>
             <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
               <Link
@@ -424,17 +422,17 @@ export function VariantFeature({ data, viewer }: LandingVariantProps) {
                 className="inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-semibold text-white transition hover:opacity-90"
                 style={{ backgroundColor: ACCENT }}
               >
-                프로젝트 등록하기 (무료)
+                {t.hero.submitCta}
               </Link>
               <Link
                 href="/feature/products"
                 className="inline-flex items-center gap-2 rounded-full border border-neutral-700 px-6 py-3 text-sm font-semibold text-white transition hover:border-neutral-500"
               >
-                등록 가이드 보기
+                {t.hero.guideCta}
               </Link>
             </div>
             <p className="mt-6 text-xs text-neutral-500">
-              지금 1,240개의 프로젝트가 Vibeollio에 등록되고 있어요
+              {t.hero.ctaBottom}
             </p>
           </div>
         </div>

@@ -4,6 +4,8 @@ import { db } from "@/db";
 import { getAllPosts } from "@/lib/blog/posts";
 import { getAdminProjectsData } from "@/lib/services/read-models";
 
+export const dynamic = "force-dynamic";
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "http://127.0.0.1:3000";
   const [projects, allTags] = await Promise.all([
