@@ -1,7 +1,15 @@
 import type { Metadata } from "next";
+import { Poiret_One } from "next/font/google";
 import "./globals.css";
 
 export const dynamic = "force-dynamic";
+
+const logoFont = Poiret_One({
+  weight: "400",
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-logo",
+});
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
 import { ThemeProvider } from "@/components/theme-provider";
@@ -59,7 +67,7 @@ export default async function RootLayout({
   return (
     <html lang={locale} data-theme="dark">
       <head />
-      <body className="min-h-screen text-foreground antialiased">
+      <body className={`min-h-screen text-foreground antialiased ${logoFont.variable}`}>
         <LocaleProvider initialLocale={locale}>
           <ThemeProvider>
             <div className="min-h-screen">

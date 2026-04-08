@@ -8,7 +8,7 @@ export const translations = {
       trending: "트렌딩",
       new: "뉴",
       feedback: "피드백",
-      discover: "Discover",
+      discover: "디스커버",
       blog: "블로그",
       submit: "등록하기",
       login: "로그인",
@@ -57,7 +57,8 @@ export const translations = {
     },
     discover: {
       badge: "Product Hunt",
-      title: "Today's Best",
+      heading: "디스커버",
+      title: "오늘의 베스트",
       description: "Product Hunt에서 오늘 가장 주목받는 프로덕트를 소개합니다.",
     },
     blog: {
@@ -124,6 +125,7 @@ export const translations = {
     },
     discover: {
       badge: "Product Hunt",
+      heading: "Discover",
       title: "Today's Best",
       description: "Discover today's most popular products on Product Hunt.",
     },

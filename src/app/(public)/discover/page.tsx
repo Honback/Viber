@@ -71,7 +71,7 @@ export default function DiscoverPage() {
             <Compass className="h-3.5 w-3.5" /> {t.discover.badge}
           </span>
           <h1 className="mt-6 text-3xl font-extrabold tracking-tight text-white sm:text-4xl lg:text-5xl">
-            <span style={{ color: ACCENT }}>Discover</span> {t.discover.title}
+            <span style={{ color: ACCENT }}>{t.discover.heading}</span> {t.discover.title}
           </h1>
           <p className="mx-auto mt-4 max-w-lg text-sm leading-6 text-neutral-400 sm:text-base">
             {t.discover.description}

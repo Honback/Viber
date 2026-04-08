@@ -14,6 +14,11 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  async rewrites() {
+    return [
+      { source: "/", destination: "/feature" },
+    ];
+  },
   async headers() {
     return [
       {

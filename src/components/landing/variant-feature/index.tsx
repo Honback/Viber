@@ -40,6 +40,23 @@ import { getCategoryLabel } from "../shared";
 const ACCENT = "#d76542";
 const ACCENT_LIGHT = "#fdf2ee";
 
+/* ── Hero logo: Poiret One text ── */
+function HeroLogo() {
+  return (
+    <span
+      style={{
+        fontFamily: "var(--font-logo), sans-serif",
+        fontWeight: 300,
+        color: ACCENT,
+        letterSpacing: "0.02em",
+        lineHeight: 1,
+      }}
+    >
+      Vibeollio
+    </span>
+  );
+}
+
 /* ── custom hook: scroll animation ── */
 function useScrollAnimation(threshold = 0.15) {
   const ref = useRef<HTMLDivElement>(null);
@@ -205,8 +222,8 @@ export function VariantFeature({ data, viewer }: LandingVariantProps) {
             heroAnim.isVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
           }`}
         >
-          <h1 className="text-6xl font-extrabold tracking-tight sm:text-7xl lg:text-8xl">
-            Vibeollio
+          <h1 className="flex justify-center text-6xl sm:text-7xl lg:text-8xl">
+            <Link href="/" className="cursor-pointer"><HeroLogo /></Link>
           </h1>
 
           <p className="mt-6 text-2xl font-extrabold tracking-tight sm:text-3xl lg:text-4xl">

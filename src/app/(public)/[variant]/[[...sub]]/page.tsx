@@ -8,15 +8,26 @@ import { getCurrentProfile } from "@/lib/auth/session";
 import { getHomepageData, getViewerState } from "@/lib/services/read-models";
 import type { ProjectCardModel } from "@/lib/services/read-models";
 
-export const metadata: Metadata = {
-  alternates: {
-    canonical: "/",
-  },
-  robots: {
-    index: false,
-    follow: true,
-  },
+type VariantPageProps = {
+  params: Promise<{ variant: string; sub?: string[] }>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 };
+
+export async function generateMetadata({ params }: VariantPageProps): Promise<Metadata> {
+  const { sub } = await params;
+  const isHome = !sub || sub.length === 0;
+
+  if (isHome) {
+    return {
+      alternates: { canonical: "/" },
+    };
+  }
+
+  return {
+    alternates: { canonical: "/" },
+    robots: { index: false, follow: true },
+  };
+}
 
 const VALID_VARIANTS = ["feature", "minimal"] as const;
 type ValidVariant = (typeof VALID_VARIANTS)[number];
@@ -41,11 +52,6 @@ function serializeHomepageData(data: Awaited<ReturnType<typeof getHomepageData>>
   };
 }
 
-type VariantPageProps = {
-  params: Promise<{ variant: string; sub?: string[] }>;
-  searchParams: Promise<Record<string, string | string[] | undefined>>;
-};
-
 function getTextParam(value: string | string[] | undefined) {
   return Array.isArray(value) ? value[0] : value;
 }
@@ -63,12 +69,48 @@ export default async function VariantPage({ params, searchParams }: VariantPageP
     notFound();
   }
 
+  const isHome = !subPage;
   const viewer = await getCurrentProfile();
   const viewerState = await getViewerState(viewer?.id);
   const data = await getHomepageData();
 
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL || "http://127.0.0.1:3000";
+
   return (
     <div>
+      {isHome && (
+        <>
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify({
+                "@context": "https://schema.org",
+                "@type": "WebSite",
+                name: "Vibeollio",
+                url: appUrl,
+                description: "바이브 코딩으로 만든 프로젝트를 발견하고, 체험하고, 피드백하는 커뮤니티",
+                potentialAction: {
+                  "@type": "SearchAction",
+                  target: { "@type": "EntryPoint", urlTemplate: `${appUrl}/projects?query={search_term_string}` },
+                  "query-input": "required name=search_term_string",
+                },
+              }),
+            }}
+          />
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify({
+                "@context": "https://schema.org",
+                "@type": "Organization",
+                name: "Vibeollio",
+                url: appUrl,
+                description: "바이브 코딩 프로젝트 쇼케이스 커뮤니티",
+              }),
+            }}
+          />
+        </>
+      )}
       <FlashBanner notice={getTextParam(sp.notice)} error={getTextParam(sp.error)} />
       <Suspense>
         <LandingVariantSwitcher

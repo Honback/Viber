@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 48" fill="none">
+  <defs>
+    <linearGradient id="logoGrad" x1="0" y1="0" x2="200" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#e07050"/>
+      <stop offset="100%" stop-color="#d76542"/>
+    </linearGradient>
+  </defs>
+  <text
+    x="0"
+    y="36"
+    font-family="'Sacramento', 'Dancing Script', 'Pacifico', cursive"
+    font-size="42"
+    font-weight="400"
+    fill="url(#logoGrad)"
+    letter-spacing="1"
+  >Vibeollio</text>
+</svg>
