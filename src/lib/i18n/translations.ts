@@ -56,10 +56,10 @@ export const translations = {
       rotatingWords: ["API", "앱", "SaaS", "게임", "도구", "AI", "웹사이트", "플러그인"],
     },
     discover: {
-      badge: "Product Hunt",
+      badge: "트렌딩",
       heading: "디스커버",
-      title: "오늘의 베스트",
-      description: "Product Hunt에서 오늘 가장 주목받는 프로덕트를 소개합니다.",
+      title: "주목할 프로젝트",
+      description: "바이브 코딩으로 만든 프로젝트 중 가장 주목받는 10개를 소개합니다.",
     },
     blog: {
       badge: "블로그",
@@ -124,10 +124,10 @@ export const translations = {
       rotatingWords: ["API", "App", "SaaS", "Game", "Tool", "AI", "Website", "Plugin"],
     },
     discover: {
-      badge: "Product Hunt",
+      badge: "Trending",
       heading: "Discover",
-      title: "Today's Best",
-      description: "Discover today's most popular products on Product Hunt.",
+      title: "Top Projects",
+      description: "The 10 most notable projects built with vibe coding.",
     },
     blog: {
       badge: "Blog",

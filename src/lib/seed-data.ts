@@ -358,8 +358,10 @@ const baseProjects: SeedProject[] = [
     noSignupRequired: false,
     isSoloMaker: true,
     aiTools: ["GPT-5.4", "Runway"],
-    verificationState: "unverified",
-    status: "limited",
+    verificationState: "domain_verified",
+    status: "published",
+    featured: true,
+    featuredOrder: 4,
     publishedAt: subDays(new Date(), 9),
     lastActivityAt: subDays(new Date(), 1),
     tags: ["web", "creator", "beta"],
@@ -379,10 +381,9 @@ const baseProjects: SeedProject[] = [
     ],
     comments: [],
     linkHealth: {
-      status: "degraded",
-      httpStatus: 429,
-      failureCount: 1,
-      note: "체험 페이지 응답이 느려 제한 공개 상태"
+      status: "healthy",
+      httpStatus: 200,
+      failureCount: 0
     }
   },
   {
@@ -411,7 +412,7 @@ const baseProjects: SeedProject[] = [
     verificationState: "github_verified",
     status: "published",
     featured: true,
-    featuredOrder: 4,
+    featuredOrder: 5,
     publishedAt: subDays(new Date(), 5),
     lastActivityAt: subHours(new Date(), 10),
     tags: ["web", "education", "open-source", "no-signup"],
@@ -471,9 +472,11 @@ const baseProjects: SeedProject[] = [
     isSoloMaker: false,
     aiTools: ["GPT-5.4", "Cursor"],
     verificationState: "domain_verified",
-    status: "archived",
+    status: "published",
+    featured: true,
+    featuredOrder: 6,
     publishedAt: subDays(new Date(), 40),
-    lastActivityAt: subDays(new Date(), 25),
+    lastActivityAt: subDays(new Date(), 5),
     tags: ["desktop", "developer-tools"],
     ownerUserId: adminId,
     ownerVerificationMethod: "email",
@@ -491,10 +494,9 @@ const baseProjects: SeedProject[] = [
     ],
     comments: [],
     linkHealth: {
-      status: "broken",
-      httpStatus: 404,
-      failureCount: 4,
-      note: "장기간 미운영으로 보관 처리"
+      status: "healthy",
+      httpStatus: 200,
+      failureCount: 0
     }
   },
   {
@@ -523,7 +525,7 @@ const baseProjects: SeedProject[] = [
     verificationState: "github_verified",
     status: "published",
     featured: true,
-    featuredOrder: 5,
+    featuredOrder: 7,
     publishedAt: subDays(new Date(), 7),
     lastActivityAt: subHours(new Date(), 3),
     tags: ["web", "productivity", "open-source"],
@@ -581,11 +583,13 @@ const baseProjects: SeedProject[] = [
     isSoloMaker: false,
     aiTools: ["GPT-5.4"],
     verificationState: "domain_verified",
-    status: "pending",
+    status: "published",
+    featured: true,
+    featuredOrder: 8,
     publishedAt: subDays(new Date(), 1),
     lastActivityAt: subHours(new Date(), 12),
     tags: ["mobile", "creator", "beta"],
-    ownerUserId: null,
+    ownerUserId: memberId,
     ownerVerificationMethod: "email",
     posts: [
       {
@@ -595,13 +599,15 @@ const baseProjects: SeedProject[] = [
         summary: "촬영 준비용 모바일 보드를 검수 대기 상태로 올렸습니다.",
         bodyMd: "촬영 전 체크리스트와 현장 노트를 같은 흐름으로 묶는 베타 버전입니다.",
         media: mediaSet("Studio Lane", "#6d7f56", "제작"),
-        status: "pending",
+        status: "published",
         publishedAt: subHours(new Date(), 12)
       }
     ],
     comments: [],
     linkHealth: {
-      status: "unknown"
+      status: "healthy",
+      httpStatus: 200,
+      failureCount: 0
     }
   },
   {
@@ -629,6 +635,8 @@ const baseProjects: SeedProject[] = [
     aiTools: ["GPT-5.4"],
     verificationState: "github_verified",
     status: "published",
+    featured: true,
+    featuredOrder: 9,
     publishedAt: subDays(new Date(), 3),
     lastActivityAt: subHours(new Date(), 14),
     tags: ["desktop", "productivity", "open-source", "free"],
@@ -675,8 +683,10 @@ const baseProjects: SeedProject[] = [
     noSignupRequired: true,
     isSoloMaker: false,
     aiTools: ["GPT-5.4", "Cursor"],
-    verificationState: "unverified",
+    verificationState: "github_verified",
     status: "published",
+    featured: true,
+    featuredOrder: 10,
     publishedAt: subDays(new Date(), 12),
     lastActivityAt: subHours(new Date(), 8),
     tags: ["web", "developer-tools", "beta", "no-signup"],

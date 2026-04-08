@@ -573,6 +573,12 @@ export async function getHomepageData() {
   };
 }
 
+export async function getDiscoverData() {
+  const records = await fetchProjectsWithRelations(homeStatuses);
+  const cards = sortProjectCards(records.map(mapProjectCard), "trending");
+  return cards.slice(0, 10);
+}
+
 export async function getExploreData(filters: ExploreFilters = {}) {
   const records = await fetchProjectsWithRelations(exploreStatuses);
   const cards = records
