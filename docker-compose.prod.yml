@@ -15,6 +15,23 @@ services:
       timeout: 5s
       retries: 10
 
+  db-init:
+    build: .
+    container_name: vibeollio-db-init
+    command: >
+      sh -c "
+        cd /app &&
+        node_modules/.bin/tsx scripts/migrate.ts &&
+        node_modules/.bin/tsx scripts/seed.ts
+      "
+    environment:
+      DATABASE_URL: postgres://postgres:${POSTGRES_PASSWORD:-postgres}@postgres:5432/vibe_showcase
+    depends_on:
+      postgres:
+        condition: service_healthy
+    profiles:
+      - init
+
   app:
     build: .
     container_name: vibeollio-app
