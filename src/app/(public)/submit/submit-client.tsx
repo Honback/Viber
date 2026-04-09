@@ -70,7 +70,10 @@ export function SubmitPageClient({
             heroAnim.isVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
           }`}
         >
-          <h1 className="text-6xl font-extrabold tracking-tight sm:text-7xl lg:text-8xl">
+          <h1
+            className="text-6xl tracking-tight sm:text-7xl lg:text-8xl"
+            style={{ fontFamily: "var(--font-logo), sans-serif", fontWeight: 300, color: "#d76542", letterSpacing: "0.02em" }}
+          >
             Vibeollio
           </h1>
           <div className="mt-6 inline-flex items-center gap-1.5 rounded-full px-4 py-1.5 text-xs font-semibold" style={{ backgroundColor: `${ACCENT}20`, color: ACCENT }}>

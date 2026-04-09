@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FormFlow – 폼 빌더</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --amber: #f59e0b;
+      --orange: #ea580c;
+      --amber-light: #fef3c7;
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --border: #e2e8f0;
+      --text: #1e293b;
+      --muted: #64748b;
+      --radius: 10px;
+      --shadow: 0 1px 3px rgba(0,0,0,.08), 0 4px 12px rgba(0,0,0,.06);
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans KR', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── Header ── */
+    header {
+      background: linear-gradient(135deg, #f59e0b, #ea580c);
+      padding: 0 24px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 2px 8px rgba(234,88,12,.25);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #fff;
+      font-weight: 700;
+      font-size: 20px;
+      letter-spacing: -0.5px;
+    }
+    .logo svg { width: 26px; height: 26px; }
+
+    .header-actions { display: flex; gap: 10px; }
+
+    .btn {
+      border: none;
+      cursor: pointer;
+      border-radius: 7px;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 7px 16px;
+      transition: all .15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn-ghost {
+      background: rgba(255,255,255,.18);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,.3);
+    }
+    .btn-ghost:hover { background: rgba(255,255,255,.28); }
+
+    .btn-white {
+      background: #fff;
+      color: var(--orange);
+    }
+    .btn-white:hover { background: #fff7ed; }
+
+    .btn-danger {
+      background: #fee2e2;
+      color: #dc2626;
+      border: none;
+      border-radius: 6px;
+      padding: 5px 10px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background .15s;
+    }
+    .btn-danger:hover { background: #fecaca; }
+
+    /* ── Layout ── */
+    .workspace {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+      height: calc(100vh - 56px);
+    }
+
+    /* ── Sidebar ── */
+    .sidebar {
+      width: 220px;
+      min-width: 220px;
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+      padding: 20px 14px;
+    }
+    .sidebar-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      margin-bottom: 12px;
+      padding-left: 4px;
+    }
+    .field-palette {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .palette-item {
+      background: var(--bg);
+      border: 1.5px dashed var(--border);
+      border-radius: var(--radius);
+      padding: 11px 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: grab;
+      font-size: 13.5px;
+      font-weight: 500;
+      color: var(--text);
+      transition: all .15s ease;
+      user-select: none;
+    }
+    .palette-item:hover {
+      border-color: var(--amber);
+      background: #fffbeb;
+      color: #92400e;
+      transform: translateX(2px);
+    }
+    .palette-item:active { cursor: grabbing; }
+    .palette-item.dragging { opacity: .45; }
+
+    .field-icon {
+      width: 30px;
+      height: 30px;
+      border-radius: 7px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      background: linear-gradient(135deg, #fef3c7, #fed7aa);
+      flex-shrink: 0;
+    }
+
+    .sidebar-tip {
+      margin-top: 28px;
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      border-radius: 8px;
+      padding: 12px;
+      font-size: 12px;
+      color: #92400e;
+      line-height: 1.5;
+    }
+    .sidebar-tip strong { display: block; margin-bottom: 4px; font-size: 12px; }
+
+    /* ── Canvas area ── */
+    .canvas-wrapper {
+      flex: 1;
+      overflow-y: auto;
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .form-card {
+      background: var(--surface);
+      border-radius: 14px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      width: 100%;
+      max-width: 640px;
+    }
+
+    .form-header {
+      padding: 24px 28px 18px;
+      border-bottom: 1px solid var(--border);
+    }
+    .form-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+    .form-subtitle {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    /* ── Drop Zone ── */
+    .drop-zone {
+      min-height: 280px;
+      padding: 18px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transition: background .15s;
+      position: relative;
+    }
+    .drop-zone.drag-over {
+      background: #fffbeb;
+    }
+    .drop-zone.drag-over::after {
+      content: '';
+      position: absolute;
+      inset: 8px;
+      border: 2px dashed var(--amber);
+      border-radius: 10px;
+      pointer-events: none;
+      animation: pulse-border .7s ease-in-out infinite alternate;
+    }
+    @keyframes pulse-border {
+      from { border-color: var(--amber); }
+      to { border-color: var(--orange); }
+    }
+
+    .empty-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      color: var(--muted);
+      padding: 48px 20px;
+      text-align: center;
+    }
+    .empty-state .icon {
+      font-size: 40px;
+      opacity: .4;
+    }
+    .empty-state p { font-size: 14px; }
+    .empty-state span { font-size: 12px; color: #94a3b8; }
+
+    /* ── Form Field ── */
+    .form-field {
+      background: #fff;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      position: relative;
+      transition: all .15s ease;
+      cursor: default;
+    }
+    .form-field:hover {
+      border-color: #fcd34d;
+      box-shadow: 0 0 0 3px rgba(245,158,11,.08);
+    }
+    .form-field.drag-over-field {
+      border-color: var(--amber);
+      background: #fffbeb;
+      transform: scale(1.01);
+    }
+    .form-field.dragging-field {
+      opacity: .4;
+    }
+
+    .field-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+    .field-type-badge {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      color: #d97706;
+      background: #fef3c7;
+      border-radius: 4px;
+      padding: 2px 7px;
+    }
+    .field-controls { display: flex; gap: 6px; align-items: center; }
+
+    .drag-handle {
+      cursor: grab;
+      color: #cbd5e1;
+      font-size: 16px;
+      padding: 2px 4px;
+      border-radius: 4px;
+      transition: color .1s;
+    }
+    .drag-handle:hover { color: var(--amber); }
+    .drag-handle:active { cursor: grabbing; }
+
+    /* ── Editable label ── */
+    .field-label-wrap { margin-bottom: 7px; }
+    .editable-label {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      cursor: text;
+      border: 1.5px solid transparent;
+      border-radius: 5px;
+      padding: 3px 7px;
+      display: inline-block;
+      min-width: 60px;
+      transition: border-color .15s;
+    }
+    .editable-label:hover { border-color: #fcd34d; background: #fffbeb; }
+    .editable-label:focus {
+      outline: none;
+      border-color: var(--amber);
+      background: #fff;
+      box-shadow: 0 0 0 3px rgba(245,158,11,.12);
+    }
+    .required-star {
+      color: #ef4444;
+      font-weight: 700;
+      margin-left: 3px;
+    }
+
+    /* ── Field inputs (builder) ── */
+    .mock-input {
+      width: 100%;
+      border: 1.5px solid var(--border);
+      border-radius: 7px;
+      padding: 9px 12px;
+      font-size: 13.5px;
+      color: #94a3b8;
+      background: #f8fafc;
+      pointer-events: none;
+      font-family: inherit;
+    }
+    .mock-textarea {
+      height: 72px;
+      resize: none;
+    }
+    .mock-select { appearance: none; }
+    .mock-checkbox-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13.5px;
+      color: #94a3b8;
+    }
+    .mock-checkbox {
+      width: 16px;
+      height: 16px;
+      border: 1.5px solid var(--border);
+      border-radius: 4px;
+      pointer-events: none;
+      flex-shrink: 0;
+    }
+
+    /* ── Preview mode inputs ── */
+    .preview-mode .mock-input,
+    .preview-mode .mock-textarea,
+    .preview-mode .mock-select {
+      color: var(--text);
+      background: #fff;
+      pointer-events: all;
+      cursor: text;
+      border-color: #d1d5db;
+    }
+    .preview-mode .mock-input:focus,
+    .preview-mode .mock-textarea:focus,
+    .preview-mode .mock-select:focus {
+      outline: none;
+      border-color: var(--amber);
+      box-shadow: 0 0 0 3px rgba(245,158,11,.12);
+    }
+    .preview-mode .mock-checkbox-wrap { color: var(--text); }
+    .preview-mode .mock-checkbox { pointer-events: all; cursor: pointer; }
+
+    .preview-mode .field-toolbar { display: none; }
+    .preview-mode .form-field {
+      cursor: default;
+      border-color: var(--border);
+    }
+    .preview-mode .form-field:hover {
+      border-color: var(--border);
+      box-shadow: none;
+    }
+    .preview-mode .editable-label {
+      cursor: default;
+      border-color: transparent;
+      background: transparent;
+      padding-left: 0;
+    }
+    .preview-mode .editable-label:hover {
+      border-color: transparent;
+      background: transparent;
+    }
+
+    .preview-submit {
+      display: none;
+      width: 100%;
+      padding: 11px;
+      border: none;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #f59e0b, #ea580c);
+      color: #fff;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: opacity .15s;
+      font-family: inherit;
+    }
+    .preview-submit:hover { opacity: .88; }
+    .preview-mode .preview-submit { display: block; }
+
+    .form-footer {
+      padding: 16px 20px 20px;
+    }
+
+    /* ── Stats bar ── */
+    .stats-bar {
+      display: flex;
+      gap: 16px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 12px 20px;
+      width: 100%;
+      max-width: 640px;
+    }
+    .stat-item {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .stat-val {
+      font-size: 20px;
+      font-weight: 700;
+      background: linear-gradient(135deg, #f59e0b, #ea580c);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .stat-label { font-size: 11px; color: var(--muted); }
+    .stat-sep { width: 1px; background: var(--border); }
+
+    /* ── Preview banner ── */
+    .preview-banner {
+      display: none;
+      align-items: center;
+      gap: 10px;
+      background: linear-gradient(135deg, #f59e0b22, #ea580c18);
+      border: 1px solid #fcd34d;
+      border-radius: 9px;
+      padding: 10px 16px;
+      width: 100%;
+      max-width: 640px;
+      font-size: 13px;
+      color: #92400e;
+      font-weight: 500;
+    }
+    .preview-banner.visible { display: flex; }
+    .preview-banner span { flex: 1; }
+
+    /* ── Responsive ── */
+    @media (max-width: 680px) {
+      .sidebar { width: 180px; min-width: 180px; }
+      .canvas-wrapper { padding: 16px 12px; }
+    }
+    @media (max-width: 520px) {
+      .workspace { flex-direction: column; height: auto; overflow: visible; }
+      .sidebar {
+        width: 100%;
+        min-width: unset;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+        padding: 14px 12px;
+      }
+      .field-palette { flex-direction: row; flex-wrap: wrap; }
+      .palette-item { width: calc(50% - 4px); }
+      .canvas-wrapper { padding: 16px 10px; }
+    }
+
+    /* ── Drop indicator line ── */
+    .drop-indicator {
+      height: 3px;
+      background: linear-gradient(90deg, var(--amber), var(--orange));
+      border-radius: 2px;
+      margin: -2px 0;
+      display: none;
+    }
+    .drop-indicator.visible { display: block; }
+  </style>
+</head>
+<body>
+
+<!-- Header -->
+<header>
+  <div class="logo">
+    <svg viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="2" y="5" width="22" height="16" rx="3" fill="rgba(255,255,255,.25)" stroke="rgba(255,255,255,.7)" stroke-width="1.5"/>
+      <line x1="6" y1="10" x2="20" y2="10" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="6" y1="14" x2="16" y2="14" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="6" y1="18" x2="13" y2="18" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+    </svg>
+    FormFlow
+  </div>
+  <div class="header-actions">
+    <button class="btn btn-ghost" id="clearBtn">🗑 초기화</button>
+    <button class="btn btn-white" id="previewBtn">👁 미리보기</button>
+  </div>
+</header>
+
+<!-- Workspace -->
+<div class="workspace">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-title">필드 유형</div>
+    <div class="field-palette" id="palette">
+      <div class="palette-item" draggable="true" data-type="text">
+        <div class="field-icon">✏️</div>텍스트
+      </div>
+      <div class="palette-item" draggable="true" data-type="email">
+        <div class="field-icon">📧</div>이메일
+      </div>
+      <div class="palette-item" draggable="true" data-type="textarea">
+        <div class="field-icon">📝</div>장문 입력
+      </div>
+      <div class="palette-item" draggable="true" data-type="dropdown">
+        <div class="field-icon">▾</div>드롭다운
+      </div>
+      <div class="palette-item" draggable="true" data-type="checkbox">
+        <div class="field-icon">☑️</div>체크박스
+      </div>
+      <div class="palette-item" draggable="true" data-type="number">
+        <div class="field-icon">🔢</div>숫자
+      </div>
+    </div>
+    <div class="sidebar-tip">
+      <strong>💡 사용 방법</strong>
+      왼쪽 필드를 오른쪽 폼 영역으로 드래그하세요. 라벨을 클릭하면 직접 편집할 수 있어요.
+    </div>
+  </aside>
+
+  <!-- Canvas -->
+  <main class="canvas-wrapper" id="canvasWrapper">
+
+    <div class="preview-banner" id="previewBanner">
+      <span>👁 미리보기 모드 — 실제 사용자에게 보이는 폼입니다.</span>
+      <button class="btn btn-white" id="exitPreviewBtn" style="padding:5px 12px;font-size:12px;">편집으로 돌아가기</button>
+    </div>
+
+    <div class="stats-bar" id="statsBar">
+      <div class="stat-item">
+        <span class="stat-val" id="statFields">0</span>
+        <span class="stat-label">필드 수</span>
+      </div>
+      <div class="stat-sep"></div>
+      <div class="stat-item">
+        <span class="stat-val" id="statTypes">0</span>
+        <span class="stat-label">유형 수</span>
+      </div>
+      <div class="stat-sep"></div>
+      <div class="stat-item">
+        <span class="stat-val" id="statRequired">0</span>
+        <span class="stat-label">필수 항목</span>
+      </div>
+    </div>
+
+    <div class="form-card" id="formCard">
+      <div class="form-header">
+        <div class="form-title">새 폼</div>
+        <div class="form-subtitle">드래그로 필드를 추가하고 폼을 구성하세요</div>
+      </div>
+
+      <div class="drop-zone" id="dropZone">
+        <div class="empty-state" id="emptyState">
+          <div class="icon">⊕</div>
+          <p>필드를 여기에 드래그하세요</p>
+          <span>왼쪽 사이드바에서 원하는 필드 유형을 선택하세요</span>
+        </div>
+      </div>
+
+      <div class="form-footer">
+        <button class="preview-submit" id="previewSubmitBtn">제출하기</button>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+(() => {
+  'use strict';
+
+  // ── State ──────────────────────────────────────────────
+  const state = {
+    fields: [],
+    isPreview: false,
+    dragSource: null,       // { origin: 'palette'|'field', type?, id? }
+    dragOverFieldId: null,
+  };
+
+  let nextId = 1;
+
+  const LABELS = {
+    text: '텍스트 입력',
+    email: '이메일 주소',
+    textarea: '내용',
+    dropdown: '선택 항목',
+    checkbox: '동의 여부',
+    number: '숫자 입력',
+  };
+
+  const TYPES_KR = {
+    text: '텍스트',
+    email: '이메일',
+    textarea: '장문',
+    dropdown: '드롭다운',
+    checkbox: '체크박스',
+    number: '숫자',
+  };
+
+  // ── DOM refs ───────────────────────────────────────────
+  const dropZone     = document.getElementById('dropZone');
+  const emptyState   = document.getElementById('emptyState');
+  const previewBtn   = document.getElementById('previewBtn');
+  const exitPreviewBtn = document.getElementById('exitPreviewBtn');
+  const clearBtn     = document.getElementById('clearBtn');
+  const previewBanner= document.getElementById('previewBanner');
+  const formCard     = document.getElementById('formCard');
+  const statsBar     = document.getElementById('statsBar');
+  const previewSubmitBtn = document.getElementById('previewSubmitBtn');
+
+  const statFields   = document.getElementById('statFields');
+  const statTypes    = document.getElementById('statTypes');
+  const statRequired = document.getElementById('statRequired');
+
+  // ── Field factory ──────────────────────────────────────
+  function createField(type) {
+    return {
+      id: nextId++,
+      type,
+      label: LABELS[type] || '입력 필드',
+      required: true,
+    };
+  }
+
+  // ── Render ─────────────────────────────────────────────
+  function renderAll() {
+    // Clear drop zone except empty state
+    const children = [...dropZone.children];
+    children.forEach(c => {
+      if (c.id !== 'emptyState') c.remove();
+    });
+
+    emptyState.style.display = state.fields.length === 0 ? 'flex' : 'none';
+
+    state.fields.forEach((field, idx) => {
+      const el = buildFieldEl(field, idx);
+      dropZone.appendChild(el);
+    });
+
+    updateStats();
+  }
+
+  function buildFieldEl(field, idx) {
+    const wrap = document.createElement('div');
+    wrap.className = 'form-field';
+    wrap.dataset.id = field.id;
+    wrap.draggable = !state.isPreview;
+
+    wrap.innerHTML = `
+      <div class="field-toolbar">
+        <span class="field-type-badge">${TYPES_KR[field.type]}</span>
+        <div class="field-controls">
+          <span class="drag-handle" title="드래그하여 순서 변경">⠿</span>
+          <button class="btn-danger" data-action="delete" data-id="${field.id}" title="삭제">✕ 삭제</button>
+        </div>
+      </div>
+      <div class="field-label-wrap">
+        <span
+          class="editable-label"
+          contenteditable="${state.isPreview ? 'false' : 'true'}"
+          data-id="${field.id}"
+          spellcheck="false"
+        >${escHtml(field.label)}</span><span class="required-star">*</span>
+      </div>
+      ${buildInputHtml(field)}
+    `;
+
+    // Delete button
+    wrap.querySelector('[data-action="delete"]').addEventListener('click', (e) => {
+      e.stopPropagation();
+      deleteField(field.id);
+    });
+
+    // Inline label editing
+    const labelEl = wrap.querySelector('.editable-label');
+    labelEl.addEventListener('blur', () => {
+      const text = labelEl.textContent.trim();
+      if (text) {
+        const f = state.fields.find(f => f.id === field.id);
+        if (f) f.label = text;
+      }
+    });
+    labelEl.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') { e.preventDefault(); labelEl.blur(); }
+    });
+
+    // Drag events (reorder)
+    if (!state.isPreview) {
+      wrap.addEventListener('dragstart', onFieldDragStart);
+      wrap.addEventListener('dragover', onFieldDragOver);
+      wrap.addEventListener('dragleave', onFieldDragLeave);
+      wrap.addEventListener('drop', onFieldDrop);
+      wrap.addEventListener('dragend', onFieldDragEnd);
+    }
+
+    return wrap;
+  }
+
+  function buildInputHtml(field) {
+    switch (field.type) {
+      case 'text':
+        return `<input class="mock-input" type="text" placeholder="텍스트를 입력하세요" />`;
+      case 'email':
+        return `<input class="mock-input" type="email" placeholder="example@email.com" />`;
+      case 'textarea':
+        return `<textarea class="mock-input mock-textarea" placeholder="내용을 입력하세요..."></textarea>`;
+      case 'dropdown':
+        return `<select class="mock-input mock-select">
+          <option value="">-- 선택하세요 --</option>
+          <option>옵션 1</option>
+          <option>옵션 2</option>
+          <option>옵션 3</option>
+        </select>`;
+      case 'checkbox':
+        return `<label class="mock-checkbox-wrap">
+          <div class="mock-checkbox"></div>
+          <span>이 항목에 동의합니다</span>
+        </label>`;
+      case 'number':
+        return `<input class="mock-input" type="number" placeholder="0" />`;
+      default:
+        return `<input class="mock-input" type="text" placeholder="입력" />`;
+    }
+  }
+
+  function updateStats() {
+    const count = state.fields.length;
+    const types = new Set(state.fields.map(f => f.type)).size;
+    const required = state.fields.filter(f => f.required).length;
+    statFields.textContent = count;
+    statTypes.textContent = types;
+    statRequired.textContent = required;
+  }
+
+  // ── Delete ─────────────────────────────────────────────
+  function deleteField(id) {
+    state.fields = state.fields.filter(f => f.id !== id);
+    renderAll();
+  }
+
+  // ── Preview mode ───────────────────────────────────────
+  function setPreview(on) {
+    state.isPreview = on;
+    formCard.classList.toggle('preview-mode', on);
+    previewBanner.classList.toggle('visible', on);
+    previewBtn.style.display = on ? 'none' : '';
+    clearBtn.style.display = on ? 'none' : '';
+    renderAll();
+
+    // Make checkboxes interactive in preview
+    if (on) {
+      dropZone.querySelectorAll('.mock-checkbox').forEach(cb => {
+        cb.style.pointerEvents = 'all';
+        cb.style.cursor = 'pointer';
+        cb.addEventListener('click', () => {
+          cb.style.background = cb.dataset.checked === '1'
+            ? '' : 'linear-gradient(135deg,#f59e0b,#ea580c)';
+          cb.style.borderColor = cb.dataset.checked === '1' ? '' : '#f59e0b';
+          cb.dataset.checked = cb.dataset.checked === '1' ? '0' : '1';
+        });
+      });
+    }
+  }
+
+  previewBtn.addEventListener('click', () => setPreview(true));
+  exitPreviewBtn.addEventListener('click', () => setPreview(false));
+
+  previewSubmitBtn.addEventListener('click', () => {
+    previewSubmitBtn.textContent = '✓ 제출 완료!';
+    previewSubmitBtn.style.background = 'linear-gradient(135deg,#10b981,#059669)';
+    setTimeout(() => {
+      previewSubmitBtn.textContent = '제출하기';
+      previewSubmitBtn.style.background = '';
+    }, 2000);
+  });
+
+  // ── Clear ──────────────────────────────────────────────
+  clearBtn.addEventListener('click', () => {
+    if (state.fields.length === 0) return;
+    if (confirm('모든 필드를 삭제하시겠습니까?')) {
+      state.fields = [];
+      renderAll();
+    }
+  });
+
+  // ── Palette drag ──────────────────────────────────────
+  document.querySelectorAll('.palette-item').forEach(item => {
+    item.addEventListener('dragstart', (e) => {
+      state.dragSource = { origin: 'palette', type: item.dataset.type };
+      item.classList.add('dragging');
+      e.dataTransfer.effectAllowed = 'copy';
+      e.dataTransfer.setData('text/plain', item.dataset.type);
+    });
+    item.addEventListener('dragend', () => {
+      item.classList.remove('dragging');
+      state.dragSource = null;
+    });
+  });
+
+  // ── Drop zone events ──────────────────────────────────
+  dropZone.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'copy';
+    dropZone.classList.add('drag-over');
+  });
+
+  dropZone.addEventListener('dragleave', (e) => {
+    if (!dropZone.contains(e.relatedTarget)) {
+      dropZone.classList.remove('drag-over');
+    }
+  });
+
+  dropZone.addEventListener('drop', (e) => {
+    e.preventDefault();
+    dropZone.classList.remove('drag-over');
+
+    if (!state.dragSource) return;
+
+    if (state.dragSource.origin === 'palette') {
+      const type = state.dragSource.type;
+      state.fields.push(createField(type));
+      renderAll();
+    }
+    state.dragSource = null;
+  });
+
+  // ── Field reorder drag ────────────────────────────────
+  function onFieldDragStart(e) {
+    const id = parseInt(this.dataset.id);
+    state.dragSource = { origin: 'field', id };
+    this.classList.add('dragging-field');
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/plain', 'field-' + id);
+    e.stopPropagation();
+  }
+
+  function onFieldDragOver(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    if (!state.dragSource || state.dragSource.origin !== 'field') return;
+    const targetId = parseInt(this.dataset.id);
+    if (state.dragSource.id === targetId) return;
+    this.classList.add('drag-over-field');
+    state.dragOverFieldId = targetId;
+  }
+
+  function onFieldDragLeave(e) {
+    this.classList.remove('drag-over-field');
+  }
+
+  function onFieldDrop(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    this.classList.remove('drag-over-field');
+    dropZone.classList.remove('drag-over');
+
+    if (!state.dragSource || state.dragSource.origin !== 'field') return;
+    const fromId = state.dragSource.id;
+    const toId   = parseInt(this.dataset.id);
+    if (fromId === toId) return;
+
+    const fromIdx = state.fields.findIndex(f => f.id === fromId);
+    const toIdx   = state.fields.findIndex(f => f.id === toId);
+    if (fromIdx === -1 || toIdx === -1) return;
+
+    const [moved] = state.fields.splice(fromIdx, 1);
+    state.fields.splice(toIdx, 0, moved);
+    renderAll();
+    state.dragSource = null;
+  }
+
+  function onFieldDragEnd() {
+    this.classList.remove('dragging-field');
+    document.querySelectorAll('.form-field').forEach(el => el.classList.remove('drag-over-field'));
+    state.dragSource = null;
+    state.dragOverFieldId = null;
+  }
+
+  // ── Helpers ────────────────────────────────────────────
+  function escHtml(str) {
+    return str
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  // ── Init ───────────────────────────────────────────────
+  renderAll();
+
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SoundScape</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0d0d14;
+      --surface: #13131f;
+      --surface2: #1a1a2e;
+      --border: rgba(139, 92, 246, 0.18);
+      --accent1: #a855f7;
+      --accent2: #d946ef;
+      --text: #e2e2f0;
+      --muted: #8888aa;
+      --radius: 14px;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 1rem 3rem;
+    }
+
+    /* ── Header ── */
+    header {
+      text-align: center;
+      margin-bottom: 2.2rem;
+    }
+    .logo {
+      display: inline-flex;
+      align-items: center;
+      gap: .55rem;
+      font-size: 2rem;
+      font-weight: 800;
+      letter-spacing: -1px;
+      background: linear-gradient(135deg, var(--accent1), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .logo svg { flex-shrink: 0; }
+    header p { color: var(--muted); font-size: .9rem; margin-top: .4rem; letter-spacing: .03em; }
+
+    /* ── Master bar ── */
+    .master-bar {
+      width: 100%;
+      max-width: 720px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1rem 1.4rem;
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+      margin-bottom: 1.5rem;
+    }
+    .master-bar label { font-size: .8rem; color: var(--muted); white-space: nowrap; }
+    .master-bar input[type=range] { flex: 1; }
+
+    /* ── Presets ── */
+    .presets {
+      display: flex;
+      gap: .7rem;
+      margin-bottom: 2rem;
+    }
+    .preset-btn {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 50px;
+      color: var(--text);
+      font-size: .82rem;
+      padding: .42rem 1.1rem;
+      cursor: pointer;
+      transition: all .2s;
+      font-weight: 500;
+    }
+    .preset-btn:hover, .preset-btn.active {
+      background: linear-gradient(135deg, var(--accent1), var(--accent2));
+      border-color: transparent;
+      color: #fff;
+    }
+
+    /* ── Channel grid ── */
+    .grid {
+      width: 100%;
+      max-width: 720px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+
+    /* ── Channel card ── */
+    .channel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.1rem;
+      display: flex;
+      flex-direction: column;
+      gap: .8rem;
+      transition: border-color .2s, box-shadow .2s;
+      position: relative;
+      overflow: hidden;
+    }
+    .channel.on {
+      border-color: rgba(168, 85, 247, 0.5);
+      box-shadow: 0 0 18px rgba(168, 85, 247, 0.12);
+    }
+
+    .channel-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .channel-info {
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+    }
+    .channel-icon {
+      font-size: 1.4rem;
+      line-height: 1;
+    }
+    .channel-name {
+      font-size: .92rem;
+      font-weight: 600;
+    }
+    .channel-sub {
+      font-size: .72rem;
+      color: var(--muted);
+    }
+
+    /* Toggle switch */
+    .toggle {
+      position: relative;
+      width: 38px;
+      height: 21px;
+      flex-shrink: 0;
+    }
+    .toggle input { opacity: 0; width: 0; height: 0; }
+    .toggle-track {
+      position: absolute;
+      inset: 0;
+      background: #2a2a40;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: background .25s;
+    }
+    .toggle input:checked ~ .toggle-track {
+      background: linear-gradient(135deg, var(--accent1), var(--accent2));
+    }
+    .toggle-track::after {
+      content: '';
+      position: absolute;
+      left: 3px; top: 3px;
+      width: 15px; height: 15px;
+      background: #fff;
+      border-radius: 50%;
+      transition: transform .25s;
+    }
+    .toggle input:checked ~ .toggle-track::after {
+      transform: translateX(17px);
+    }
+
+    /* Canvas waveform */
+    .viz {
+      width: 100%;
+      height: 44px;
+      border-radius: 8px;
+      background: rgba(0,0,0,.25);
+      display: block;
+    }
+
+    /* Volume slider */
+    .vol-row {
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+    }
+    .vol-row span { font-size: .72rem; color: var(--muted); width: 26px; text-align: right; }
+
+    /* Range inputs */
+    input[type=range] {
+      -webkit-appearance: none;
+      appearance: none;
+      height: 4px;
+      background: #2a2a40;
+      border-radius: 2px;
+      outline: none;
+      cursor: pointer;
+    }
+    input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 14px; height: 14px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent1), var(--accent2));
+      cursor: pointer;
+      transition: transform .15s;
+    }
+    input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.2); }
+    input[type=range]::-moz-range-thumb {
+      width: 14px; height: 14px;
+      border: none;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent1), var(--accent2));
+      cursor: pointer;
+    }
+
+    /* Footer */
+    footer {
+      margin-top: 2.5rem;
+      color: var(--muted);
+      font-size: .75rem;
+      text-align: center;
+    }
+
+    /* Fade-in */
+    @keyframes fadeUp { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:none; } }
+    .channel { animation: fadeUp .4s ease both; }
+    .channel:nth-child(1){ animation-delay:.05s }
+    .channel:nth-child(2){ animation-delay:.10s }
+    .channel:nth-child(3){ animation-delay:.15s }
+    .channel:nth-child(4){ animation-delay:.20s }
+    .channel:nth-child(5){ animation-delay:.25s }
+    .channel:nth-child(6){ animation-delay:.30s }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+      <circle cx="14" cy="14" r="14" fill="url(#lg)"/>
+      <path d="M7 18 Q9 10 11 14 Q13 18 14 10 Q15 2 17 14 Q19 20 21 16" stroke="#fff" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <defs>
+        <linearGradient id="lg" x1="0" y1="0" x2="28" y2="28" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#a855f7"/>
+          <stop offset="100%" stop-color="#d946ef"/>
+        </linearGradient>
+      </defs>
+    </svg>
+    SoundScape
+  </div>
+  <p>주변 소리로 나만의 공간을 만드세요</p>
+</header>
+
+<!-- Master volume -->
+<div class="master-bar">
+  <label>🔊 마스터 볼륨</label>
+  <input type="range" id="masterVol" min="0" max="1" step="0.01" value="0.8" />
+  <span id="masterPct" style="font-size:.8rem;color:var(--muted);width:34px;text-align:right;">80%</span>
+</div>
+
+<!-- Presets -->
+<div class="presets">
+  <button class="preset-btn" data-preset="focus">🎯 집중</button>
+  <button class="preset-btn" data-preset="relax">🌿 휴식</button>
+  <button class="preset-btn" data-preset="sleep">🌙 수면</button>
+</div>
+
+<!-- Channel cards injected by JS -->
+<div class="grid" id="grid"></div>
+
+<footer>Web Audio API · 브라우저에서 직접 소리를 합성합니다</footer>
+
+<script>
+/* ─────────────────────────────────────────────
+   SOUNDSCAPE  –  Web Audio API ambient mixer
+───────────────────────────────────────────── */
+
+const AC = new (window.AudioContext || window.webkitAudioContext)();
+
+// Master gain
+const masterGain = AC.createGain();
+masterGain.gain.value = 0.8;
+masterGain.connect(AC.destination);
+
+/* ── Channel definitions ── */
+const CHANNELS = [
+  { id: 'rain',    name: '빗소리',   icon: '🌧️',  sub: 'Rain',    color: '#60a5fa' },
+  { id: 'thunder', name: '천둥',     icon: '⚡',   sub: 'Thunder', color: '#818cf8' },
+  { id: 'wind',    name: '바람',     icon: '🌬️',  sub: 'Wind',    color: '#a78bfa' },
+  { id: 'fire',    name: '장작불',   icon: '🔥',   sub: 'Fire',    color: '#fb923c' },
+  { id: 'waves',   name: '파도',     icon: '🌊',   sub: 'Waves',   color: '#34d399' },
+  { id: 'forest',  name: '숲',       icon: '🌳',   sub: 'Forest',  color: '#86efac' },
+];
+
+/* ── Mood presets  (channel volumes 0-1) ── */
+const PRESETS = {
+  focus: { rain:.7, thunder:0, wind:.3, fire:.5, waves:0, forest:.4 },
+  relax: { rain:.4, thunder:0, wind:.2, fire:.6, waves:.6, forest:.5 },
+  sleep: { rain:.5, thunder:.1, wind:.1, fire:.3, waves:.7, forest:.2 },
+};
+
+/* ══════════════════════════════════════════
+   SYNTHESIZERS  (one per channel)
+══════════════════════════════════════════ */
+
+function buildRain(dest) {
+  // Filtered white noise, two bands
+  const buf = makeNoiseBuf(3);
+  const src1 = makeNoiseSrc(buf);
+  const src2 = makeNoiseSrc(buf);
+
+  const hpf = AC.createBiquadFilter();
+  hpf.type = 'highpass'; hpf.frequency.value = 1200; hpf.Q.value = .4;
+
+  const lpf = AC.createBiquadFilter();
+  lpf.type = 'lowpass'; lpf.frequency.value = 6000; lpf.Q.value = .3;
+
+  // gentle amplitude flutter
+  const flutterGain = AC.createGain();
+  const flutterLFO = AC.createOscillator();
+  const flutterDepth = AC.createGain();
+  flutterLFO.frequency.value = 2.5;
+  flutterDepth.gain.value = .12;
+  flutterGain.gain.value = .88;
+  flutterLFO.connect(flutterDepth);
+  flutterDepth.connect(flutterGain.gain);
+  flutterLFO.start();
+
+  src1.connect(hpf); hpf.connect(lpf); lpf.connect(flutterGain);
+  flutterGain.connect(dest);
+  src1.start(); src2.start();
+  return { nodes:[src1,src2,hpf,lpf,flutterGain,flutterLFO,flutterDepth] };
+}
+
+function buildThunder(dest) {
+  // Low sub-bass rumble + sporadic bursts
+  const buf = makeNoiseBuf(4);
+  const src = makeNoiseSrc(buf);
+
+  const lpf = AC.createBiquadFilter();
+  lpf.type = 'lowpass'; lpf.frequency.value = 120; lpf.Q.value = 1.2;
+
+  const peq = AC.createBiquadFilter();
+  peq.type = 'peaking'; peq.frequency.value = 55; peq.gain.value = 12; peq.Q.value = .6;
+
+  const envGain = AC.createGain();
+  envGain.gain.value = 0;
+
+  src.connect(lpf); lpf.connect(peq); peq.connect(envGain); envGain.connect(dest);
+  src.start();
+
+  // Periodic thunder events
+  function thunder() {
+    const now = AC.currentTime;
+    envGain.gain.cancelScheduledValues(now);
+    envGain.gain.setValueAtTime(0, now);
+    envGain.gain.linearRampToValueAtTime(1.6, now + .08);
+    envGain.gain.exponentialRampToValueAtTime(.001, now + 3.5);
+    setTimeout(thunder, 6000 + Math.random() * 12000);
+  }
+  setTimeout(thunder, 1500 + Math.random() * 4000);
+
+  return { nodes:[src,lpf,peq,envGain] };
+}
+
+function buildWind(dest) {
+  const buf = makeNoiseBuf(3);
+  const src = makeNoiseSrc(buf);
+
+  const bpf = AC.createBiquadFilter();
+  bpf.type = 'bandpass'; bpf.frequency.value = 400; bpf.Q.value = .8;
+
+  const lpf = AC.createBiquadFilter();
+  lpf.type = 'lowpass'; lpf.frequency.value = 1800;
+
+  // Slow LFO sweeps filter freq
+  const freqLFO = AC.createOscillator();
+  const freqDepth = AC.createGain();
+  freqLFO.frequency.value = .12;
+  freqDepth.gain.value = 260;
+  freqLFO.connect(freqDepth);
+  freqDepth.connect(bpf.frequency);
+  freqLFO.start();
+
+  // Amplitude howl LFO
+  const ampLFO = AC.createOscillator();
+  const ampDepth = AC.createGain();
+  const ampGain  = AC.createGain();
+  ampLFO.frequency.value = .08;
+  ampDepth.gain.value = .35;
+  ampGain.gain.value  = .65;
+  ampLFO.connect(ampDepth);
+  ampDepth.connect(ampGain.gain);
+  ampLFO.start();
+
+  src.connect(bpf); bpf.connect(lpf); lpf.connect(ampGain); ampGain.connect(dest);
+  src.start();
+  return { nodes:[src,bpf,lpf,freqLFO,freqDepth,ampLFO,ampDepth,ampGain] };
+}
+
+function buildFire(dest) {
+  const buf = makeNoiseBuf(3);
+  const src1 = makeNoiseSrc(buf);
+  const src2 = makeNoiseSrc(buf);
+
+  // Mid-range crackling band
+  const bpf = AC.createBiquadFilter();
+  bpf.type = 'bandpass'; bpf.frequency.value = 680; bpf.Q.value = 1.4;
+
+  const hpf = AC.createBiquadFilter();
+  hpf.type = 'highpass'; hpf.frequency.value = 300;
+
+  // Irregular crackle gain
+  const crackleGain = AC.createGain();
+  crackleGain.gain.value = .7;
+
+  // Warm sub hiss
+  const lpf = AC.createBiquadFilter();
+  lpf.type = 'lowpass'; lpf.frequency.value = 280;
+  const subGain = AC.createGain();
+  subGain.gain.value = .55;
+
+  src1.connect(bpf); bpf.connect(hpf); hpf.connect(crackleGain); crackleGain.connect(dest);
+  src2.connect(lpf); lpf.connect(subGain); subGain.connect(dest);
+
+  // Random crackle bursts
+  function crackle() {
+    const now = AC.currentTime;
+    crackleGain.gain.cancelScheduledValues(now);
+    crackleGain.gain.setValueAtTime(.5 + Math.random() * .5, now);
+    crackleGain.gain.exponentialRampToValueAtTime(.001, now + .06 + Math.random() * .1);
+    setTimeout(crackle, 60 + Math.random() * 280);
+  }
+  crackle();
+
+  src1.start(); src2.start();
+  return { nodes:[src1,src2,bpf,hpf,crackleGain,lpf,subGain] };
+}
+
+function buildWaves(dest) {
+  const buf = makeNoiseBuf(4);
+  const src = makeNoiseSrc(buf);
+
+  const lpf = AC.createBiquadFilter();
+  lpf.type = 'lowpass'; lpf.frequency.value = 900;
+
+  const bpf = AC.createBiquadFilter();
+  bpf.type = 'bandpass'; bpf.frequency.value = 350; bpf.Q.value = .6;
+
+  // Wave swell LFO on amplitude
+  const swellLFO = AC.createOscillator();
+  const swellDepth = AC.createGain();
+  const swellGain  = AC.createGain();
+  swellLFO.frequency.value = .22;
+  swellDepth.gain.value = .45;
+  swellGain.gain.value  = .55;
+  swellLFO.connect(swellDepth);
+  swellDepth.connect(swellGain.gain);
+  swellLFO.start();
+
+  // LFO on filter freq (surf)
+  const freqLFO = AC.createOscillator();
+  const freqDepth = AC.createGain();
+  freqLFO.frequency.value = .18;
+  freqDepth.gain.value = 220;
+  freqLFO.connect(freqDepth);
+  freqDepth.connect(lpf.frequency);
+  freqLFO.start();
+
+  src.connect(lpf); lpf.connect(bpf); bpf.connect(swellGain); swellGain.connect(dest);
+  src.start();
+  return { nodes:[src,lpf,bpf,swellLFO,swellDepth,swellGain,freqLFO,freqDepth] };
+}
+
+function buildForest(dest) {
+  // Layered chirps via oscillators + noise shimmer
+  const mix = AC.createGain();
+  mix.gain.value = .5;
+  mix.connect(dest);
+
+  const chirpOscs = [];
+
+  function spawnChirp() {
+    const osc = AC.createOscillator();
+    const g   = AC.createGain();
+    const freq = 2800 + Math.random() * 2200;
+    osc.type = 'sine';
+    osc.frequency.value = freq;
+
+    const now = AC.currentTime;
+    g.gain.setValueAtTime(0, now);
+    g.gain.linearRampToValueAtTime(.18 + Math.random() * .22, now + .02);
+    g.gain.exponentialRampToValueAtTime(.001, now + .08 + Math.random() * .12);
+
+    osc.connect(g); g.connect(mix);
+    osc.start(now);
+    osc.stop(now + .25);
+    setTimeout(spawnChirp, 150 + Math.random() * 600);
+  }
+  spawnChirp();
+
+  // Gentle noise shimmer for rustling leaves
+  const buf = makeNoiseBuf(3);
+  const nSrc = makeNoiseSrc(buf);
+  const nhpf = AC.createBiquadFilter();
+  nhpf.type = 'highpass'; nhpf.frequency.value = 4000;
+  const nGain = AC.createGain();
+  nGain.gain.value = .3;
+  nSrc.connect(nhpf); nhpf.connect(nGain); nGain.connect(dest);
+  nSrc.start();
+
+  return { nodes:[mix,nhpf,nGain,nSrc] };
+}
+
+/* ── Noise helpers ── */
+function makeNoiseBuf(seconds) {
+  const sr = AC.sampleRate;
+  const len = sr * seconds;
+  const buf = AC.createBuffer(1, len, sr);
+  const data = buf.getChannelData(0);
+  for (let i = 0; i < len; i++) data[i] = Math.random() * 2 - 1;
+  return buf;
+}
+function makeNoiseSrc(buf) {
+  const src = AC.createBufferSource();
+  src.buffer = buf;
+  src.loop = true;
+  return src;
+}
+
+/* ── Channel state ── */
+const channels = {};
+
+CHANNELS.forEach(ch => {
+  const gain = AC.createGain();
+  gain.gain.value = 0;       // off by default
+  gain.connect(masterGain);
+
+  channels[ch.id] = {
+    ...ch,
+    gain,
+    active: false,
+    volume: .5,
+    synth: null,
+    analyser: null,
+  };
+});
+
+function BUILDERS(id, dest) {
+  const map = { rain:buildRain, thunder:buildThunder, wind:buildWind,
+                fire:buildFire, waves:buildWaves,   forest:buildForest };
+  return map[id](dest);
+}
+
+/* ── Toggle channel ── */
+function toggleChannel(id, forcedOn) {
+  const ch = channels[id];
+  const card = document.getElementById('card-' + id);
+  const shouldBeOn = forcedOn !== undefined ? forcedOn : !ch.active;
+
+  if (shouldBeOn && !ch.active) {
+    // Resume context if needed
+    if (AC.state === 'suspended') AC.resume();
+
+    // Create analyser
+    const analyser = AC.createAnalyser();
+    analyser.fftSize = 256;
+    analyser.connect(ch.gain);
+    ch.analyser = analyser;
+
+    // Build synth
+    ch.synth = BUILDERS(id, analyser);
+    ch.active = true;
+    ch.gain.gain.setTargetAtTime(ch.volume, AC.currentTime, .1);
+    card.classList.add('on');
+  } else if (!shouldBeOn && ch.active) {
+    ch.gain.gain.setTargetAtTime(0, AC.currentTime, .15);
+    // Disconnect after fade
+    setTimeout(() => {
+      if (ch.synth) {
+        ch.synth.nodes.forEach(n => { try { n.disconnect(); } catch(e){} });
+        ch.synth = null;
+      }
+      if (ch.analyser) { try { ch.analyser.disconnect(); } catch(e){} ch.analyser = null; }
+    }, 600);
+    ch.active = false;
+    card.classList.remove('on');
+  }
+}
+
+/* ── Set volume ── */
+function setVolume(id, v) {
+  const ch = channels[id];
+  ch.volume = v;
+  if (ch.active) ch.gain.gain.setTargetAtTime(v, AC.currentTime, .05);
+}
+
+/* ── Render UI ── */
+const grid = document.getElementById('grid');
+
+CHANNELS.forEach(ch => {
+  const card = document.createElement('div');
+  card.className = 'channel';
+  card.id = 'card-' + ch.id;
+  card.innerHTML = `
+    <div class="channel-top">
+      <div class="channel-info">
+        <span class="channel-icon">${ch.icon}</span>
+        <div>
+          <div class="channel-name">${ch.name}</div>
+          <div class="channel-sub">${ch.sub}</div>
+        </div>
+      </div>
+      <label class="toggle">
+        <input type="checkbox" id="tog-${ch.id}" />
+        <span class="toggle-track"></span>
+      </label>
+    </div>
+    <canvas class="viz" id="viz-${ch.id}" width="300" height="44"></canvas>
+    <div class="vol-row">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="flex-shrink:0">
+        <path d="M2 4.5h2l3-3v10l-3-3H2V4.5z" fill="${ch.color}" opacity=".7"/>
+        <path d="M9.5 4.2a3.5 3.5 0 0 1 0 5.6" stroke="${ch.color}" stroke-width="1.3" stroke-linecap="round" fill="none"/>
+      </svg>
+      <input type="range" id="vol-${ch.id}" min="0" max="1" step="0.01" value="0.5" style="flex:1" />
+      <span id="vpct-${ch.id}">50%</span>
+    </div>
+  `;
+  grid.appendChild(card);
+
+  // Toggle listener
+  document.getElementById('tog-' + ch.id).addEventListener('change', e => {
+    toggleChannel(ch.id, e.target.checked);
+    clearPresetActive();
+  });
+
+  // Volume listener
+  document.getElementById('vol-' + ch.id).addEventListener('input', e => {
+    const v = parseFloat(e.target.value);
+    document.getElementById('vpct-' + ch.id).textContent = Math.round(v * 100) + '%';
+    setVolume(ch.id, v);
+  });
+});
+
+/* ── Master volume ── */
+document.getElementById('masterVol').addEventListener('input', e => {
+  const v = parseFloat(e.target.value);
+  masterGain.gain.setTargetAtTime(v, AC.currentTime, .05);
+  document.getElementById('masterPct').textContent = Math.round(v * 100) + '%';
+});
+
+/* ── Presets ── */
+function applyPreset(name) {
+  if (AC.state === 'suspended') AC.resume();
+  const p = PRESETS[name];
+  CHANNELS.forEach(ch => {
+    const v = p[ch.id] || 0;
+    const toggle = document.getElementById('tog-' + ch.id);
+    const volSlider = document.getElementById('vol-' + ch.id);
+    const vpct = document.getElementById('vpct-' + ch.id);
+
+    volSlider.value = v;
+    vpct.textContent = Math.round(v * 100) + '%';
+    setVolume(ch.id, v);
+
+    if (v > 0 && !channels[ch.id].active) {
+      toggle.checked = true;
+      toggleChannel(ch.id, true);
+    } else if (v === 0 && channels[ch.id].active) {
+      toggle.checked = false;
+      toggleChannel(ch.id, false);
+    }
+  });
+  document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector(`[data-preset="${name}"]`).classList.add('active');
+}
+
+function clearPresetActive() {
+  document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+}
+
+document.querySelectorAll('.preset-btn').forEach(btn => {
+  btn.addEventListener('click', () => applyPreset(btn.dataset.preset));
+});
+
+/* ══════════════════════════════════════════
+   VISUALIZER  – per-channel canvas
+══════════════════════════════════════════ */
+const COLOR_MAP = {};
+CHANNELS.forEach(ch => { COLOR_MAP[ch.id] = ch.color; });
+
+function drawViz() {
+  CHANNELS.forEach(ch => {
+    const canvas = document.getElementById('viz-' + ch.id);
+    const ctx = canvas.getContext('2d');
+    const W = canvas.width, H = canvas.height;
+    ctx.clearRect(0, 0, W, H);
+
+    const state = channels[ch.id];
+    if (!state.active || !state.analyser) {
+      // Draw flat idle line
+      ctx.strokeStyle = 'rgba(255,255,255,.08)';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(0, H / 2);
+      ctx.lineTo(W, H / 2);
+      ctx.stroke();
+      return;
+    }
+
+    const analyser = state.analyser;
+    const bufLen = analyser.frequencyBinCount;
+    const data = new Uint8Array(bufLen);
+    analyser.getByteTimeDomainData(data);
+
+    // Waveform
+    const color = COLOR_MAP[ch.id];
+    const grad = ctx.createLinearGradient(0, 0, W, 0);
+    grad.addColorStop(0, color + '88');
+    grad.addColorStop(.5, color + 'ff');
+    grad.addColorStop(1, color + '88');
+
+    ctx.strokeStyle = grad;
+    ctx.lineWidth = 2;
+    ctx.shadowBlur = 8;
+    ctx.shadowColor = color;
+    ctx.beginPath();
+
+    const step = W / bufLen;
+    for (let i = 0; i < bufLen; i++) {
+      const v = data[i] / 128.0;
+      const y = (v * H) / 2;
+      if (i === 0) ctx.moveTo(0, y);
+      else ctx.lineTo(i * step, y);
+    }
+    ctx.stroke();
+    ctx.shadowBlur = 0;
+
+    // Freq bars (mini EQ overlay)
+    analyser.getByteFrequencyData(data);
+    const barW = W / 32;
+    for (let i = 0; i < 32; i++) {
+      const barH = (data[i * Math.floor(bufLen / 32)] / 255) * H * .7;
+      ctx.fillStyle = color + '33';
+      ctx.fillRect(i * barW, H - barH, barW - 1, barH);
+    }
+  });
+
+  requestAnimationFrame(drawViz);
+}
+drawViz();
+
+// Unlock audio on first interaction
+document.addEventListener('click', () => { if (AC.state === 'suspended') AC.resume(); }, { once: true });
+</script>
+</body>
+</html>

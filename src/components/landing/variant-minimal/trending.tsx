@@ -7,6 +7,7 @@ import {
 } from "lucide-react";
 import { useVariantNav } from "../landing-variant-switcher";
 import { Logo } from "@/components/ui/logo";
+import { DEMO_PROJECTS, toMinimalTrendingShape } from "@/lib/demo-projects";
 
 /* ── scroll animation hook ── */
 function useScrollFadeIn<T extends HTMLElement>(threshold = 0.15) {
@@ -74,26 +75,8 @@ const V3_NAV = [
 const PERIODS = ["오늘", "이번 주", "이번 달", "전체"] as const;
 type Period = (typeof PERIODS)[number];
 
-/* ── dummy projects ── */
-const DUMMY_PROJECTS = [
-  { id: 1, title: "VibeAI", desc: "자연어로 UI를 생성하는 AI 디자인 도구", icon: "", score: 487, category: "AI / ML", delta: "+52" },
-  { id: 2, title: "SnapDeploy", desc: "Git push 한 번으로 서버리스 배포 완료", icon: "", score: 423, category: "개발 도구", delta: "+41" },
-  { id: 3, title: "PixelForge", desc: "브라우저에서 실행되는 픽셀아트 에디터", icon: "", score: 391, category: "디자인", delta: "+38" },
-  { id: 4, title: "DataPulse", desc: "실시간 데이터 파이프라인 모니터링 대시보드", icon: "", score: 356, category: "SaaS", delta: "+29" },
-  { id: 5, title: "IndieCraft", desc: "인디 게임 개발자 커뮤니티 & 잼 플랫폼", icon: "", score: 312, category: "게임", delta: "+27" },
-  { id: 6, title: "FormFlow", desc: "드래그앤드롭으로 폼을 만드는 노코드 빌더", icon: "", score: 298, category: "웹 서비스", delta: "+24" },
-  { id: 7, title: "NightOwl", desc: "개발자를 위한 다크 테마 포모도로 타이머", icon: "", score: 276, category: "개발 도구", delta: "+21" },
-  { id: 8, title: "CodeBridge", desc: "팀 코드 리뷰를 자동화하는 GitHub 앱", icon: "", score: 254, category: "개발 도구", delta: "+19" },
-  { id: 9, title: "MarkdownPro", desc: "실시간 협업이 가능한 마크다운 에디터", icon: "", score: 241, category: "웹 서비스", delta: "+17" },
-  { id: 10, title: "BotFactory", desc: "노코드로 챗봇을 만드는 AI 빌더", icon: "", score: 229, category: "AI / ML", delta: "+15" },
-  { id: 11, title: "TinyAnalytics", desc: "프라이버시 중심의 경량 웹 분석 도구", icon: "", score: 218, category: "SaaS", delta: "+14" },
-  { id: 12, title: "SoundScape", desc: "AI로 배경음악을 생성하는 앰비언트 도구", icon: "", score: 205, category: "AI / ML", delta: "+12" },
-  { id: 13, title: "QuizMaker", desc: "인터랙티브 퀴즈를 5분 만에 제작", icon: "", score: 193, category: "웹 서비스", delta: "+11" },
-  { id: 14, title: "LogStream", desc: "멀티 서버 로그를 실시간 스트리밍", icon: "", score: 181, category: "개발 도구", delta: "+9" },
-  { id: 15, title: "GitNotify", desc: "GitHub 이벤트를 슬랙/디스코드로 알림", icon: "", score: 167, category: "API", delta: "+8" },
-  { id: 16, title: "PaletteAI", desc: "AI가 추천하는 컬러 팔레트 생성기", icon: "", score: 154, category: "디자인", delta: "+6" },
-  { id: 17, title: "MicroSaaS", desc: "마이크로 SaaS 보일러플레이트 스타터킷", icon: "", score: 142, category: "SaaS", delta: "+4" },
-];
+/* ── 10 demo projects ── */
+const DUMMY_PROJECTS = DEMO_PROJECTS.map(toMinimalTrendingShape);
 
 export function MinimalTrending() {
   const { subPage, navigate } = useVariantNav();
@@ -181,8 +164,8 @@ export function MinimalTrending() {
                   <span className="w-8 shrink-0 text-center text-sm font-medium text-neutral-600">
                     {String(i + 1).padStart(2, "0")}
                   </span>
-                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-neutral-800 text-lg">
-                    {p.icon}
+                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-neutral-800 overflow-hidden">
+                    <img src={p.icon} alt={p.title} className="h-full w-full object-cover" />
                   </div>
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-2">

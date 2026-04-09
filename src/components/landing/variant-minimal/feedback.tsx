@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 import { useVariantNav } from "../landing-variant-switcher";
 import { Logo } from "@/components/ui/logo";
+import { DEMO_PROJECTS, toMinimalFeedbackShape } from "@/lib/demo-projects";
 
 /* ── scroll animation hook ── */
 function useScrollFadeIn<T extends HTMLElement>(threshold = 0.15) {
@@ -71,26 +72,8 @@ const V3_NAV = [
   { page: "feedback" as const, label: "피드백" },
 ];
 
-/* ── dummy projects for feedback ── */
-const DUMMY_PROJECTS = [
-  { id: 1, title: "VibeAI", icon: "", question: "AI 디자인 도구의 UX가 직관적인가요? 어떤 기능이 더 필요할까요?", replies: 14 },
-  { id: 2, title: "SnapDeploy", icon: "", question: "배포 프로세스에서 가장 불편한 점은 무엇인가요?", replies: 9 },
-  { id: 3, title: "PixelForge", icon: "", question: "브라우저 기반 에디터의 성능은 충분한가요? 레이어 기능이 필요할까요?", replies: 11 },
-  { id: 4, title: "DataPulse", icon: "", question: "대시보드에 어떤 차트 유형이 추가되면 좋을까요?", replies: 7 },
-  { id: 5, title: "IndieCraft", icon: "", question: "게임잼 이벤트의 적정 기간은 얼마가 좋을까요?", replies: 18 },
-  { id: 6, title: "FormFlow", icon: "", question: "노코드 폼 빌더에 조건부 로직이 꼭 필요한가요?", replies: 5 },
-  { id: 7, title: "NightOwl", icon: "", question: "포모도로 타이머에 통계 기능이 있으면 사용하실 건가요?", replies: 12 },
-  { id: 8, title: "CodeBridge", icon: "", question: "코드 리뷰 자동화에서 가장 중요한 체크 항목은 무엇인가요?", replies: 8 },
-  { id: 9, title: "MarkdownPro", icon: "", question: "실시간 협업 시 충돌 해결은 어떤 방식이 좋을까요?", replies: 6 },
-  { id: 10, title: "BotFactory", icon: "", question: "챗봇 빌더에서 가장 먼저 지원했으면 하는 채널은?", replies: 15 },
-  { id: 11, title: "TinyAnalytics", icon: "", question: "웹 분석에서 꼭 필요한 지표 3가지는 무엇인가요?", replies: 3 },
-  { id: 12, title: "SoundScape", icon: "", question: "AI 배경음악의 장르 선택지로 무엇이 필요할까요?", replies: 10 },
-  { id: 13, title: "QuizMaker", icon: "", question: "퀴즈 유형 중 어떤 것을 가장 많이 사용하시나요?", replies: 4 },
-  { id: 14, title: "LogStream", icon: "", question: "로그 스트리밍에서 필터/검색 기능이 충분한가요?", replies: 7 },
-  { id: 15, title: "GitNotify", icon: "", question: "어떤 GitHub 이벤트 알림이 가장 유용한가요?", replies: 13 },
-  { id: 16, title: "PaletteAI", icon: "", question: "컬러 팔레트 생성 시 이미지 업로드 기반 추출이 필요한가요?", replies: 2 },
-  { id: 17, title: "MicroSaaS", icon: "", question: "보일러플레이트에 결제 연동이 기본 포함되어야 할까요?", replies: 16 },
-];
+/* ── 10 demo projects ── */
+const DUMMY_PROJECTS = DEMO_PROJECTS.map(toMinimalFeedbackShape);
 
 export function MinimalFeedback() {
   const { subPage, navigate } = useVariantNav();
@@ -143,8 +126,8 @@ export function MinimalFeedback() {
               <AnimateIn key={p.id} delay={i * 50}>
                 <div className="rounded-xl border border-neutral-800 bg-neutral-900/50 p-5 transition hover:border-neutral-600">
                   <div className="flex items-center gap-3">
-                    <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-neutral-800 text-base">
-                      {p.icon}
+                    <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-neutral-800 overflow-hidden">
+                      <img src={p.icon} alt={p.title} className="h-full w-full object-cover" />
                     </span>
                     <h3 className="text-sm font-semibold">{p.title}</h3>
                   </div>

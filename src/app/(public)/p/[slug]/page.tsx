@@ -2,13 +2,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Heart } from "lucide-react";
+import { Heart, ArrowLeft, MessageSquareText, BookMarked } from "lucide-react";
+import { ImageCarousel } from "@/components/projects/image-carousel";
 
 import { OutboundLink } from "@/components/analytics/outbound-link";
 import { ProjectEventBeacon } from "@/components/analytics/project-event-beacon";
-import { ActivityFeed } from "@/components/projects/activity-feed";
+
 import { CommentThread } from "@/components/projects/comment-thread";
-import { ProjectGrid } from "@/components/projects/project-grid";
+
 import { FlashBanner } from "@/components/ui/flash-banner";
 import { PageShell } from "@/components/ui/page-shell";
 import { ProseBlock } from "@/components/ui/prose-block";
@@ -23,7 +24,7 @@ import {
   verificationLabels
 } from "@/lib/constants";
 import { getCurrentProfile } from "@/lib/auth/session";
-import { getProjectDetailBySlug, getProjectMetaBySlug, getViewerState, type ProjectPostModel } from "@/lib/services/read-models";
+import { getProjectDetailBySlug, getProjectMetaBySlug, getViewerState } from "@/lib/services/read-models";
 import { formatDate, formatRelative } from "@/lib/utils/date";
 
 type ProjectDetailPageProps = {
@@ -90,7 +91,7 @@ export default async function ProjectDetailPage({ params, searchParams }: Projec
   const isOwner = viewerState.ownedProjectIds.includes(project.id);
   const canManage = isOwner || viewer?.role === "admin";
   const canView = ["published", "limited", "archived"].includes(project.status) || canManage;
-  const visiblePosts = canManage ? project.posts : project.posts.filter((post) => post.status === "published");
+  void canManage; // posts section removed
   const visibleComments = project.comments.filter((comment) => comment.status !== "hidden");
 
   if (!canView) notFound();
@@ -151,6 +152,15 @@ export default async function ProjectDetailPage({ params, searchParams }: Projec
         </div>
       )}
 
+      {/* ── 뒤로가기 ── */}
+      <Link
+        href="/feature/products"
+        className="inline-flex items-center gap-1.5 text-sm text-foreground-muted transition hover:text-foreground"
+      >
+        <ArrowLeft className="h-4 w-4" />
+        프로젝트 목록
+      </Link>
+
       {/* ── PH 스타일 헤더 ── */}
       <div className="flex items-start gap-4">
         {/* 로고 */}
@@ -189,26 +199,11 @@ export default async function ProjectDetailPage({ params, searchParams }: Projec
 
         {/* 왼쪽: 커버 + 갤러리 + 소개 + 활동 + 댓글 */}
         <div className="space-y-6">
-          {/* 커버 이미지 */}
-          <img
-            src={project.coverImageUrl}
-            alt={`${project.title} 대표 이미지`}
-            className="aspect-video w-full rounded-2xl border border-line bg-surface-muted object-cover"
+          {/* 이미지 슬라이더 */}
+          <ImageCarousel
+            images={[project.coverImageUrl, ...project.gallery]}
+            alt={project.title}
           />
-
-          {/* 갤러리 */}
-          {project.gallery.length > 0 && (
-            <div className="grid grid-cols-2 gap-3">
-              {project.gallery.slice(0, 4).map((image, index) => (
-                <img
-                  key={`${project.id}-gallery-${index}`}
-                  src={image}
-                  alt={`${project.title} 스크린샷 ${index + 1}`}
-                  className="aspect-video w-full rounded-xl border border-line bg-surface-muted object-cover"
-                />
-              ))}
-            </div>
-          )}
 
           {/* 소개 */}
           <div className="space-y-5 rounded-2xl border border-line bg-surface p-6">
@@ -232,12 +227,6 @@ export default async function ProjectDetailPage({ params, searchParams }: Projec
             )}
           </div>
 
-          {/* 활동 */}
-          <div id="activity" className="space-y-4">
-            <SectionHeading eyebrow="활동" title="런치 이후의 변화" description="업데이트와 피드백 요청이 시간순으로 쌓입니다." />
-            <ActivityFeed posts={visiblePosts} projectId={project.id} projectSlug={project.slug} />
-          </div>
-
           {/* 댓글 */}
           <div id="comments" className="space-y-4">
             <SectionHeading eyebrow="댓글" title="댓글과 피드백" />
@@ -253,8 +242,9 @@ export default async function ProjectDetailPage({ params, searchParams }: Projec
             projectId={project.id}
             source="detail_try"
             href={project.liveUrl}
-            className="flex w-full items-center justify-center rounded-xl bg-surface py-3 text-sm font-bold text-foreground border border-line hover:bg-surface-muted transition"
+            className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#d76542] py-4 text-base font-bold text-white shadow-lg shadow-[#d76542]/25 transition hover:brightness-110"
           >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
             Visit Site
           </OutboundLink>
 
@@ -407,7 +397,39 @@ export default async function ProjectDetailPage({ params, searchParams }: Projec
       {project.relatedProjects.length > 0 && (
         <section className="space-y-5">
           <SectionHeading eyebrow="추천" title="비슷한 프로젝트" />
-          <ProjectGrid items={project.relatedProjects} viewer={viewer} savedProjectIds={viewerState.savedProjectIds} surface="tag" />
+          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+            {project.relatedProjects.map((rp) => (
+              <Link
+                key={rp.id}
+                href={`/p/${rp.slug}`}
+                className="group overflow-hidden rounded-2xl border border-line bg-surface transition hover:-translate-y-1 hover:border-line-strong"
+              >
+                <div className="aspect-[16/10] overflow-hidden bg-surface-muted">
+                  <img src={rp.coverImageUrl} alt={rp.title} className="h-full w-full object-cover transition group-hover:scale-105" />
+                </div>
+                <div className="px-4 py-3">
+                  <div className="flex items-center gap-2">
+                    <h3 className="truncate text-sm font-bold text-foreground">{rp.title}</h3>
+                    <span className="shrink-0 rounded bg-surface-muted px-1.5 py-0.5 text-[10px] font-semibold uppercase text-foreground-muted">
+                      {stageLabels[rp.stage as keyof typeof stageLabels] ?? rp.stage}
+                    </span>
+                  </div>
+                  <p className="mt-1 line-clamp-2 text-xs leading-5 text-foreground-muted">{rp.tagline}</p>
+                  <div className="mt-2 flex items-center gap-3 text-xs text-foreground-muted">
+                    <span>{rp.makerAlias}</span>
+                    <span className="inline-flex items-center gap-1">
+                      <MessageSquareText className="size-3" />
+                      {rp.metrics.comments}
+                    </span>
+                    <span className="inline-flex items-center gap-1">
+                      <BookMarked className="size-3" />
+                      {rp.metrics.saves}
+                    </span>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
         </section>
       )}
     </PageShell>

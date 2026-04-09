@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DataPulse — 실시간 데이터 스트림</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0b0f1a;
+      --surface: #111827;
+      --surface2: #1a2233;
+      --border: #1f2d40;
+      --teal: #14b8a6;
+      --emerald: #10b981;
+      --teal-light: #2dd4bf;
+      --text: #e2e8f0;
+      --text-muted: #64748b;
+      --text-dim: #94a3b8;
+      --red: #ef4444;
+      --amber: #f59e0b;
+      --blue: #3b82f6;
+      --purple: #8b5cf6;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 0;
+    }
+
+    /* ── Header ── */
+    header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 0 24px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.2rem;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+    }
+
+    .logo-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #14b8a6, #10b981);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .logo-icon svg { width: 18px; height: 18px; fill: white; }
+
+    .logo-text { background: linear-gradient(90deg, #14b8a6, #10b981); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+    .header-right { display: flex; align-items: center; gap: 12px; }
+
+    .status-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.75rem;
+      color: var(--text-dim);
+      padding: 4px 10px;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--emerald);
+      box-shadow: 0 0 6px var(--emerald);
+      animation: pulse-dot 2s infinite;
+    }
+
+    .status-dot.paused { background: var(--amber); box-shadow: 0 0 6px var(--amber); animation: none; }
+
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    #toggle-btn {
+      padding: 7px 18px;
+      border-radius: 8px;
+      border: none;
+      background: linear-gradient(135deg, #14b8a6, #10b981);
+      color: white;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.1s;
+    }
+
+    #toggle-btn:hover { opacity: 0.85; transform: translateY(-1px); }
+    #toggle-btn:active { transform: translateY(0); }
+
+    /* ── Layout ── */
+    .container { max-width: 1280px; margin: 0 auto; padding: 24px 20px; }
+
+    .page-title {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 20px;
+    }
+
+    /* ── KPI Grid ── */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .kpi-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px 24px;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.3s;
+    }
+
+    .kpi-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #14b8a6, #10b981);
+    }
+
+    .kpi-card:hover { border-color: #2dd4bf44; }
+
+    .kpi-label {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .kpi-value {
+      font-size: 2.1rem;
+      font-weight: 700;
+      line-height: 1;
+      background: linear-gradient(90deg, #e2e8f0, #94a3b8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 8px;
+    }
+
+    .kpi-delta {
+      font-size: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .kpi-delta.up { color: var(--emerald); }
+    .kpi-delta.down { color: var(--red); }
+
+    .kpi-icon {
+      position: absolute;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      opacity: 0.08;
+      font-size: 3.5rem;
+    }
+
+    /* ── Charts Grid ── */
+    .charts-grid {
+      display: grid;
+      grid-template-columns: 3fr 2fr;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .chart-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px 24px;
+    }
+
+    .chart-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    .chart-title {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--text-dim);
+    }
+
+    .chart-badge {
+      font-size: 0.68rem;
+      padding: 3px 8px;
+      border-radius: 20px;
+      background: #14b8a620;
+      color: var(--teal);
+      border: 1px solid #14b8a630;
+    }
+
+    .chart-container { width: 100%; }
+
+    #line-chart { width: 100%; height: 200px; display: block; }
+    #bar-chart  { width: 100%; height: 200px; display: block; }
+
+    /* SVG axis & grid */
+    .grid-line { stroke: #1f2d40; stroke-width: 1; }
+    .axis-label { fill: #475569; font-size: 10px; }
+    .chart-line {
+      fill: none;
+      stroke: url(#lineGrad);
+      stroke-width: 2.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .chart-area { fill: url(#areaGrad); }
+    .data-dot { fill: var(--teal); stroke: var(--bg); stroke-width: 2; }
+
+    /* ── Stream Feed ── */
+    .feed-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px 24px;
+    }
+
+    .feed-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+
+    .feed-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 14px;
+      background: var(--surface2);
+      border-radius: 8px;
+      font-size: 0.8rem;
+      border: 1px solid transparent;
+      animation: slide-in 0.3s ease;
+    }
+
+    @keyframes slide-in {
+      from { opacity: 0; transform: translateX(-8px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+
+    .feed-type {
+      font-size: 0.65rem;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      white-space: nowrap;
+    }
+
+    .feed-type.signup   { background: #14b8a620; color: var(--teal); }
+    .feed-type.purchase { background: #10b98120; color: var(--emerald); }
+    .feed-type.session  { background: #3b82f620; color: var(--blue); }
+    .feed-type.error    { background: #ef444420; color: var(--red); }
+
+    .feed-msg { flex: 1; color: var(--text-dim); }
+    .feed-time { color: var(--text-muted); font-size: 0.7rem; white-space: nowrap; }
+
+    /* ── Bottom Grid ── */
+    .bottom-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 900px) {
+      .kpi-grid { grid-template-columns: 1fr 1fr; }
+      .charts-grid { grid-template-columns: 1fr; }
+      .bottom-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 520px) {
+      .kpi-grid { grid-template-columns: 1fr; }
+      header { padding: 0 14px; }
+      .container { padding: 16px 12px; }
+      .kpi-value { font-size: 1.6rem; }
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="logo-icon">
+      <svg viewBox="0 0 24 24"><path d="M3 18l4-8 4 4 4-10 4 14H3z"/></svg>
+    </div>
+    <span class="logo-text">DataPulse</span>
+  </div>
+  <div class="header-right">
+    <div class="status-badge">
+      <div class="status-dot" id="status-dot"></div>
+      <span id="status-text">실시간 수신 중</span>
+    </div>
+    <button id="toggle-btn" onclick="togglePause()">⏸ 일시정지</button>
+  </div>
+</header>
+
+<div class="container">
+  <p class="page-title">대시보드 개요 — 실시간 데이터 스트림</p>
+
+  <!-- KPI Cards -->
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-label">총 사용자</div>
+      <div class="kpi-value" id="kpi-users">0</div>
+      <div class="kpi-delta up" id="delta-users">▲ +0.0%</div>
+      <div class="kpi-icon">👤</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">총 매출</div>
+      <div class="kpi-value" id="kpi-revenue">₩0</div>
+      <div class="kpi-delta up" id="delta-revenue">▲ +0.0%</div>
+      <div class="kpi-icon">💰</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">활성 세션</div>
+      <div class="kpi-value" id="kpi-sessions">0</div>
+      <div class="kpi-delta up" id="delta-sessions">▲ +0.0%</div>
+      <div class="kpi-icon">⚡</div>
+    </div>
+  </div>
+
+  <!-- Charts -->
+  <div class="charts-grid">
+    <!-- Line Chart -->
+    <div class="chart-card">
+      <div class="chart-header">
+        <span class="chart-title">실시간 트래픽 (최근 20초)</span>
+        <span class="chart-badge">LIVE</span>
+      </div>
+      <div class="chart-container">
+        <svg id="line-chart" viewBox="0 0 600 200" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="lineGrad" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="#14b8a6"/>
+              <stop offset="100%" stop-color="#10b981"/>
+            </linearGradient>
+            <linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#14b8a6" stop-opacity="0.25"/>
+              <stop offset="100%" stop-color="#14b8a6" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+          <!-- Grid lines -->
+          <line x1="40" y1="20" x2="580" y2="20" class="grid-line"/>
+          <line x1="40" y1="60" x2="580" y2="60" class="grid-line"/>
+          <line x1="40" y1="100" x2="580" y2="100" class="grid-line"/>
+          <line x1="40" y1="140" x2="580" y2="140" class="grid-line"/>
+          <line x1="40" y1="180" x2="580" y2="180" class="grid-line"/>
+          <!-- Y axis labels -->
+          <text x="30" y="24"  class="axis-label" text-anchor="end" id="y4">--</text>
+          <text x="30" y="64"  class="axis-label" text-anchor="end" id="y3">--</text>
+          <text x="30" y="104" class="axis-label" text-anchor="end" id="y2">--</text>
+          <text x="30" y="144" class="axis-label" text-anchor="end" id="y1">--</text>
+          <text x="30" y="184" class="axis-label" text-anchor="end" id="y0">0</text>
+          <!-- Chart paths -->
+          <path id="area-path" class="chart-area" d=""/>
+          <path id="line-path" class="chart-line" d=""/>
+          <!-- Dots group -->
+          <g id="dots-group"></g>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Bar Chart -->
+    <div class="chart-card">
+      <div class="chart-header">
+        <span class="chart-title">일별 데이터 (이번 주)</span>
+        <span class="chart-badge">주간</span>
+      </div>
+      <div class="chart-container">
+        <svg id="bar-chart" viewBox="0 0 350 200" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="barGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#14b8a6"/>
+              <stop offset="100%" stop-color="#10b981"/>
+            </linearGradient>
+            <linearGradient id="barGradDim" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#1f4d47"/>
+              <stop offset="100%" stop-color="#1a3d36"/>
+            </linearGradient>
+          </defs>
+          <line x1="30" y1="170" x2="330" y2="170" stroke="#1f2d40" stroke-width="1"/>
+          <g id="bars-group"></g>
+          <g id="bar-labels"></g>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom: Feed + Sparklines -->
+  <div class="bottom-grid">
+    <!-- Event Feed -->
+    <div class="feed-card">
+      <div class="chart-header">
+        <span class="chart-title">실시간 이벤트 피드</span>
+        <span class="chart-badge">STREAM</span>
+      </div>
+      <ul class="feed-list" id="event-feed"></ul>
+    </div>
+
+    <!-- Metric Breakdown -->
+    <div class="chart-card">
+      <div class="chart-header">
+        <span class="chart-title">채널별 트래픽 비율</span>
+        <span class="chart-badge">현재</span>
+      </div>
+      <svg id="donut-chart" viewBox="0 0 200 160" style="width:100%;display:block;">
+        <g id="donut-group" transform="translate(80, 80)"></g>
+        <g id="legend-group" transform="translate(165, 30)"></g>
+      </svg>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── State ──────────────────────────────────────────
+let paused = false;
+let tick = 0;
+
+// KPI targets & current
+const kpi = {
+  users:    { current: 84200, target: 84200 },
+  revenue:  { current: 52140000, target: 52140000 },
+  sessions: { current: 1283, target: 1283 },
+};
+
+// Line chart data (20 pts)
+const lineData = Array.from({ length: 20 }, () => Math.floor(Math.random() * 400 + 100));
+
+// Bar chart data (Mon–Sun)
+const days = ['월', '화', '수', '목', '금', '토', '일'];
+const barData = [420, 560, 310, 680, 740, 290, 180];
+
+// Donut data
+const donut = [
+  { label: '직접 유입', value: 38, color: '#14b8a6' },
+  { label: '검색',     value: 27, color: '#10b981' },
+  { label: 'SNS',      value: 21, color: '#3b82f6' },
+  { label: '광고',     value: 14, color: '#8b5cf6' },
+];
+
+// Feed messages
+const feedTemplates = [
+  { type: 'signup',   msgs: ['신규 회원 가입', '회원가입 완료', '이메일 인증 성공'] },
+  { type: 'purchase', msgs: ['결제 완료 ₩29,000', '구독 갱신 ₩9,900', '상품 구매 ₩55,000'] },
+  { type: 'session',  msgs: ['세션 시작됨', '페이지 방문 (홈)', '대시보드 진입'] },
+  { type: 'error',    msgs: ['API 응답 지연', '로그인 실패 (3회)', '타임아웃 감지'] },
+];
+
+// ── Helpers ──────────────────────────────────────────
+function lerp(a, b, t) { return a + (b - a) * t; }
+
+function formatNum(n) {
+  if (n >= 1000000) return (n / 1000000).toFixed(1) + 'M';
+  if (n >= 1000)    return (n / 1000).toFixed(1) + 'K';
+  return Math.floor(n).toLocaleString('ko-KR');
+}
+
+function formatRevenue(n) {
+  if (n >= 100000000) return '₩' + (n / 100000000).toFixed(1) + '억';
+  if (n >= 10000)     return '₩' + (n / 10000).toFixed(0) + '만';
+  return '₩' + n.toLocaleString('ko-KR');
+}
+
+function now() {
+  const d = new Date();
+  return `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}:${String(d.getSeconds()).padStart(2,'0')}`;
+}
+
+// ── KPI animated counter ──────────────────────────────
+let kpiFrame = null;
+function animateKPI() {
+  let done = true;
+  ['users', 'revenue', 'sessions'].forEach(key => {
+    const diff = kpi[key].target - kpi[key].current;
+    if (Math.abs(diff) > 0.5) {
+      kpi[key].current = lerp(kpi[key].current, kpi[key].target, 0.12);
+      done = false;
+    } else {
+      kpi[key].current = kpi[key].target;
+    }
+  });
+
+  document.getElementById('kpi-users').textContent    = formatNum(kpi.users.current);
+  document.getElementById('kpi-revenue').textContent  = formatRevenue(kpi.revenue.current);
+  document.getElementById('kpi-sessions').textContent = formatNum(kpi.sessions.current);
+
+  if (!done) kpiFrame = requestAnimationFrame(animateKPI);
+}
+
+function setKPITargets() {
+  const usersDelta   = Math.floor(Math.random() * 300) - 50;
+  const revenueDelta = Math.floor(Math.random() * 200000) - 20000;
+  const sessionDelta = Math.floor(Math.random() * 80) - 20;
+
+  kpi.users.target    = Math.max(kpi.users.target + usersDelta, 50000);
+  kpi.revenue.target  = Math.max(kpi.revenue.target + revenueDelta, 10000000);
+  kpi.sessions.target = Math.max(kpi.sessions.target + sessionDelta, 200);
+
+  const ug = usersDelta >= 0;
+  const rg = revenueDelta >= 0;
+  const sg = sessionDelta >= 0;
+
+  document.getElementById('delta-users').className    = 'kpi-delta ' + (ug ? 'up' : 'down');
+  document.getElementById('delta-revenue').className  = 'kpi-delta ' + (rg ? 'up' : 'down');
+  document.getElementById('delta-sessions').className = 'kpi-delta ' + (sg ? 'up' : 'down');
+
+  document.getElementById('delta-users').textContent    = (ug ? '▲ +' : '▼ ') + Math.abs(usersDelta).toLocaleString('ko-KR') + '명';
+  document.getElementById('delta-revenue').textContent  = (rg ? '▲ +' : '▼ ') + formatRevenue(Math.abs(revenueDelta));
+  document.getElementById('delta-sessions').textContent = (sg ? '▲ +' : '▼ ') + Math.abs(sessionDelta) + ' 세션';
+
+  cancelAnimationFrame(kpiFrame);
+  kpiFrame = requestAnimationFrame(animateKPI);
+}
+
+// ── Line Chart ──────────────────────────────────────────
+function renderLineChart() {
+  const W = 600, H = 200;
+  const padL = 42, padR = 14, padT = 20, padB = 20;
+  const chartW = W - padL - padR;
+  const chartH = H - padT - padB;
+
+  const mn = Math.min(...lineData) * 0.85;
+  const mx = Math.max(...lineData) * 1.1;
+  const range = mx - mn || 1;
+
+  const xStep = chartW / (lineData.length - 1);
+
+  function px(i) { return padL + i * xStep; }
+  function py(v) { return padT + chartH - ((v - mn) / range) * chartH; }
+
+  // Y labels
+  for (let i = 0; i <= 4; i++) {
+    const v = mn + (range / 4) * i;
+    document.getElementById('y' + i).textContent = v >= 1000 ? (v/1000).toFixed(1)+'k' : Math.floor(v);
+  }
+
+  // Line path
+  let linePath = lineData.map((v, i) => (i === 0 ? 'M' : 'L') + px(i).toFixed(1) + ',' + py(v).toFixed(1)).join(' ');
+  // Area path
+  let areaPath = linePath + ` L${px(lineData.length-1).toFixed(1)},${(padT+chartH).toFixed(1)} L${padL},${(padT+chartH).toFixed(1)} Z`;
+
+  document.getElementById('line-path').setAttribute('d', linePath);
+  document.getElementById('area-path').setAttribute('d', areaPath);
+
+  // Dots (only last one highlighted)
+  const dotsG = document.getElementById('dots-group');
+  dotsG.innerHTML = '';
+  lineData.forEach((v, i) => {
+    const isLast = i === lineData.length - 1;
+    const c = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    c.setAttribute('cx', px(i).toFixed(1));
+    c.setAttribute('cy', py(v).toFixed(1));
+    c.setAttribute('r', isLast ? '5' : '3');
+    c.setAttribute('fill', isLast ? '#2dd4bf' : '#14b8a670');
+    c.setAttribute('stroke', '#0b0f1a');
+    c.setAttribute('stroke-width', '2');
+    dotsG.appendChild(c);
+  });
+}
+
+// ── Bar Chart ──────────────────────────────────────────
+function renderBarChart() {
+  const W = 350, H = 200;
+  const padL = 30, padR = 10, padT = 14, padB = 30;
+  const chartH = H - padT - padB;
+  const n = barData.length;
+  const mx = Math.max(...barData) * 1.1 || 1;
+  const colW = (W - padL - padR) / n;
+  const barW = colW * 0.55;
+
+  const barsG  = document.getElementById('bars-group');
+  const labsG  = document.getElementById('bar-labels');
+  barsG.innerHTML = '';
+  labsG.innerHTML = '';
+
+  const today = new Date().getDay(); // 0=Sun, 1=Mon...
+  // Map JS day to Mon-based index (Mon=0)
+  const todayBar = today === 0 ? 6 : today - 1;
+
+  barData.forEach((v, i) => {
+    const bh = (v / mx) * chartH;
+    const x  = padL + i * colW + (colW - barW) / 2;
+    const y  = H - padB - bh;
+    const isToday = i === todayBar;
+
+    const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+    rect.setAttribute('x', x.toFixed(1));
+    rect.setAttribute('y', y.toFixed(1));
+    rect.setAttribute('width', barW.toFixed(1));
+    rect.setAttribute('height', bh.toFixed(1));
+    rect.setAttribute('rx', '4');
+    rect.setAttribute('fill', isToday ? 'url(#barGrad)' : 'url(#barGradDim)');
+    barsG.appendChild(rect);
+
+    // Value label on top
+    const vt = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    vt.setAttribute('x', (x + barW / 2).toFixed(1));
+    vt.setAttribute('y', (y - 4).toFixed(1));
+    vt.setAttribute('text-anchor', 'middle');
+    vt.setAttribute('fill', isToday ? '#2dd4bf' : '#475569');
+    vt.setAttribute('font-size', '9');
+    vt.textContent = v >= 1000 ? (v/1000).toFixed(1)+'k' : v;
+    labsG.appendChild(vt);
+
+    // Day label below
+    const dt = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    dt.setAttribute('x', (x + barW / 2).toFixed(1));
+    dt.setAttribute('y', (H - padB + 14).toFixed(1));
+    dt.setAttribute('text-anchor', 'middle');
+    dt.setAttribute('fill', isToday ? '#2dd4bf' : '#475569');
+    dt.setAttribute('font-size', '10');
+    dt.textContent = days[i];
+    labsG.appendChild(dt);
+  });
+}
+
+// ── Donut Chart ──────────────────────────────────────────
+function renderDonut() {
+  const g = document.getElementById('donut-group');
+  const lg = document.getElementById('legend-group');
+  g.innerHTML = '';
+  lg.innerHTML = '';
+
+  const total = donut.reduce((s, d) => s + d.value, 0);
+  let angle = -Math.PI / 2;
+  const R = 55, r = 30;
+
+  donut.forEach((seg, i) => {
+    const theta = (seg.value / total) * Math.PI * 2;
+    const x1 = Math.cos(angle) * R, y1 = Math.sin(angle) * R;
+    const x2 = Math.cos(angle + theta) * R, y2 = Math.sin(angle + theta) * R;
+    const xi1 = Math.cos(angle) * r, yi1 = Math.sin(angle) * r;
+    const xi2 = Math.cos(angle + theta) * r, yi2 = Math.sin(angle + theta) * r;
+    const large = theta > Math.PI ? 1 : 0;
+
+    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    path.setAttribute('d', `M${x1.toFixed(2)},${y1.toFixed(2)} A${R},${R} 0 ${large},1 ${x2.toFixed(2)},${y2.toFixed(2)} L${xi2.toFixed(2)},${yi2.toFixed(2)} A${r},${r} 0 ${large},0 ${xi1.toFixed(2)},${yi1.toFixed(2)} Z`);
+    path.setAttribute('fill', seg.color);
+    path.setAttribute('stroke', '#0b0f1a');
+    path.setAttribute('stroke-width', '2');
+    g.appendChild(path);
+
+    // Legend
+    const row = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+    row.setAttribute('transform', `translate(0, ${i * 24})`);
+
+    const dot = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+    dot.setAttribute('width', '8'); dot.setAttribute('height', '8');
+    dot.setAttribute('rx', '2'); dot.setAttribute('fill', seg.color);
+    row.appendChild(dot);
+
+    const lbl = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    lbl.setAttribute('x', '13'); lbl.setAttribute('y', '8');
+    lbl.setAttribute('fill', '#94a3b8'); lbl.setAttribute('font-size', '9');
+    lbl.textContent = `${seg.label} ${seg.value}%`;
+    row.appendChild(lbl);
+    lg.appendChild(row);
+
+    angle += theta;
+  });
+
+  // Center label
+  const ct = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+  ct.setAttribute('text-anchor', 'middle'); ct.setAttribute('y', '-6');
+  ct.setAttribute('fill', '#e2e8f0'); ct.setAttribute('font-size', '14');
+  ct.setAttribute('font-weight', '700'); ct.textContent = '채널';
+  g.appendChild(ct);
+
+  const cs = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+  cs.setAttribute('text-anchor', 'middle'); cs.setAttribute('y', '10');
+  cs.setAttribute('fill', '#64748b'); cs.setAttribute('font-size', '9');
+  cs.textContent = '분석';
+  g.appendChild(cs);
+}
+
+// ── Event Feed ──────────────────────────────────────────
+function addFeedItem() {
+  const tmpl = feedTemplates[Math.floor(Math.random() * feedTemplates.length)];
+  const msg  = tmpl.msgs[Math.floor(Math.random() * tmpl.msgs.length)];
+  const user = '사용자 #' + (Math.floor(Math.random() * 9000) + 1000);
+
+  const li = document.createElement('li');
+  li.className = 'feed-item';
+  li.innerHTML = `
+    <span class="feed-type ${tmpl.type}">${tmpl.type === 'signup' ? '가입' : tmpl.type === 'purchase' ? '구매' : tmpl.type === 'session' ? '세션' : '오류'}</span>
+    <span class="feed-msg">${user} — ${msg}</span>
+    <span class="feed-time">${now()}</span>
+  `;
+
+  const feed = document.getElementById('event-feed');
+  feed.insertBefore(li, feed.firstChild);
+  if (feed.children.length > 6) feed.removeChild(feed.lastChild);
+}
+
+// ── Update line chart data ──────────────────────────────
+function updateLineData() {
+  const newVal = Math.floor(Math.random() * 500 + 80);
+  lineData.shift();
+  lineData.push(newVal);
+}
+
+// ── Update bar chart data (slowly) ──────────────────────
+function updateBarData() {
+  const today = new Date().getDay();
+  const todayBar = today === 0 ? 6 : today - 1;
+  barData[todayBar] = Math.max(10, barData[todayBar] + Math.floor(Math.random() * 30) - 5);
+}
+
+// ── Update donut slices ──────────────────────────────────
+function updateDonut() {
+  donut.forEach(d => {
+    d.value = Math.max(5, Math.min(60, d.value + Math.floor(Math.random() * 5) - 2));
+  });
+  const t = donut.reduce((s, d) => s + d.value, 0);
+  // normalize to ~100
+  donut.forEach(d => d.value = Math.round(d.value / t * 100));
+}
+
+// ── Toggle ──────────────────────────────────────────────
+function togglePause() {
+  paused = !paused;
+  const btn = document.getElementById('toggle-btn');
+  const dot = document.getElementById('status-dot');
+  const txt = document.getElementById('status-text');
+
+  if (paused) {
+    btn.textContent = '▶ 재개';
+    dot.classList.add('paused');
+    txt.textContent = '일시정지됨';
+  } else {
+    btn.textContent = '⏸ 일시정지';
+    dot.classList.remove('paused');
+    txt.textContent = '실시간 수신 중';
+    scheduleNext();
+  }
+}
+
+// ── Main tick ───────────────────────────────────────────
+function tick_fn() {
+  if (paused) return;
+  tick++;
+
+  updateLineData();
+  renderLineChart();
+
+  if (tick % 3 === 0) {
+    setKPITargets();
+    addFeedItem();
+    updateBarData();
+    renderBarChart();
+  }
+
+  if (tick % 7 === 0) {
+    updateDonut();
+    renderDonut();
+  }
+
+  scheduleNext();
+}
+
+function scheduleNext() {
+  setTimeout(tick_fn, 1000);
+}
+
+// ── Init ────────────────────────────────────────────────
+renderLineChart();
+renderBarChart();
+renderDonut();
+setKPITargets();
+cancelAnimationFrame(kpiFrame);
+kpi.users.current = 1;
+kpi.revenue.current = 1;
+kpi.sessions.current = 1;
+kpiFrame = requestAnimationFrame(animateKPI);
+
+// Populate feed initially
+for (let i = 0; i < 4; i++) addFeedItem();
+
+scheduleNext();
+</script>
+</body>
+</html>

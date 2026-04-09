@@ -1,0 +1,82 @@
+version: "3.8"
+
+services:
+  vibeai:
+    image: nginx:alpine
+    ports:
+      - "7100:80"
+    volumes:
+      - ./vibeai:/usr/share/nginx/html:ro
+    restart: unless-stopped
+
+  pixelforge:
+    image: nginx:alpine
+    ports:
+      - "7101:80"
+    volumes:
+      - ./pixelforge:/usr/share/nginx/html:ro
+    restart: unless-stopped
+
+  datapulse:
+    image: nginx:alpine
+    ports:
+      - "7102:80"
+    volumes:
+      - ./datapulse:/usr/share/nginx/html:ro
+    restart: unless-stopped
+
+  indiecraft:
+    image: nginx:alpine
+    ports:
+      - "7103:80"
+    volumes:
+      - ./indiecraft:/usr/share/nginx/html:ro
+    restart: unless-stopped
+
+  formflow:
+    image: nginx:alpine
+    ports:
+      - "7104:80"
+    volumes:
+      - ./formflow:/usr/share/nginx/html:ro
+    restart: unless-stopped
+
+  markdownpro:
+    image: nginx:alpine
+    ports:
+      - "7105:80"
+    volumes:
+      - ./markdownpro:/usr/share/nginx/html:ro
+    restart: unless-stopped
+
+  tinyanalytics:
+    image: nginx:alpine
+    ports:
+      - "7106:80"
+    volumes:
+      - ./tinyanalytics:/usr/share/nginx/html:ro
+    restart: unless-stopped
+
+  soundscape:
+    image: nginx:alpine
+    ports:
+      - "7107:80"
+    volumes:
+      - ./soundscape:/usr/share/nginx/html:ro
+    restart: unless-stopped
+
+  quizmaker:
+    image: nginx:alpine
+    ports:
+      - "7108:80"
+    volumes:
+      - ./quizmaker:/usr/share/nginx/html:ro
+    restart: unless-stopped
+
+  paletteai:
+    image: nginx:alpine
+    ports:
+      - "7109:80"
+    volumes:
+      - ./paletteai:/usr/share/nginx/html:ro
+    restart: unless-stopped

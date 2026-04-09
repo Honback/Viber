@@ -35,6 +35,7 @@ import {
 import type { LandingVariantProps, SerializedProjectCard } from "../types";
 import { OutboundLink } from "@/components/analytics/outbound-link";
 import { getCategoryLabel } from "../shared";
+import { DEMO_PROJECTS, toFeatureIndexShape, CATEGORY_COLORS as SHARED_COLORS } from "@/lib/demo-projects";
 
 /* ── palette ── */
 const ACCENT = "#d76542";
@@ -93,39 +94,10 @@ const CATEGORY_TABS = [
   { key: "api", label: "API", emoji: "" },
 ];
 
-const CATEGORY_COLORS: Record<string, string> = {
-  ai: "#8B5CF6",
-  tool: "#F59E0B",
-  web: "#06B6D4",
-  game: "#EC4899",
-  api: "#3B82F6",
-  service: "#10B981",
-  saas: "#6366F1",
-  data: "#14B8A6",
-  music: "#A855F7",
-  devtool: "#EF4444",
-};
+const CATEGORY_COLORS = SHARED_COLORS;
 
-/* ── 17 dummy projects ── */
-const DUMMY_PROJECTS = [
-  { title: "VibeAI", icon: "", category: "ai", tagline: "자연어로 대화하며 아이디어를 코드로 변환하는 AI 페어 프로그래머", tries: 3420, votes: 892, score: 4.8, feedback: "AI 응답 속도와 코드 품질에 대한 의견을 주세요" },
-  { title: "SnapDeploy", icon: "", category: "tool", tagline: "Git push 한 번으로 자동 빌드/배포까지 완료하는 원클릭 CI/CD", tries: 2180, votes: 654, score: 4.6, feedback: "배포 파이프라인 설정 UX가 직관적인지 테스트해주세요" },
-  { title: "PixelForge", icon: "", category: "web", tagline: "브라우저에서 바로 픽셀아트를 그리고 공유하는 온라인 에디터", tries: 1890, votes: 523, score: 4.5, feedback: "레이어 기능과 내보내기 품질에 대한 피드백 부탁드립니다" },
-  { title: "DataPulse", icon: "", category: "data", tagline: "실시간 데이터 스트림을 시각화하는 대시보드 빌더", tries: 1650, votes: 487, score: 4.4, feedback: "" },
-  { title: "IndieCraft", icon: "", category: "game", tagline: "노코드로 2D 인디 게임을 만들고 웹에 퍼블리싱하는 플랫폼", tries: 1420, votes: 412, score: 4.3, feedback: "" },
-  { title: "FormFlow", icon: "", category: "tool", tagline: "드래그앤드롭으로 폼을 만들고 자동 검증까지 처리하는 폼 빌더", tries: 1380, votes: 398, score: 4.2, feedback: "" },
-  { title: "NightOwl", icon: "", category: "web", tagline: "다크모드 전용 컴포넌트 라이브러리와 테마 미리보기 도구", tries: 1210, votes: 356, score: 4.1, feedback: "" },
-  { title: "CodeBridge", icon: "", category: "devtool", tagline: "프론트/백엔드 API 스키마를 자동 동기화하는 타입세이프 브릿지", tries: 1150, votes: 334, score: 4.0, feedback: "" },
-  { title: "MarkdownPro", icon: "", category: "tool", tagline: "실시간 협업이 가능한 마크다운 에디터 + 미리보기 + 내보내기", tries: 1080, votes: 312, score: 3.9, feedback: "" },
-  { title: "BotFactory", icon: "", category: "ai", tagline: "챗봇을 5분 만에 만들어 슬랙/디스코드에 배포하는 봇 빌더", tries: 980, votes: 289, score: 3.8, feedback: "" },
-  { title: "TinyAnalytics", icon: "", category: "saas", tagline: "가볍고 프라이버시 친화적인 웹 분석 도구 (쿠키 없음)", tries: 920, votes: 267, score: 3.7, feedback: "" },
-  { title: "SoundScape", icon: "", category: "music", tagline: "AI가 분위기에 맞는 배경음악을 생성해주는 사운드 디자인 앱", tries: 870, votes: 245, score: 3.6, feedback: "" },
-  { title: "QuizMaker", icon: "", category: "web", tagline: "인터랙티브 퀴즈를 만들고 결과를 공유하는 퀴즈 플랫폼", tries: 810, votes: 234, score: 3.5, feedback: "" },
-  { title: "LogStream", icon: "", category: "devtool", tagline: "서버 로그를 실시간 스트리밍하고 필터링하는 모니터링 대시보드", tries: 760, votes: 212, score: 3.4, feedback: "" },
-  { title: "GitNotify", icon: "", category: "tool", tagline: "GitHub 이벤트를 슬랙/텔레그램으로 실시간 알림해주는 봇", tries: 720, votes: 198, score: 3.3, feedback: "" },
-  { title: "PaletteAI", icon: "", category: "ai", tagline: "브랜드 키워드를 입력하면 AI가 완벽한 컬러 팔레트를 생성", tries: 680, votes: 187, score: 3.2, feedback: "" },
-  { title: "MicroSaaS", icon: "", category: "saas", tagline: "마이크로 SaaS 아이디어 검증부터 랜딩페이지 생성까지 올인원 도구", tries: 640, votes: 176, score: 3.1, feedback: "" },
-];
+/* ── 10 demo projects ── */
+const DUMMY_PROJECTS = DEMO_PROJECTS.map(toFeatureIndexShape);
 
 const DUMMY_FEATURED = DUMMY_PROJECTS[0];
 const DUMMY_GRID = DUMMY_PROJECTS.slice(1, 7);
@@ -545,11 +517,11 @@ function FeaturedCard({ project }: { project: SerializedProjectCard }) {
 
 function DummyFeaturedCard() {
   return (
-    <div className="overflow-hidden rounded-2xl border border-neutral-800 bg-gradient-to-br from-neutral-900 via-[#0A0A0A] to-neutral-900 p-6 transition hover:-translate-y-1 hover:border-neutral-600 sm:p-8">
+    <Link href={`/p/${DUMMY_FEATURED.slug}`} className="block overflow-hidden rounded-2xl border border-neutral-800 bg-gradient-to-br from-neutral-900 via-[#0A0A0A] to-neutral-900 p-6 transition hover:-translate-y-1 hover:border-neutral-600 sm:p-8">
       <div className="flex items-start justify-between">
         <div className="flex items-center gap-4">
-          <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-neutral-800 text-3xl">
-            {DUMMY_FEATURED.icon}
+          <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-neutral-800 overflow-hidden">
+            <img src={DUMMY_FEATURED.icon} alt={DUMMY_FEATURED.title} className="h-full w-full object-cover" />
           </div>
           <div>
             <div className="flex items-center gap-2">
@@ -587,7 +559,7 @@ function DummyFeaturedCard() {
           Try it <ArrowRight className="h-4 w-4" />
         </span>
       </div>
-    </div>
+    </Link>
   );
 }
 
@@ -627,16 +599,17 @@ function ProjectCard({ project }: { project: SerializedProjectCard }) {
   );
 }
 
-function DummyCard({ title, icon, category, tagline, votes, score }: {
+function DummyCard({ title, icon, category, tagline, votes, score, slug }: {
   title: string;
   icon: string;
   category: string;
   tagline: string;
   votes: number;
   score: number;
+  slug: string;
 }) {
   return (
-    <div className="flex flex-col justify-between rounded-2xl border border-neutral-800 bg-neutral-900/50 p-5 transition hover:-translate-y-1 hover:border-neutral-600">
+    <Link href={`/p/${slug}`} className="flex flex-col justify-between rounded-2xl border border-neutral-800 bg-neutral-900/50 p-5 transition hover:-translate-y-1 hover:border-neutral-600">
       <div>
         <div className="flex items-start justify-between">
           <div className="flex items-center gap-2.5">
@@ -660,7 +633,7 @@ function DummyCard({ title, icon, category, tagline, votes, score }: {
           Try it <ArrowRight className="h-3 w-3" />
         </span>
       </div>
-    </div>
+    </Link>
   );
 }
 
@@ -697,16 +670,17 @@ function NewProjectRow({ project }: { project: SerializedProjectCard }) {
   );
 }
 
-function DummyNewRow({ title, icon, category, tagline, votes, rank }: {
+function DummyNewRow({ title, icon, category, tagline, votes, rank, slug }: {
   title: string;
   icon: string;
   category: string;
   tagline: string;
   votes: number;
   rank: number;
+  slug: string;
 }) {
   return (
-    <div className="flex items-center gap-4 px-5 py-4 transition hover:bg-neutral-800/50">
+    <Link href={`/p/${slug}`} className="flex items-center gap-4 px-5 py-4 transition hover:bg-neutral-800/50">
       <span className="w-6 text-center text-sm font-bold text-neutral-600">{rank}</span>
       <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-neutral-800 text-lg">
         {icon}
@@ -727,7 +701,7 @@ function DummyNewRow({ title, icon, category, tagline, votes, rank }: {
           Try it <ArrowRight className="h-3 w-3" />
         </span>
       </div>
-    </div>
+    </Link>
   );
 }
 

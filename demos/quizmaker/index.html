@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QuizMaker</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cyan: #06b6d4;
+      --teal: #0d9488;
+      --cyan-light: #cffafe;
+      --teal-dark: #0f766e;
+      --bg: #0f172a;
+      --surface: #1e293b;
+      --surface2: #273549;
+      --border: #334155;
+      --text: #f1f5f9;
+      --muted: #94a3b8;
+      --success: #22c55e;
+      --error: #ef4444;
+      --warning: #f59e0b;
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    /* ── Scrollbar ── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+    /* ── Gradient utilities ── */
+    .gradient-text {
+      background: linear-gradient(135deg, var(--cyan), var(--teal));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .gradient-bg {
+      background: linear-gradient(135deg, var(--cyan), var(--teal));
+    }
+    .gradient-border {
+      border: 1px solid transparent;
+      background-clip: padding-box;
+      position: relative;
+    }
+
+    /* ── Layout ── */
+    .app { max-width: 800px; margin: 0 auto; padding: 0 16px 64px; }
+
+    header {
+      padding: 28px 0 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 32px;
+    }
+    .logo { display: flex; align-items: center; gap: 10px; }
+    .logo-icon {
+      width: 40px; height: 40px;
+      background: linear-gradient(135deg, var(--cyan), var(--teal));
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px;
+    }
+    .logo-title { font-size: 22px; font-weight: 700; letter-spacing: -0.5px; }
+
+    /* ── Tabs ── */
+    .tabs {
+      display: flex;
+      gap: 4px;
+      background: var(--surface);
+      border-radius: 12px;
+      padding: 4px;
+      margin-bottom: 28px;
+    }
+    .tab-btn {
+      flex: 1;
+      padding: 10px 0;
+      border: none;
+      border-radius: 9px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      background: transparent;
+      color: var(--muted);
+    }
+    .tab-btn.active {
+      background: linear-gradient(135deg, var(--cyan), var(--teal));
+      color: #fff;
+      box-shadow: 0 2px 12px rgba(6,182,212,0.35);
+    }
+    .tab-btn:hover:not(.active) { color: var(--text); background: var(--surface2); }
+
+    /* ── Panels ── */
+    .panel { display: none; animation: fadeIn 0.3s ease; }
+    .panel.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+    /* ── Cards ── */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 16px;
+    }
+    .card-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* ── Form ── */
+    .form-group { margin-bottom: 14px; }
+    label { display: block; font-size: 13px; color: var(--muted); margin-bottom: 6px; font-weight: 500; }
+    input[type="text"], textarea {
+      width: 100%;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 14px;
+      color: var(--text);
+      font-size: 14px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      font-family: inherit;
+      resize: vertical;
+    }
+    input[type="text"]:focus, textarea:focus {
+      outline: none;
+      border-color: var(--cyan);
+      box-shadow: 0 0 0 3px rgba(6,182,212,0.15);
+    }
+    input.error, textarea.error {
+      border-color: var(--error);
+      box-shadow: 0 0 0 3px rgba(239,68,68,0.15);
+    }
+    .error-msg { color: var(--error); font-size: 12px; margin-top: 4px; }
+
+    /* ── Choice inputs ── */
+    .choices-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .choice-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 8px 10px;
+      transition: border-color 0.2s;
+    }
+    .choice-row.selected { border-color: var(--teal); background: rgba(13,148,136,0.08); }
+    .choice-label-badge {
+      width: 24px; height: 24px;
+      border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 700;
+      background: var(--border);
+      color: var(--muted);
+      flex-shrink: 0;
+      transition: all 0.2s;
+    }
+    .choice-row.selected .choice-label-badge {
+      background: linear-gradient(135deg, var(--cyan), var(--teal));
+      color: #fff;
+    }
+    .choice-row input[type="text"] {
+      background: transparent;
+      border: none;
+      padding: 0;
+      font-size: 13px;
+    }
+    .choice-row input[type="text"]:focus { box-shadow: none; }
+    .correct-radio {
+      width: 16px; height: 16px;
+      accent-color: var(--teal);
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    /* ── Buttons ── */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+      padding: 10px 20px;
+      border-radius: 10px;
+      border: none;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--cyan), var(--teal));
+      color: #fff;
+      box-shadow: 0 2px 12px rgba(6,182,212,0.3);
+    }
+    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 18px rgba(6,182,212,0.45); }
+    .btn-secondary {
+      background: var(--surface2);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-secondary:hover { background: var(--border); }
+    .btn-danger {
+      background: rgba(239,68,68,0.1);
+      color: var(--error);
+      border: 1px solid rgba(239,68,68,0.3);
+    }
+    .btn-danger:hover { background: rgba(239,68,68,0.2); }
+    .btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none !important; }
+    .btn-sm { padding: 6px 12px; font-size: 13px; border-radius: 8px; }
+
+    /* ── Quiz list (Play tab) ── */
+    .quiz-list { display: flex; flex-direction: column; gap: 12px; }
+    .quiz-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 18px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .quiz-item:hover {
+      border-color: var(--cyan);
+      background: var(--surface2);
+      transform: translateX(4px);
+    }
+    .quiz-item-info h3 { font-size: 16px; font-weight: 700; }
+    .quiz-item-info p { font-size: 13px; color: var(--muted); margin-top: 3px; }
+    .quiz-item-badge {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 4px 10px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .quiz-item-arrow { color: var(--cyan); font-size: 18px; margin-left: 8px; }
+
+    /* ── Play screen ── */
+    #play-screen { display: none; }
+    #play-screen.active { display: block; animation: fadeIn 0.3s ease; }
+
+    .progress-bar-wrap {
+      background: var(--surface);
+      border-radius: 100px;
+      height: 6px;
+      margin-bottom: 24px;
+      overflow: hidden;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--cyan), var(--teal));
+      border-radius: 100px;
+      transition: width 0.5s cubic-bezier(0.4,0,0.2,1);
+    }
+
+    .question-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    .question-counter {
+      font-size: 13px;
+      color: var(--muted);
+      font-weight: 500;
+    }
+    .question-num-badge {
+      background: linear-gradient(135deg, var(--cyan), var(--teal));
+      color: #fff;
+      padding: 3px 10px;
+      border-radius: 100px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .question-text {
+      font-size: 20px;
+      font-weight: 700;
+      line-height: 1.4;
+      margin-bottom: 24px;
+    }
+
+    .options-grid { display: flex; flex-direction: column; gap: 10px; }
+    .option-btn {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 16px;
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      cursor: pointer;
+      text-align: left;
+      color: var(--text);
+      font-size: 15px;
+      font-family: inherit;
+      transition: all 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+    .option-btn:hover:not(:disabled) {
+      border-color: var(--cyan);
+      background: rgba(6,182,212,0.06);
+      transform: translateX(4px);
+    }
+    .option-btn:disabled { cursor: default; }
+    .option-btn.correct {
+      border-color: var(--success);
+      background: rgba(34,197,94,0.1);
+    }
+    .option-btn.wrong {
+      border-color: var(--error);
+      background: rgba(239,68,68,0.1);
+    }
+    .option-badge {
+      width: 32px; height: 32px;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700;
+      font-size: 14px;
+      background: var(--surface2);
+      color: var(--muted);
+      flex-shrink: 0;
+      transition: all 0.2s;
+    }
+    .option-btn.correct .option-badge { background: var(--success); color: #fff; }
+    .option-btn.wrong .option-badge { background: var(--error); color: #fff; }
+    .option-btn:hover:not(:disabled) .option-badge {
+      background: linear-gradient(135deg, var(--cyan), var(--teal));
+      color: #fff;
+    }
+
+    /* ── Feedback ── */
+    .feedback-box {
+      margin-top: 16px;
+      padding: 12px 16px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      animation: slideUp 0.25s ease;
+    }
+    @keyframes slideUp { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+    .feedback-box.correct { background: rgba(34,197,94,0.12); color: var(--success); border: 1px solid rgba(34,197,94,0.3); }
+    .feedback-box.wrong { background: rgba(239,68,68,0.12); color: var(--error); border: 1px solid rgba(239,68,68,0.3); }
+
+    .next-btn-wrap { margin-top: 20px; display: flex; justify-content: flex-end; }
+
+    /* ── Score screen ── */
+    #score-screen { display: none; }
+    #score-screen.active { display: block; animation: fadeIn 0.35s ease; }
+
+    .score-card {
+      text-align: center;
+      padding: 40px 24px;
+      background: var(--surface);
+      border-radius: 20px;
+      border: 1px solid var(--border);
+    }
+    .score-ring {
+      width: 140px; height: 140px;
+      border-radius: 50%;
+      background: conic-gradient(var(--cyan) var(--pct), var(--surface2) 0);
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 24px;
+      position: relative;
+    }
+    .score-ring::before {
+      content: '';
+      position: absolute;
+      width: 112px; height: 112px;
+      border-radius: 50%;
+      background: var(--surface);
+    }
+    .score-number {
+      position: relative;
+      z-index: 1;
+      font-size: 36px;
+      font-weight: 800;
+    }
+    .score-title { font-size: 22px; font-weight: 800; margin-bottom: 8px; }
+    .score-sub { color: var(--muted); font-size: 15px; margin-bottom: 28px; }
+    .score-breakdown {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+    .score-stat {
+      background: var(--surface2);
+      border-radius: 12px;
+      padding: 14px;
+    }
+    .score-stat-val { font-size: 24px; font-weight: 800; }
+    .score-stat-lbl { font-size: 12px; color: var(--muted); margin-top: 2px; }
+    .score-actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+
+    /* ── Creator section ── */
+    .question-builder-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px; }
+    .q-preview-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .q-preview-text { font-size: 14px; flex: 1; }
+    .q-preview-answer { font-size: 12px; color: var(--teal); background: rgba(13,148,136,0.1); padding: 3px 8px; border-radius: 6px; flex-shrink: 0; }
+
+    /* ── Creator save bar ── */
+    .save-bar {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 16px;
+    }
+    .save-bar input { flex: 1; }
+
+    /* ── Empty state ── */
+    .empty-state {
+      text-align: center;
+      padding: 48px 24px;
+      color: var(--muted);
+    }
+    .empty-state .icon { font-size: 48px; margin-bottom: 12px; }
+    .empty-state h3 { font-size: 16px; font-weight: 600; margin-bottom: 6px; color: var(--text); }
+    .empty-state p { font-size: 13px; }
+
+    /* ── Toast ── */
+    #toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 20px;
+      font-size: 14px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      z-index: 999;
+      transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+      white-space: nowrap;
+    }
+    #toast.show { transform: translateX(-50%) translateY(0); }
+    #toast.success { border-color: rgba(34,197,94,0.4); color: var(--success); }
+    #toast.error { border-color: rgba(239,68,68,0.4); color: var(--error); }
+
+    /* ── Responsive ── */
+    @media (max-width: 500px) {
+      .choices-grid { grid-template-columns: 1fr; }
+      .score-breakdown { grid-template-columns: 1fr 1fr; }
+      .question-text { font-size: 17px; }
+    }
+  </style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <div class="logo">
+      <div class="logo-icon">🧠</div>
+      <span class="logo-title gradient-text">QuizMaker</span>
+    </div>
+    <span style="font-size:13px;color:var(--muted);">인터랙티브 퀴즈 플랫폼</span>
+  </header>
+
+  <!-- ── Tabs ── -->
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('play')">▶ 플레이</button>
+    <button class="tab-btn" onclick="switchTab('create')">✏️ 만들기</button>
+  </div>
+
+  <!-- ════════════════════════ PLAY TAB ════════════════════════ -->
+  <div class="panel active" id="tab-play">
+
+    <!-- Quiz selection list -->
+    <div id="quiz-select">
+      <div style="margin-bottom:16px;">
+        <div style="font-size:18px;font-weight:700;margin-bottom:4px;">퀴즈를 선택하세요</div>
+        <div style="font-size:13px;color:var(--muted);">원하는 퀴즈를 클릭해서 시작하세요</div>
+      </div>
+      <div class="quiz-list" id="quiz-list-container"></div>
+    </div>
+
+    <!-- Active quiz play screen -->
+    <div id="play-screen">
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-fill" id="progress-bar" style="width:0%"></div>
+      </div>
+      <div class="question-meta">
+        <span class="question-counter" id="q-counter">문제 1 / 5</span>
+        <span class="question-num-badge" id="q-num-badge">Q1</span>
+      </div>
+      <div class="card" style="margin-bottom:16px;">
+        <div class="question-text" id="q-text"></div>
+        <div class="options-grid" id="options-grid"></div>
+        <div id="feedback-wrap"></div>
+      </div>
+      <div class="next-btn-wrap">
+        <button class="btn btn-primary" id="next-btn" style="display:none;" onclick="nextQuestion()">
+          다음 문제 →
+        </button>
+      </div>
+    </div>
+
+    <!-- Score screen -->
+    <div id="score-screen">
+      <div class="score-card">
+        <div class="score-ring" id="score-ring">
+          <div class="score-number gradient-text" id="score-pct">0%</div>
+        </div>
+        <div class="score-title" id="score-title">잘했어요!</div>
+        <div class="score-sub" id="score-sub">퀴즈를 완료했습니다</div>
+        <div class="score-breakdown">
+          <div class="score-stat">
+            <div class="score-stat-val" id="stat-correct" style="color:var(--success)">0</div>
+            <div class="score-stat-lbl">정답</div>
+          </div>
+          <div class="score-stat">
+            <div class="score-stat-val" id="stat-wrong" style="color:var(--error)">0</div>
+            <div class="score-stat-lbl">오답</div>
+          </div>
+          <div class="score-stat">
+            <div class="score-stat-val" id="stat-total" style="color:var(--cyan)">0</div>
+            <div class="score-stat-lbl">전체</div>
+          </div>
+        </div>
+        <div class="score-actions">
+          <button class="btn btn-secondary" onclick="backToList()">← 목록으로</button>
+          <button class="btn btn-primary" onclick="retryQuiz()">🔄 다시 도전</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ════════════════════════ CREATE TAB ════════════════════════ -->
+  <div class="panel" id="tab-create">
+
+    <!-- Add question form -->
+    <div class="card">
+      <div class="card-title">📝 문제 추가</div>
+
+      <div class="form-group">
+        <label>문제 내용 <span style="color:var(--error)">*</span></label>
+        <textarea id="new-q-text" rows="2" placeholder="문제를 입력하세요..."></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>보기 (정답 라디오 선택) <span style="color:var(--error)">*</span></label>
+        <div class="choices-grid" id="choices-grid">
+          <!-- injected by JS -->
+        </div>
+      </div>
+
+      <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:4px;">
+        <button class="btn btn-secondary btn-sm" onclick="clearForm()">초기화</button>
+        <button class="btn btn-primary btn-sm" onclick="addQuestion()">+ 문제 추가</button>
+      </div>
+    </div>
+
+    <!-- Current question list -->
+    <div class="card">
+      <div class="card-title">📋 추가된 문제 <span id="q-count-badge" style="background:var(--surface2);padding:2px 8px;border-radius:6px;font-size:12px;font-weight:600;color:var(--muted);">0개</span></div>
+      <div id="question-builder-list">
+        <div class="empty-state">
+          <div class="icon">📭</div>
+          <h3>아직 문제가 없어요</h3>
+          <p>위에서 문제를 추가해보세요</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Save quiz bar -->
+    <div class="save-bar">
+      <input type="text" id="quiz-title-input" placeholder="퀴즈 이름을 입력하세요..." />
+      <button class="btn btn-primary" onclick="saveQuiz()">💾 저장</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- Toast -->
+<div id="toast"></div>
+
+<script>
+// ─────────────────────────────────────────────
+//  DATA
+// ─────────────────────────────────────────────
+const SAMPLE_QUIZZES = [
+  {
+    id: 'q1',
+    title: '한국 역사 기초',
+    desc: '조선, 고려, 삼국시대',
+    questions: [
+      {
+        text: '조선 왕조를 개국한 인물은 누구입니까?',
+        choices: ['왕건', '이성계', '세종대왕', '광개토대왕'],
+        answer: 1
+      },
+      {
+        text: '고려를 세운 왕의 이름은 무엇입니까?',
+        choices: ['이성계', '왕건', '을지문덕', '김유신'],
+        answer: 1
+      },
+      {
+        text: '한글을 창제한 조선의 왕은 누구입니까?',
+        choices: ['태조', '태종', '세종', '연산군'],
+        answer: 2
+      },
+      {
+        text: '삼국 중 한반도를 최초로 통일한 나라는?',
+        choices: ['고구려', '백제', '신라', '가야'],
+        answer: 2
+      },
+      {
+        text: '임진왜란이 발생한 연도는 언제입니까?',
+        choices: ['1392년', '1592년', '1492년', '1692년'],
+        answer: 1
+      }
+    ]
+  },
+  {
+    id: 'q2',
+    title: '한국 지리 & 문화',
+    desc: '수도, 명소, 음식 문화',
+    questions: [
+      {
+        text: '대한민국의 수도는 어디입니까?',
+        choices: ['부산', '인천', '서울', '대전'],
+        answer: 2
+      },
+      {
+        text: '한국의 국보 1호로 지정된 문화재는?',
+        choices: ['첨성대', '숭례문', '경복궁', '불국사'],
+        answer: 1
+      },
+      {
+        text: '한국에서 가장 높은 산은 어디입니까?',
+        choices: ['지리산', '설악산', '한라산', '북한산'],
+        answer: 2
+      },
+      {
+        text: '한국의 대표 발효 음식으로 세계적으로 유명한 것은?',
+        choices: ['된장찌개', '비빔밥', '김치', '불고기'],
+        answer: 2
+      },
+      {
+        text: '한국의 전통 명절 중 음력 1월 1일은?',
+        choices: ['추석', '설날', '단오', '한식'],
+        answer: 1
+      },
+      {
+        text: '서울의 대표 고궁으로 조선의 정궁(正宮)은?',
+        choices: ['창덕궁', '경복궁', '덕수궁', '창경궁'],
+        answer: 1
+      }
+    ]
+  }
+];
+
+let quizzes = JSON.parse(localStorage.getItem('qm_quizzes') || 'null') || [...SAMPLE_QUIZZES];
+let draftQuestions = [];
+let activeQuiz = null;
+let currentQ = 0;
+let score = 0;
+let answered = false;
+
+// ─────────────────────────────────────────────
+//  INIT
+// ─────────────────────────────────────────────
+function init() {
+  renderQuizList();
+  buildChoicesForm();
+}
+
+// ─────────────────────────────────────────────
+//  TABS
+// ─────────────────────────────────────────────
+function switchTab(tab) {
+  document.querySelectorAll('.tab-btn').forEach((b,i) => {
+    b.classList.toggle('active', (i === 0 && tab === 'play') || (i === 1 && tab === 'create'));
+  });
+  document.getElementById('tab-play').classList.toggle('active', tab === 'play');
+  document.getElementById('tab-create').classList.toggle('active', tab === 'create');
+}
+
+// ─────────────────────────────────────────────
+//  QUIZ LIST (Play tab)
+// ─────────────────────────────────────────────
+function renderQuizList() {
+  const container = document.getElementById('quiz-list-container');
+  if (!quizzes.length) {
+    container.innerHTML = `<div class="empty-state"><div class="icon">🗂️</div><h3>퀴즈가 없어요</h3><p>만들기 탭에서 퀴즈를 만들어보세요</p></div>`;
+    return;
+  }
+  container.innerHTML = quizzes.map(q => `
+    <div class="quiz-item" onclick="startQuiz('${q.id}')">
+      <div class="quiz-item-info">
+        <h3>${escHtml(q.title)}</h3>
+        <p>${escHtml(q.desc || '')}</p>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span class="quiz-item-badge">${q.questions.length}문제</span>
+        <span class="quiz-item-arrow">›</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ─────────────────────────────────────────────
+//  PLAY
+// ─────────────────────────────────────────────
+function startQuiz(id) {
+  activeQuiz = quizzes.find(q => q.id === id);
+  if (!activeQuiz) return;
+  currentQ = 0;
+  score = 0;
+  document.getElementById('quiz-select').style.display = 'none';
+  document.getElementById('score-screen').classList.remove('active');
+  document.getElementById('play-screen').classList.add('active');
+  renderQuestion();
+}
+
+function renderQuestion() {
+  const q = activeQuiz.questions[currentQ];
+  const total = activeQuiz.questions.length;
+  answered = false;
+
+  // progress
+  const pct = (currentQ / total) * 100;
+  document.getElementById('progress-bar').style.width = pct + '%';
+  document.getElementById('q-counter').textContent = `문제 ${currentQ + 1} / ${total}`;
+  document.getElementById('q-num-badge').textContent = `Q${currentQ + 1}`;
+  document.getElementById('q-text').textContent = q.text;
+  document.getElementById('feedback-wrap').innerHTML = '';
+  document.getElementById('next-btn').style.display = 'none';
+
+  // options
+  const grid = document.getElementById('options-grid');
+  const labels = ['A', 'B', 'C', 'D'];
+  grid.innerHTML = q.choices.map((c, i) => `
+    <button class="option-btn" onclick="selectAnswer(${i})" id="opt-${i}">
+      <span class="option-badge">${labels[i]}</span>
+      <span>${escHtml(c)}</span>
+    </button>
+  `).join('');
+}
+
+function selectAnswer(idx) {
+  if (answered) return;
+  answered = true;
+  const q = activeQuiz.questions[currentQ];
+  const correct = q.answer;
+  const isCorrect = idx === correct;
+  if (isCorrect) score++;
+
+  // style buttons
+  for (let i = 0; i < q.choices.length; i++) {
+    const btn = document.getElementById(`opt-${i}`);
+    btn.disabled = true;
+    if (i === correct) btn.classList.add('correct');
+    else if (i === idx && !isCorrect) btn.classList.add('wrong');
+  }
+
+  // feedback
+  const fbWrap = document.getElementById('feedback-wrap');
+  fbWrap.innerHTML = isCorrect
+    ? `<div class="feedback-box correct">✅ 정답입니다! 잘했어요!</div>`
+    : `<div class="feedback-box wrong">❌ 오답입니다. 정답은 <strong>${q.choices[correct]}</strong>입니다.</div>`;
+
+  // next btn
+  const nextBtn = document.getElementById('next-btn');
+  const isLast = currentQ === activeQuiz.questions.length - 1;
+  nextBtn.textContent = isLast ? '결과 보기 🎉' : '다음 문제 →';
+  nextBtn.style.display = 'inline-flex';
+}
+
+function nextQuestion() {
+  currentQ++;
+  if (currentQ >= activeQuiz.questions.length) {
+    showScore();
+  } else {
+    // slight animation reset
+    const ps = document.getElementById('play-screen');
+    ps.style.opacity = '0';
+    setTimeout(() => {
+      renderQuestion();
+      ps.style.opacity = '1';
+    }, 150);
+    document.getElementById('play-screen').style.transition = 'opacity 0.15s';
+  }
+}
+
+function showScore() {
+  document.getElementById('play-screen').classList.remove('active');
+  const total = activeQuiz.questions.length;
+  const pct = Math.round((score / total) * 100);
+  const wrong = total - score;
+
+  // ring
+  const ring = document.getElementById('score-ring');
+  ring.style.setProperty('--pct', `${pct * 3.6}deg`);
+  ring.style.background = `conic-gradient(var(--cyan) ${pct * 3.6}deg, var(--surface2) 0)`;
+
+  document.getElementById('score-pct').textContent = pct + '%';
+  document.getElementById('stat-correct').textContent = score;
+  document.getElementById('stat-wrong').textContent = wrong;
+  document.getElementById('stat-total').textContent = total;
+
+  let title, sub;
+  if (pct === 100) { title = '완벽해요! 🏆'; sub = '모든 문제를 맞혔습니다!'; }
+  else if (pct >= 80) { title = '훌륭해요! 🎉'; sub = '대부분의 문제를 맞혔습니다!'; }
+  else if (pct >= 60) { title = '잘했어요! 👍'; sub = '절반 이상을 맞혔습니다!'; }
+  else if (pct >= 40) { title = '조금 더 공부해요 📚'; sub = '더 열심히 해봐요!'; }
+  else { title = '다시 도전해봐요 💪'; sub = '포기하지 말고 다시 시도하세요!'; }
+  document.getElementById('score-title').textContent = title;
+  document.getElementById('score-sub').textContent = sub;
+
+  document.getElementById('score-screen').classList.add('active');
+
+  // update progress bar to 100%
+  document.getElementById('progress-bar').style.width = '100%';
+}
+
+function backToList() {
+  document.getElementById('score-screen').classList.remove('active');
+  document.getElementById('play-screen').classList.remove('active');
+  document.getElementById('quiz-select').style.display = 'block';
+  document.getElementById('progress-bar').style.width = '0%';
+  renderQuizList();
+}
+
+function retryQuiz() {
+  document.getElementById('score-screen').classList.remove('active');
+  currentQ = 0;
+  score = 0;
+  document.getElementById('play-screen').classList.add('active');
+  renderQuestion();
+}
+
+// ─────────────────────────────────────────────
+//  CREATE
+// ─────────────────────────────────────────────
+function buildChoicesForm() {
+  const labels = ['A', 'B', 'C', 'D'];
+  const grid = document.getElementById('choices-grid');
+  grid.innerHTML = labels.map((l, i) => `
+    <div class="choice-row" id="choice-row-${i}">
+      <span class="choice-label-badge">${l}</span>
+      <input type="text" id="choice-${i}" placeholder="보기 ${l}" oninput="updateChoiceHighlight()" />
+      <input type="radio" class="correct-radio" name="correct-answer" value="${i}" id="radio-${i}" onchange="updateChoiceHighlight()" title="정답 선택" />
+    </div>
+  `).join('');
+}
+
+function updateChoiceHighlight() {
+  for (let i = 0; i < 4; i++) {
+    const radio = document.getElementById(`radio-${i}`);
+    document.getElementById(`choice-row-${i}`).classList.toggle('selected', radio.checked);
+  }
+}
+
+function getSelectedRadio() {
+  for (let i = 0; i < 4; i++) {
+    if (document.getElementById(`radio-${i}`).checked) return i;
+  }
+  return -1;
+}
+
+function addQuestion() {
+  const text = document.getElementById('new-q-text').value.trim();
+  const choices = [0,1,2,3].map(i => document.getElementById(`choice-${i}`).value.trim());
+  const answer = getSelectedRadio();
+
+  let valid = true;
+
+  // validate question
+  setFieldError('new-q-text', !text ? '문제 내용을 입력하세요.' : '');
+  if (!text) valid = false;
+
+  // validate choices
+  choices.forEach((c, i) => {
+    const empty = !c;
+    document.getElementById(`choice-${i}`).classList.toggle('error', empty);
+    if (empty) valid = false;
+  });
+
+  // validate answer selection
+  if (answer === -1) {
+    showToast('정답을 선택해주세요 (라디오 버튼)', 'error');
+    valid = false;
+  }
+
+  if (!valid) return;
+
+  draftQuestions.push({ text, choices, answer });
+  renderDraftQuestions();
+  clearForm();
+  showToast('문제가 추가되었습니다!', 'success');
+}
+
+function renderDraftQuestions() {
+  const container = document.getElementById('question-builder-list');
+  const badge = document.getElementById('q-count-badge');
+  badge.textContent = draftQuestions.length + '개';
+
+  if (!draftQuestions.length) {
+    container.innerHTML = `<div class="empty-state"><div class="icon">📭</div><h3>아직 문제가 없어요</h3><p>위에서 문제를 추가해보세요</p></div>`;
+    return;
+  }
+
+  container.innerHTML = `<div class="question-builder-list">` +
+    draftQuestions.map((q, i) => `
+      <div class="q-preview-card">
+        <span style="color:var(--muted);font-size:13px;flex-shrink:0;">${i+1}.</span>
+        <span class="q-preview-text">${escHtml(q.text)}</span>
+        <span class="q-preview-answer">정답: ${escHtml(q.choices[q.answer])}</span>
+        <button class="btn btn-danger btn-sm" onclick="removeQuestion(${i})" title="삭제">✕</button>
+      </div>
+    `).join('') +
+  `</div>`;
+}
+
+function removeQuestion(idx) {
+  draftQuestions.splice(idx, 1);
+  renderDraftQuestions();
+}
+
+function clearForm() {
+  document.getElementById('new-q-text').value = '';
+  [0,1,2,3].forEach(i => {
+    document.getElementById(`choice-${i}`).value = '';
+    document.getElementById(`choice-${i}`).classList.remove('error');
+    document.getElementById(`radio-${i}`).checked = false;
+    document.getElementById(`choice-row-${i}`).classList.remove('selected');
+  });
+  document.getElementById('new-q-text').classList.remove('error');
+}
+
+function saveQuiz() {
+  const title = document.getElementById('quiz-title-input').value.trim();
+
+  if (!title) {
+    document.getElementById('quiz-title-input').classList.add('error');
+    showToast('퀴즈 이름을 입력하세요.', 'error');
+    return;
+  }
+  document.getElementById('quiz-title-input').classList.remove('error');
+
+  if (!draftQuestions.length) {
+    showToast('최소 1개 이상의 문제가 필요합니다.', 'error');
+    return;
+  }
+
+  const newQuiz = {
+    id: 'custom_' + Date.now(),
+    title,
+    desc: `${draftQuestions.length}문제 · 직접 만든 퀴즈`,
+    questions: [...draftQuestions]
+  };
+
+  quizzes.push(newQuiz);
+  localStorage.setItem('qm_quizzes', JSON.stringify(quizzes));
+
+  draftQuestions = [];
+  document.getElementById('quiz-title-input').value = '';
+  renderDraftQuestions();
+  renderQuizList();
+  showToast(`"${title}" 퀴즈가 저장되었습니다!`, 'success');
+  switchTab('play');
+}
+
+// ─────────────────────────────────────────────
+//  HELPERS
+// ─────────────────────────────────────────────
+function setFieldError(id, msg) {
+  const el = document.getElementById(id);
+  el.classList.toggle('error', !!msg);
+}
+
+function escHtml(str) {
+  return String(str)
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;');
+}
+
+let toastTimer;
+function showToast(msg, type = 'success') {
+  const el = document.getElementById('toast');
+  el.textContent = (type === 'success' ? '✓ ' : '✕ ') + msg;
+  el.className = `show ${type}`;
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => { el.className = ''; }, 2800);
+}
+
+// ─────────────────────────────────────────────
+//  Boot
+// ─────────────────────────────────────────────
+init();
+</script>
+</body>
+</html>

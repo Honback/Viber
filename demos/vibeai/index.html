@@ -1,0 +1,1455 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VibeAI — AI 페어 프로그래머</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg-base: #0a0a0f;
+      --bg-surface: #12121a;
+      --bg-elevated: #1a1a26;
+      --bg-input: #1e1e2e;
+      --border: #2a2a3e;
+      --border-glow: rgba(139, 92, 246, 0.35);
+      --purple: #8b5cf6;
+      --indigo: #6366f1;
+      --purple-light: #a78bfa;
+      --text-primary: #e8e8f0;
+      --text-secondary: #9090b0;
+      --text-muted: #5a5a78;
+      --accent-gradient: linear-gradient(135deg, #8b5cf6, #6366f1);
+      --code-bg: #0d0d16;
+    }
+
+    html, body {
+      height: 100%;
+      background: var(--bg-base);
+      color: var(--text-primary);
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--purple); }
+
+    /* Layout */
+    .app {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 24px;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg-surface);
+      flex-shrink: 0;
+    }
+
+    .header-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .header-logo {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      background: var(--accent-gradient);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 17px;
+      box-shadow: 0 0 16px rgba(139, 92, 246, 0.4);
+    }
+
+    .header-title {
+      font-size: 18px;
+      font-weight: 700;
+      background: var(--accent-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: -0.3px;
+    }
+
+    .header-subtitle {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .header-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(139, 92, 246, 0.12);
+      border: 1px solid rgba(139, 92, 246, 0.25);
+      border-radius: 20px;
+      padding: 5px 12px;
+      font-size: 12px;
+      color: var(--purple-light);
+    }
+
+    .badge-dot {
+      width: 7px;
+      height: 7px;
+      background: #22c55e;
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    /* Language tabs */
+    .lang-tabs {
+      display: flex;
+      gap: 6px;
+      padding: 12px 24px;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg-surface);
+      flex-shrink: 0;
+      overflow-x: auto;
+    }
+
+    .lang-tab {
+      padding: 5px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text-secondary);
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+
+    .lang-tab:hover {
+      border-color: var(--purple);
+      color: var(--purple-light);
+    }
+
+    .lang-tab.active {
+      background: var(--accent-gradient);
+      border-color: transparent;
+      color: #fff;
+      box-shadow: 0 0 12px rgba(139, 92, 246, 0.3);
+    }
+
+    /* Chat area */
+    .chat-area {
+      flex: 1;
+      overflow-y: auto;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    /* Welcome screen */
+    .welcome {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      flex: 1;
+      text-align: center;
+      gap: 16px;
+      padding: 40px 20px;
+    }
+
+    .welcome-icon {
+      width: 72px;
+      height: 72px;
+      border-radius: 20px;
+      background: var(--accent-gradient);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      box-shadow: 0 0 40px rgba(139, 92, 246, 0.35);
+      margin-bottom: 8px;
+    }
+
+    .welcome h2 {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .welcome p {
+      color: var(--text-secondary);
+      max-width: 400px;
+      font-size: 14px;
+    }
+
+    .welcome-examples {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+      margin-top: 12px;
+      max-width: 560px;
+    }
+
+    .example-chip {
+      padding: 8px 16px;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      font-size: 13px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .example-chip:hover {
+      border-color: var(--purple);
+      color: var(--purple-light);
+      background: rgba(139, 92, 246, 0.08);
+    }
+
+    /* Messages */
+    .message {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .msg-user {
+      align-self: flex-end;
+      max-width: 75%;
+    }
+
+    .msg-user .bubble {
+      background: var(--accent-gradient);
+      color: #fff;
+      padding: 12px 16px;
+      border-radius: 18px 18px 4px 18px;
+      font-size: 14px;
+      line-height: 1.5;
+      box-shadow: 0 4px 16px rgba(139, 92, 246, 0.25);
+    }
+
+    .msg-ai {
+      align-self: flex-start;
+      max-width: 100%;
+      width: 100%;
+    }
+
+    .msg-ai-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 2px;
+    }
+
+    .ai-avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      background: var(--accent-gradient);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      flex-shrink: 0;
+    }
+
+    .ai-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--purple-light);
+    }
+
+    .ai-time {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .msg-ai-body {
+      margin-left: 36px;
+    }
+
+    .ai-text {
+      color: var(--text-secondary);
+      font-size: 14px;
+      line-height: 1.6;
+      margin-bottom: 12px;
+    }
+
+    /* Code block */
+    .code-block {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    .code-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 16px;
+      background: var(--bg-elevated);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .code-lang {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .code-dots {
+      display: flex;
+      gap: 5px;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .dot-red { background: #ff5f57; }
+    .dot-yellow { background: #ffbd2e; }
+    .dot-green { background: #28ca41; }
+
+    .lang-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .copy-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 12px;
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text-muted);
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .copy-btn:hover {
+      border-color: var(--purple);
+      color: var(--purple-light);
+    }
+
+    .copy-btn.copied {
+      border-color: #22c55e;
+      color: #22c55e;
+    }
+
+    .code-scroll {
+      overflow-x: auto;
+    }
+
+    pre {
+      padding: 20px;
+      font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+      font-size: 13px;
+      line-height: 1.7;
+      color: #c9d1d9;
+    }
+
+    /* Syntax highlighting */
+    .kw { color: #c792ea; font-weight: 600; }      /* keyword */
+    .fn { color: #82aaff; }                          /* function */
+    .str { color: #c3e88d; }                         /* string */
+    .cmt { color: #546e7a; font-style: italic; }    /* comment */
+    .num { color: #f78c6c; }                         /* number */
+    .cls { color: #ffcb6b; }                         /* class */
+    .attr { color: #89ddff; }                        /* attribute */
+    .tag { color: #f07178; }                         /* html tag */
+    .pun { color: #89ddff; }                         /* punctuation */
+    .typ { color: #ffcb6b; }                         /* type */
+    .dec { color: #82aaff; }                         /* decorator */
+    .imp { color: #c792ea; }                         /* import */
+
+    /* Typing indicator */
+    .typing-indicator {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 0;
+      margin-left: 36px;
+    }
+
+    .typing-dots {
+      display: flex;
+      gap: 4px;
+    }
+
+    .typing-dot {
+      width: 7px;
+      height: 7px;
+      background: var(--purple);
+      border-radius: 50%;
+      animation: typingBounce 1.2s infinite;
+    }
+
+    .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+    .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+    @keyframes typingBounce {
+      0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+      30% { transform: translateY(-6px); opacity: 1; }
+    }
+
+    .typing-text {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    /* Input area */
+    .input-area {
+      padding: 16px 24px 20px;
+      border-top: 1px solid var(--border);
+      background: var(--bg-surface);
+      flex-shrink: 0;
+    }
+
+    .input-wrapper {
+      display: flex;
+      gap: 10px;
+      align-items: flex-end;
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 10px 10px 10px 16px;
+      transition: border-color 0.2s;
+    }
+
+    .input-wrapper:focus-within {
+      border-color: var(--border-glow);
+      box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.08);
+    }
+
+    #user-input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      outline: none;
+      color: var(--text-primary);
+      font-size: 14px;
+      font-family: inherit;
+      resize: none;
+      max-height: 120px;
+      line-height: 1.5;
+      padding: 2px 0;
+    }
+
+    #user-input::placeholder {
+      color: var(--text-muted);
+    }
+
+    .send-btn {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: var(--accent-gradient);
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      flex-shrink: 0;
+      box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+    }
+
+    .send-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(139, 92, 246, 0.45);
+    }
+
+    .send-btn:active { transform: translateY(0); }
+
+    .send-btn svg { width: 16px; height: 16px; fill: #fff; }
+
+    .input-hint {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 8px;
+      padding: 0 4px;
+    }
+
+    .input-hint-text {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .input-hint-keys {
+      display: flex;
+      gap: 4px;
+      align-items: center;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    kbd {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 2px 6px;
+      font-family: inherit;
+      font-size: 10px;
+    }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+      .header { padding: 12px 16px; }
+      .lang-tabs { padding: 10px 16px; }
+      .chat-area { padding: 16px; }
+      .input-area { padding: 12px 16px 16px; }
+      .msg-user { max-width: 90%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <!-- Header -->
+    <header class="header">
+      <div class="header-brand">
+        <div class="header-logo">⚡</div>
+        <div>
+          <div class="header-title">VibeAI</div>
+          <div class="header-subtitle">AI 페어 프로그래머</div>
+        </div>
+      </div>
+      <div class="header-badge">
+        <span class="badge-dot"></span>
+        온라인
+      </div>
+    </header>
+
+    <!-- Language filter tabs -->
+    <div class="lang-tabs">
+      <button class="lang-tab active" data-lang="all">전체</button>
+      <button class="lang-tab" data-lang="react">React</button>
+      <button class="lang-tab" data-lang="typescript">TypeScript</button>
+      <button class="lang-tab" data-lang="javascript">JavaScript</button>
+      <button class="lang-tab" data-lang="python">Python</button>
+      <button class="lang-tab" data-lang="css">CSS</button>
+    </div>
+
+    <!-- Chat messages -->
+    <div class="chat-area" id="chat-area">
+      <div class="welcome" id="welcome-screen">
+        <div class="welcome-icon">⚡</div>
+        <h2>VibeAI에 오신 걸 환영해요</h2>
+        <p>자연어로 설명하면 즉시 코드를 생성해드립니다. React, Python, TypeScript, JavaScript, CSS를 지원합니다.</p>
+        <div class="welcome-examples">
+          <span class="example-chip" onclick="sendExample('로그인 폼 만들어줘')">🔐 로그인 폼 만들어줘</span>
+          <span class="example-chip" onclick="sendExample('파이썬 웹 크롤러')">🕷️ 파이썬 웹 크롤러</span>
+          <span class="example-chip" onclick="sendExample('다크모드 토글 버튼')">🌙 다크모드 토글 버튼</span>
+          <span class="example-chip" onclick="sendExample('타입스크립트 API 훅')">🪝 타입스크립트 API 훅</span>
+          <span class="example-chip" onclick="sendExample('애니메이션 카드 컴포넌트')">✨ 애니메이션 카드 컴포넌트</span>
+          <span class="example-chip" onclick="sendExample('파이썬 FastAPI 서버')">🚀 파이썬 FastAPI 서버</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Input area -->
+    <div class="input-area">
+      <div class="input-wrapper">
+        <textarea
+          id="user-input"
+          rows="1"
+          placeholder="코드로 만들고 싶은 것을 설명해보세요..."
+          onkeydown="handleKeyDown(event)"
+          oninput="autoResize(this)"
+        ></textarea>
+        <button class="send-btn" onclick="sendMessage()">
+          <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+        </button>
+      </div>
+      <div class="input-hint">
+        <span class="input-hint-text">✨ AI가 최적의 코드를 생성합니다</span>
+        <div class="input-hint-keys">
+          <kbd>Enter</kbd> 전송 &nbsp;·&nbsp; <kbd>Shift</kbd>+<kbd>Enter</kbd> 줄바꿈
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ─── Pre-defined responses ───────────────────────────────────────────────
+
+    const responses = [
+      {
+        keywords: ['로그인', '로그인 폼', 'login', '인증', '사인인'],
+        lang: 'react',
+        intro: '로그인 폼 컴포넌트를 생성했습니다. 유효성 검사와 로딩 상태를 포함한 완전한 구현입니다.',
+        code: `<span class="imp">import</span> <span class="pun">{</span> useState <span class="pun">}</span> <span class="imp">from</span> <span class="str">'react'</span><span class="pun">;</span>
+
+<span class="kw">export default function</span> <span class="fn">LoginForm</span><span class="pun">() {</span>
+  <span class="kw">const</span> <span class="pun">[</span>email<span class="pun">,</span> setEmail<span class="pun">]</span> <span class="pun">=</span> <span class="fn">useState</span><span class="pun">(</span><span class="str">''</span><span class="pun">);</span>
+  <span class="kw">const</span> <span class="pun">[</span>password<span class="pun">,</span> setPassword<span class="pun">]</span> <span class="pun">=</span> <span class="fn">useState</span><span class="pun">(</span><span class="str">''</span><span class="pun">);</span>
+  <span class="kw">const</span> <span class="pun">[</span>loading<span class="pun">,</span> setLoading<span class="pun">]</span> <span class="pun">=</span> <span class="fn">useState</span><span class="pun">(</span><span class="kw">false</span><span class="pun">);</span>
+  <span class="kw">const</span> <span class="pun">[</span>error<span class="pun">,</span> setError<span class="pun">]</span> <span class="pun">=</span> <span class="fn">useState</span><span class="pun">(</span><span class="str">''</span><span class="pun">);</span>
+
+  <span class="kw">const</span> <span class="fn">handleSubmit</span> <span class="pun">=</span> <span class="kw">async</span> <span class="pun">(</span>e<span class="pun">) => {</span>
+    e<span class="pun">.</span><span class="fn">preventDefault</span><span class="pun">();</span>
+    <span class="kw">if</span> <span class="pun">(!</span>email <span class="pun">||</span> <span class="pun">!</span>password<span class="pun">) {</span>
+      <span class="fn">setError</span><span class="pun">(</span><span class="str">'이메일과 비밀번호를 입력해주세요.'</span><span class="pun">);</span>
+      <span class="kw">return</span><span class="pun">;</span>
+    <span class="pun">}</span>
+    <span class="fn">setLoading</span><span class="pun">(</span><span class="kw">true</span><span class="pun">);</span>
+    <span class="fn">setError</span><span class="pun">(</span><span class="str">''</span><span class="pun">);</span>
+    <span class="kw">try</span> <span class="pun">{</span>
+      <span class="kw">await</span> <span class="fn">login</span><span class="pun">({</span> email<span class="pun">,</span> password <span class="pun">});</span>
+    <span class="pun">}</span> <span class="kw">catch</span> <span class="pun">(</span>err<span class="pun">) {</span>
+      <span class="fn">setError</span><span class="pun">(</span><span class="str">'로그인에 실패했습니다.'</span><span class="pun">);</span>
+    <span class="pun">}</span> <span class="kw">finally</span> <span class="pun">{</span>
+      <span class="fn">setLoading</span><span class="pun">(</span><span class="kw">false</span><span class="pun">);</span>
+    <span class="pun">}</span>
+  <span class="pun">};</span>
+
+  <span class="kw">return</span> <span class="pun">(</span>
+    <span class="tag">&lt;div</span> <span class="attr">className</span><span class="pun">=</span><span class="str">"min-h-screen flex items-center justify-center bg-gray-50"</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;form</span> <span class="attr">onSubmit</span><span class="pun">={</span>handleSubmit<span class="pun">}</span> <span class="attr">className</span><span class="pun">=</span><span class="str">"bg-white p-8 rounded-xl shadow-lg w-full max-w-md"</span><span class="tag">&gt;</span>
+        <span class="tag">&lt;h2</span> <span class="attr">className</span><span class="pun">=</span><span class="str">"text-2xl font-bold mb-6 text-gray-800"</span><span class="tag">&gt;</span>로그인<span class="tag">&lt;/h2&gt;</span>
+        <span class="pun">{</span>error <span class="pun">&amp;&amp;</span> <span class="tag">&lt;p</span> <span class="attr">className</span><span class="pun">=</span><span class="str">"text-red-500 text-sm mb-4"</span><span class="tag">&gt;{</span>error<span class="tag">}&lt;/p&gt;}</span>
+        <span class="tag">&lt;div</span> <span class="attr">className</span><span class="pun">=</span><span class="str">"space-y-4"</span><span class="tag">&gt;</span>
+          <span class="tag">&lt;input</span>
+            <span class="attr">type</span><span class="pun">=</span><span class="str">"email"</span>
+            <span class="attr">placeholder</span><span class="pun">=</span><span class="str">"이메일"</span>
+            <span class="attr">value</span><span class="pun">={</span>email<span class="pun">}</span>
+            <span class="attr">onChange</span><span class="pun">={(</span>e<span class="pun">) =></span> <span class="fn">setEmail</span><span class="pun">(</span>e<span class="pun">.</span>target<span class="pun">.</span>value<span class="pun">)}</span>
+            <span class="attr">className</span><span class="pun">=</span><span class="str">"w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"</span>
+          <span class="tag">/&gt;</span>
+          <span class="tag">&lt;input</span>
+            <span class="attr">type</span><span class="pun">=</span><span class="str">"password"</span>
+            <span class="attr">placeholder</span><span class="pun">=</span><span class="str">"비밀번호"</span>
+            <span class="attr">value</span><span class="pun">={</span>password<span class="pun">}</span>
+            <span class="attr">onChange</span><span class="pun">={(</span>e<span class="pun">) =></span> <span class="fn">setPassword</span><span class="pun">(</span>e<span class="pun">.</span>target<span class="pun">.</span>value<span class="pun">)}</span>
+            <span class="attr">className</span><span class="pun">=</span><span class="str">"w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"</span>
+          <span class="tag">/&gt;</span>
+          <span class="tag">&lt;button</span>
+            <span class="attr">type</span><span class="pun">=</span><span class="str">"submit"</span>
+            <span class="attr">disabled</span><span class="pun">={</span>loading<span class="pun">}</span>
+            <span class="attr">className</span><span class="pun">=</span><span class="str">"w-full py-3 bg-purple-600 text-white rounded-lg font-semibold hover:bg-purple-700 disabled:opacity-50 transition"</span>
+          <span class="tag">&gt;</span>
+            <span class="pun">{</span>loading ? <span class="str">'로그인 중...'</span> : <span class="str">'로그인'</span><span class="pun">}</span>
+          <span class="tag">&lt;/button&gt;</span>
+        <span class="tag">&lt;/div&gt;</span>
+      <span class="tag">&lt;/form&gt;</span>
+    <span class="tag">&lt;/div&gt;</span>
+  <span class="pun">);</span>
+<span class="pun">}</span>`,
+        rawCode: `import { useState } from 'react';
+
+export default function LoginForm() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!email || !password) {
+      setError('이메일과 비밀번호를 입력해주세요.');
+      return;
+    }
+    setLoading(true);
+    setError('');
+    try {
+      await login({ email, password });
+    } catch (err) {
+      setError('로그인에 실패했습니다.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <form onSubmit={handleSubmit} className="bg-white p-8 rounded-xl shadow-lg w-full max-w-md">
+        <h2 className="text-2xl font-bold mb-6 text-gray-800">로그인</h2>
+        {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
+        <div className="space-y-4">
+          <input type="email" placeholder="이메일" value={email} onChange={(e) => setEmail(e.target.value)} className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500" />
+          <input type="password" placeholder="비밀번호" value={password} onChange={(e) => setPassword(e.target.value)} className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500" />
+          <button type="submit" disabled={loading} className="w-full py-3 bg-purple-600 text-white rounded-lg font-semibold hover:bg-purple-700 disabled:opacity-50 transition">
+            {loading ? '로그인 중...' : '로그인'}
+          </button>
+        </div>
+      </form>
+    </div>
+  );
+}`
+      },
+
+      {
+        keywords: ['크롤러', '크롤링', 'scraper', 'scraping', '웹 크롤', '파이썬 크롤'],
+        lang: 'python',
+        intro: 'BeautifulSoup4와 requests를 사용한 비동기 지원 웹 크롤러입니다. 재시도 로직과 딜레이가 포함되어 있습니다.',
+        code: `<span class="imp">import</span> requests
+<span class="imp">import</span> time
+<span class="imp">from</span> bs4 <span class="imp">import</span> BeautifulSoup
+<span class="imp">from</span> dataclasses <span class="imp">import</span> dataclass
+<span class="imp">from</span> typing <span class="imp">import</span> List<span class="pun">,</span> Optional
+<span class="imp">import</span> logging
+
+logging<span class="pun">.</span><span class="fn">basicConfig</span><span class="pun">(</span>level<span class="pun">=</span>logging<span class="pun">.</span>INFO<span class="pun">)</span>
+logger <span class="pun">=</span> logging<span class="pun">.</span><span class="fn">getLogger</span><span class="pun">(</span><span class="str">__name__</span><span class="pun">)</span>
+
+<span class="dec">@dataclass</span>
+<span class="kw">class</span> <span class="cls">Article</span><span class="pun">:</span>
+    title<span class="pun">:</span> <span class="typ">str</span>
+    url<span class="pun">:</span> <span class="typ">str</span>
+    content<span class="pun">:</span> <span class="typ">str</span>
+    scraped_at<span class="pun">:</span> <span class="typ">str</span>
+
+<span class="kw">class</span> <span class="cls">WebCrawler</span><span class="pun">:</span>
+    <span class="kw">def</span> <span class="fn">__init__</span><span class="pun">(</span>self<span class="pun">,</span> base_url<span class="pun">:</span> <span class="typ">str</span><span class="pun">,</span> delay<span class="pun">:</span> <span class="typ">float</span> <span class="pun">=</span> <span class="num">1.0</span><span class="pun">):</span>
+        self<span class="pun">.</span>base_url <span class="pun">=</span> base_url
+        self<span class="pun">.</span>delay <span class="pun">=</span> delay
+        self<span class="pun">.</span>session <span class="pun">=</span> requests<span class="pun">.</span><span class="fn">Session</span><span class="pun">()</span>
+        self<span class="pun">.</span>session<span class="pun">.</span>headers<span class="pun">.</span><span class="fn">update</span><span class="pun">({</span>
+            <span class="str">'User-Agent'</span><span class="pun">:</span> <span class="str">'Mozilla/5.0 (compatible; MyCrawler/1.0)'</span>
+        <span class="pun">})</span>
+
+    <span class="kw">def</span> <span class="fn">fetch_page</span><span class="pun">(</span>self<span class="pun">,</span> url<span class="pun">:</span> <span class="typ">str</span><span class="pun">,</span> retries<span class="pun">:</span> <span class="typ">int</span> <span class="pun">=</span> <span class="num">3</span><span class="pun">) -></span> Optional<span class="pun">[</span>str<span class="pun">]:</span>
+        <span class="kw">for</span> attempt <span class="kw">in</span> <span class="fn">range</span><span class="pun">(</span>retries<span class="pun">):</span>
+            <span class="kw">try</span><span class="pun">:</span>
+                res <span class="pun">=</span> self<span class="pun">.</span>session<span class="pun">.</span><span class="fn">get</span><span class="pun">(</span>url<span class="pun">,</span> timeout<span class="pun">=</span><span class="num">10</span><span class="pun">)</span>
+                res<span class="pun">.</span><span class="fn">raise_for_status</span><span class="pun">()</span>
+                <span class="kw">return</span> res<span class="pun">.</span>text
+            <span class="kw">except</span> requests<span class="pun">.</span>RequestException <span class="kw">as</span> e<span class="pun">:</span>
+                logger<span class="pun">.</span><span class="fn">warning</span><span class="pun">(</span><span class="str">f"시도 {attempt+1}/{retries} 실패: {e}"</span><span class="pun">)</span>
+                time<span class="pun">.</span><span class="fn">sleep</span><span class="pun">(</span><span class="num">2</span> <span class="pun">**</span> attempt<span class="pun">)</span>
+        <span class="kw">return None</span>
+
+    <span class="kw">def</span> <span class="fn">parse_articles</span><span class="pun">(</span>self<span class="pun">,</span> html<span class="pun">:</span> <span class="typ">str</span><span class="pun">) -></span> List<span class="pun">[</span>Article<span class="pun">]:</span>
+        soup <span class="pun">=</span> <span class="cls">BeautifulSoup</span><span class="pun">(</span>html<span class="pun">,</span> <span class="str">'html.parser'</span><span class="pun">)</span>
+        articles <span class="pun">= []</span>
+        <span class="kw">for</span> item <span class="kw">in</span> soup<span class="pun">.</span><span class="fn">select</span><span class="pun">(</span><span class="str">'article.post'</span><span class="pun">):</span>
+            title_el <span class="pun">=</span> item<span class="pun">.</span><span class="fn">select_one</span><span class="pun">(</span><span class="str">'h2 a'</span><span class="pun">)</span>
+            <span class="kw">if not</span> title_el<span class="pun">:</span> <span class="kw">continue</span>
+            articles<span class="pun">.</span><span class="fn">append</span><span class="pun">(</span><span class="cls">Article</span><span class="pun">(</span>
+                title<span class="pun">=</span>title_el<span class="pun">.</span>get_text<span class="pun">(</span>strip<span class="pun">=</span><span class="kw">True</span><span class="pun">),</span>
+                url<span class="pun">=</span>title_el<span class="pun">[</span><span class="str">'href'</span><span class="pun">],</span>
+                content<span class="pun">=</span>item<span class="pun">.</span><span class="fn">get_text</span><span class="pun">(</span>strip<span class="pun">=</span><span class="kw">True</span><span class="pun">)[:</span><span class="num">500</span><span class="pun">],</span>
+                scraped_at<span class="pun">=</span>time<span class="pun">.</span><span class="fn">strftime</span><span class="pun">(</span><span class="str">'%Y-%m-%d %H:%M'</span><span class="pun">)</span>
+            <span class="pun">))</span>
+        <span class="kw">return</span> articles
+
+    <span class="kw">def</span> <span class="fn">crawl</span><span class="pun">(</span>self<span class="pun">,</span> pages<span class="pun">:</span> <span class="typ">int</span> <span class="pun">=</span> <span class="num">5</span><span class="pun">) -></span> List<span class="pun">[</span>Article<span class="pun">]:</span>
+        all_articles <span class="pun">= []</span>
+        <span class="kw">for</span> page <span class="kw">in</span> <span class="fn">range</span><span class="pun">(</span><span class="num">1</span><span class="pun">,</span> pages <span class="pun">+</span> <span class="num">1</span><span class="pun">):</span>
+            url <span class="pun">=</span> <span class="str">f"{self.base_url}?page={page}"</span>
+            logger<span class="pun">.</span><span class="fn">info</span><span class="pun">(</span><span class="str">f"크롤링 중: {url}"</span><span class="pun">)</span>
+            html <span class="pun">=</span> self<span class="pun">.</span><span class="fn">fetch_page</span><span class="pun">(</span>url<span class="pun">)</span>
+            <span class="kw">if</span> html<span class="pun">:</span>
+                all_articles<span class="pun">.</span><span class="fn">extend</span><span class="pun">(</span>self<span class="pun">.</span><span class="fn">parse_articles</span><span class="pun">(</span>html<span class="pun">))</span>
+            time<span class="pun">.</span><span class="fn">sleep</span><span class="pun">(</span>self<span class="pun">.</span>delay<span class="pun">)</span>
+        <span class="kw">return</span> all_articles
+
+<span class="cmt"># 사용 예시</span>
+crawler <span class="pun">=</span> <span class="cls">WebCrawler</span><span class="pun">(</span><span class="str">"https://example.com/blog"</span><span class="pun">)</span>
+articles <span class="pun">=</span> crawler<span class="pun">.</span><span class="fn">crawl</span><span class="pun">(</span>pages<span class="pun">=</span><span class="num">3</span><span class="pun">)</span>
+<span class="fn">print</span><span class="pun">(</span><span class="str">f"총 {len(articles)}개 수집 완료"</span><span class="pun">)</span>`,
+        rawCode: `import requests
+import time
+from bs4 import BeautifulSoup
+from dataclasses import dataclass
+from typing import List, Optional
+import logging
+
+@dataclass
+class Article:
+    title: str
+    url: str
+    content: str
+    scraped_at: str
+
+class WebCrawler:
+    def __init__(self, base_url: str, delay: float = 1.0):
+        self.base_url = base_url
+        self.delay = delay
+        self.session = requests.Session()
+
+    def fetch_page(self, url: str, retries: int = 3) -> Optional[str]:
+        for attempt in range(retries):
+            try:
+                res = self.session.get(url, timeout=10)
+                res.raise_for_status()
+                return res.text
+            except requests.RequestException as e:
+                time.sleep(2 ** attempt)
+        return None
+
+    def crawl(self, pages: int = 5) -> List[Article]:
+        all_articles = []
+        for page in range(1, pages + 1):
+            url = f"{self.base_url}?page={page}"
+            html = self.fetch_page(url)
+            if html:
+                all_articles.extend(self.parse_articles(html))
+            time.sleep(self.delay)
+        return all_articles`
+      },
+
+      {
+        keywords: ['다크모드', '다크 모드', 'dark mode', '토글', '테마'],
+        lang: 'react',
+        intro: 'CSS 변수와 localStorage를 활용한 다크모드 토글 훅과 버튼 컴포넌트입니다. 시스템 테마도 자동 감지합니다.',
+        code: `<span class="cmt">// useDarkMode.js</span>
+<span class="imp">import</span> <span class="pun">{</span> useState<span class="pun">,</span> useEffect <span class="pun">}</span> <span class="imp">from</span> <span class="str">'react'</span><span class="pun">;</span>
+
+<span class="kw">export function</span> <span class="fn">useDarkMode</span><span class="pun">() {</span>
+  <span class="kw">const</span> <span class="pun">[</span>isDark<span class="pun">,</span> setIsDark<span class="pun">]</span> <span class="pun">=</span> <span class="fn">useState</span><span class="pun">(() => {</span>
+    <span class="kw">const</span> saved <span class="pun">=</span> localStorage<span class="pun">.</span><span class="fn">getItem</span><span class="pun">(</span><span class="str">'theme'</span><span class="pun">);</span>
+    <span class="kw">if</span> <span class="pun">(</span>saved<span class="pun">)</span> <span class="kw">return</span> saved <span class="pun">===</span> <span class="str">'dark'</span><span class="pun">;</span>
+    <span class="kw">return</span> window<span class="pun">.</span>matchMedia<span class="pun">(</span><span class="str">'(prefers-color-scheme: dark)'</span><span class="pun">).</span>matches<span class="pun">;</span>
+  <span class="pun">});</span>
+
+  <span class="fn">useEffect</span><span class="pun">(() => {</span>
+    <span class="kw">const</span> root <span class="pun">=</span> document<span class="pun">.</span>documentElement<span class="pun">;</span>
+    <span class="kw">if</span> <span class="pun">(</span>isDark<span class="pun">) {</span>
+      root<span class="pun">.</span>classList<span class="pun">.</span><span class="fn">add</span><span class="pun">(</span><span class="str">'dark'</span><span class="pun">);</span>
+      localStorage<span class="pun">.</span><span class="fn">setItem</span><span class="pun">(</span><span class="str">'theme'</span><span class="pun">,</span> <span class="str">'dark'</span><span class="pun">);</span>
+    <span class="pun">}</span> <span class="kw">else</span> <span class="pun">{</span>
+      root<span class="pun">.</span>classList<span class="pun">.</span><span class="fn">remove</span><span class="pun">(</span><span class="str">'dark'</span><span class="pun">);</span>
+      localStorage<span class="pun">.</span><span class="fn">setItem</span><span class="pun">(</span><span class="str">'theme'</span><span class="pun">,</span> <span class="str">'light'</span><span class="pun">);</span>
+    <span class="pun">}</span>
+  <span class="pun">},</span> <span class="pun">[</span>isDark<span class="pun">]);</span>
+
+  <span class="kw">return</span> <span class="pun">[</span>isDark<span class="pun">,</span> <span class="pun">() =></span> <span class="fn">setIsDark</span><span class="pun">(</span>v <span class="pun">=></span> <span class="pun">!</span>v<span class="pun">)];</span>
+<span class="pun">}</span>
+
+<span class="cmt">// DarkModeToggle.jsx</span>
+<span class="kw">export function</span> <span class="fn">DarkModeToggle</span><span class="pun">() {</span>
+  <span class="kw">const</span> <span class="pun">[</span>isDark<span class="pun">,</span> toggle<span class="pun">]</span> <span class="pun">=</span> <span class="fn">useDarkMode</span><span class="pun">();</span>
+
+  <span class="kw">return</span> <span class="pun">(</span>
+    <span class="tag">&lt;button</span>
+      <span class="attr">onClick</span><span class="pun">={</span>toggle<span class="pun">}</span>
+      <span class="attr">className</span><span class="pun">=</span><span class="str">{`relative w-14 h-7 rounded-full transition-colors duration-300
+        ${isDark ? 'bg-purple-600' : 'bg-gray-300'}`}</span>
+      <span class="attr">aria-label</span><span class="pun">=</span><span class="str">"테마 변경"</span>
+    <span class="tag">&gt;</span>
+      <span class="tag">&lt;span</span>
+        <span class="attr">className</span><span class="pun">=</span><span class="str">{`absolute top-0.5 left-0.5 w-6 h-6 bg-white rounded-full shadow
+          transition-transform duration-300
+          ${isDark ? 'translate-x-7' : 'translate-x-0'}`}</span>
+      <span class="tag">/&gt;</span>
+      <span class="tag">&lt;span</span> <span class="attr">className</span><span class="pun">=</span><span class="str">"sr-only"</span><span class="tag">&gt;</span><span class="pun">{</span>isDark ? <span class="str">'라이트 모드로 전환'</span> : <span class="str">'다크 모드로 전환'</span><span class="pun">}</span><span class="tag">&lt;/span&gt;</span>
+    <span class="tag">&lt;/button&gt;</span>
+  <span class="pun">);</span>
+<span class="pun">}</span>`,
+        rawCode: `import { useState, useEffect } from 'react';
+
+export function useDarkMode() {
+  const [isDark, setIsDark] = useState(() => {
+    const saved = localStorage.getItem('theme');
+    if (saved) return saved === 'dark';
+    return window.matchMedia('(prefers-color-scheme: dark)').matches;
+  });
+
+  useEffect(() => {
+    const root = document.documentElement;
+    if (isDark) {
+      root.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      root.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+    }
+  }, [isDark]);
+
+  return [isDark, () => setIsDark(v => !v)];
+}`
+      },
+
+      {
+        keywords: ['타입스크립트', 'typescript', 'api 훅', 'usefetch', 'fetch 훅', '훅'],
+        lang: 'typescript',
+        intro: 'TypeScript 제네릭을 활용한 재사용 가능한 API fetch 훅입니다. 로딩, 에러, 재시도를 모두 처리합니다.',
+        code: `<span class="imp">import</span> <span class="pun">{</span> useState<span class="pun">,</span> useEffect<span class="pun">,</span> useCallback <span class="pun">}</span> <span class="imp">from</span> <span class="str">'react'</span><span class="pun">;</span>
+
+<span class="kw">interface</span> <span class="cls">FetchState</span><span class="pun">&lt;</span>T<span class="pun">&gt; {</span>
+  data<span class="pun">:</span> T <span class="pun">|</span> <span class="kw">null</span><span class="pun">;</span>
+  loading<span class="pun">:</span> <span class="typ">boolean</span><span class="pun">;</span>
+  error<span class="pun">:</span> <span class="typ">string</span> <span class="pun">|</span> <span class="kw">null</span><span class="pun">;</span>
+  refetch<span class="pun">:</span> <span class="pun">() =></span> <span class="typ">void</span><span class="pun">;</span>
+<span class="pun">}</span>
+
+<span class="kw">export function</span> <span class="fn">useFetch</span><span class="pun">&lt;</span>T<span class="pun">&gt;(</span>
+  url<span class="pun">:</span> <span class="typ">string</span><span class="pun">,</span>
+  options<span class="pun">?:</span> RequestInit
+<span class="pun">):</span> FetchState<span class="pun">&lt;</span>T<span class="pun">&gt; {</span>
+  <span class="kw">const</span> <span class="pun">[</span>data<span class="pun">,</span> setData<span class="pun">]</span> <span class="pun">=</span> <span class="fn">useState</span><span class="pun">&lt;</span>T <span class="pun">|</span> <span class="kw">null</span><span class="pun">&gt;(</span><span class="kw">null</span><span class="pun">);</span>
+  <span class="kw">const</span> <span class="pun">[</span>loading<span class="pun">,</span> setLoading<span class="pun">]</span> <span class="pun">=</span> <span class="fn">useState</span><span class="pun">&lt;</span><span class="typ">boolean</span><span class="pun">&gt;(</span><span class="kw">true</span><span class="pun">);</span>
+  <span class="kw">const</span> <span class="pun">[</span>error<span class="pun">,</span> setError<span class="pun">]</span> <span class="pun">=</span> <span class="fn">useState</span><span class="pun">&lt;</span><span class="typ">string</span> <span class="pun">|</span> <span class="kw">null</span><span class="pun">&gt;(</span><span class="kw">null</span><span class="pun">);</span>
+  <span class="kw">const</span> <span class="pun">[</span>trigger<span class="pun">,</span> setTrigger<span class="pun">]</span> <span class="pun">=</span> <span class="fn">useState</span><span class="pun">(</span><span class="num">0</span><span class="pun">);</span>
+
+  <span class="kw">const</span> refetch <span class="pun">=</span> <span class="fn">useCallback</span><span class="pun">(() =></span> <span class="fn">setTrigger</span><span class="pun">(</span>n <span class="pun">=></span> n <span class="pun">+</span> <span class="num">1</span><span class="pun">),</span> <span class="pun">[]);</span>
+
+  <span class="fn">useEffect</span><span class="pun">(() => {</span>
+    <span class="kw">const</span> controller <span class="pun">=</span> <span class="kw">new</span> <span class="cls">AbortController</span><span class="pun">();</span>
+    <span class="kw">let</span> cancelled <span class="pun">=</span> <span class="kw">false</span><span class="pun">;</span>
+
+    <span class="kw">const</span> <span class="fn">fetchData</span> <span class="pun">=</span> <span class="kw">async</span> <span class="pun">() => {</span>
+      <span class="fn">setLoading</span><span class="pun">(</span><span class="kw">true</span><span class="pun">);</span>
+      <span class="fn">setError</span><span class="pun">(</span><span class="kw">null</span><span class="pun">);</span>
+      <span class="kw">try</span> <span class="pun">{</span>
+        <span class="kw">const</span> res <span class="pun">=</span> <span class="kw">await</span> <span class="fn">fetch</span><span class="pun">(</span>url<span class="pun">, {</span> <span class="pun">...</span>options<span class="pun">,</span> signal<span class="pun">:</span> controller<span class="pun">.</span>signal <span class="pun">});</span>
+        <span class="kw">if</span> <span class="pun">(!</span>res<span class="pun">.</span>ok<span class="pun">)</span> <span class="kw">throw new</span> <span class="cls">Error</span><span class="pun">(</span><span class="str">`HTTP ${res.status}`</span><span class="pun">);</span>
+        <span class="kw">const</span> json <span class="pun">=</span> <span class="kw">await</span> res<span class="pun">.</span><span class="fn">json</span><span class="pun">();</span>
+        <span class="kw">if</span> <span class="pun">(!</span>cancelled<span class="pun">)</span> <span class="fn">setData</span><span class="pun">(</span>json <span class="kw">as</span> T<span class="pun">);</span>
+      <span class="pun">}</span> <span class="kw">catch</span> <span class="pun">(</span>err<span class="pun">) {</span>
+        <span class="kw">if</span> <span class="pun">(!</span>cancelled<span class="pun">)</span> <span class="fn">setError</span><span class="pun">((</span>err <span class="kw">as</span> Error<span class="pun">).</span>message<span class="pun">);</span>
+      <span class="pun">}</span> <span class="kw">finally</span> <span class="pun">{</span>
+        <span class="kw">if</span> <span class="pun">(!</span>cancelled<span class="pun">)</span> <span class="fn">setLoading</span><span class="pun">(</span><span class="kw">false</span><span class="pun">);</span>
+      <span class="pun">}</span>
+    <span class="pun">};</span>
+
+    <span class="fn">fetchData</span><span class="pun">();</span>
+    <span class="kw">return</span> <span class="pun">() => {</span> cancelled <span class="pun">=</span> <span class="kw">true</span><span class="pun">;</span> controller<span class="pun">.</span><span class="fn">abort</span><span class="pun">(); };</span>
+  <span class="pun">},</span> <span class="pun">[</span>url<span class="pun">,</span> trigger<span class="pun">]);</span>
+
+  <span class="kw">return</span> <span class="pun">{</span> data<span class="pun">,</span> loading<span class="pun">,</span> error<span class="pun">,</span> refetch <span class="pun">};</span>
+<span class="pun">}</span>
+
+<span class="cmt">// 사용 예시</span>
+<span class="kw">interface</span> <span class="cls">User</span> <span class="pun">{</span> id<span class="pun">:</span> <span class="typ">number</span><span class="pun">;</span> name<span class="pun">:</span> <span class="typ">string</span><span class="pun">;</span> email<span class="pun">:</span> <span class="typ">string</span><span class="pun">; }</span>
+
+<span class="kw">const</span> <span class="pun">{</span> data<span class="pun">,</span> loading<span class="pun">,</span> error<span class="pun">,</span> refetch <span class="pun">} =</span> <span class="fn">useFetch</span><span class="pun">&lt;</span>User<span class="pun">[]&gt;(</span><span class="str">'/api/users'</span><span class="pun">);</span>`,
+        rawCode: `import { useState, useEffect, useCallback } from 'react';
+
+interface FetchState<T> {
+  data: T | null;
+  loading: boolean;
+  error: string | null;
+  refetch: () => void;
+}
+
+export function useFetch<T>(url: string, options?: RequestInit): FetchState<T> {
+  const [data, setData] = useState<T | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+  const [trigger, setTrigger] = useState(0);
+
+  const refetch = useCallback(() => setTrigger(n => n + 1), []);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    let cancelled = false;
+    const fetchData = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const res = await fetch(url, { ...options, signal: controller.signal });
+        if (!res.ok) throw new Error(\`HTTP \${res.status}\`);
+        const json = await res.json();
+        if (!cancelled) setData(json as T);
+      } catch (err) {
+        if (!cancelled) setError((err as Error).message);
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    };
+    fetchData();
+    return () => { cancelled = true; controller.abort(); };
+  }, [url, trigger]);
+
+  return { data, loading, error, refetch };
+}`
+      },
+
+      {
+        keywords: ['카드', '애니메이션', 'card', 'hover', '호버', '컴포넌트'],
+        lang: 'css',
+        intro: 'CSS 변수와 transform을 이용한 호버 효과가 있는 카드 컴포넌트 스타일입니다. 글래스모피즘 디자인 포함.',
+        code: `<span class="cmt">/* 카드 컴포넌트 */</span>
+<span class="cls">.card</span> <span class="pun">{</span>
+  <span class="attr">--card-bg</span><span class="pun">:</span> rgba<span class="pun">(</span><span class="num">255</span><span class="pun">,</span> <span class="num">255</span><span class="pun">,</span> <span class="num">255</span><span class="pun">,</span> <span class="num">0.08</span><span class="pun">);</span>
+  <span class="attr">--card-border</span><span class="pun">:</span> rgba<span class="pun">(</span><span class="num">255</span><span class="pun">,</span> <span class="num">255</span><span class="pun">,</span> <span class="num">255</span><span class="pun">,</span> <span class="num">0.12</span><span class="pun">);</span>
+  <span class="attr">--card-shadow</span><span class="pun">:</span> <span class="num">0</span> <span class="num">8px</span> <span class="num">32px</span> rgba<span class="pun">(</span><span class="num">0</span><span class="pun">,</span> <span class="num">0</span><span class="pun">,</span> <span class="num">0</span><span class="pun">,</span> <span class="num">0.3</span><span class="pun">);</span>
+
+  background<span class="pun">:</span> <span class="kw">var</span><span class="pun">(--</span>card-bg<span class="pun">);</span>
+  backdrop-filter<span class="pun">:</span> blur<span class="pun">(</span><span class="num">16px</span><span class="pun">);</span>
+  border<span class="pun">:</span> <span class="num">1px</span> solid <span class="kw">var</span><span class="pun">(--</span>card-border<span class="pun">);</span>
+  border-radius<span class="pun">:</span> <span class="num">16px</span><span class="pun">;</span>
+  padding<span class="pun">:</span> <span class="num">24px</span><span class="pun">;</span>
+  box-shadow<span class="pun">:</span> <span class="kw">var</span><span class="pun">(--</span>card-shadow<span class="pun">);</span>
+  transition<span class="pun">:</span> transform <span class="num">0.3s</span> cubic-bezier<span class="pun">(</span><span class="num">0.34</span><span class="pun">,</span> <span class="num">1.56</span><span class="pun">,</span> <span class="num">0.64</span><span class="pun">,</span> <span class="num">1</span><span class="pun">),</span>
+              box-shadow <span class="num">0.3s</span> ease<span class="pun">;</span>
+  cursor<span class="pun">:</span> pointer<span class="pun">;</span>
+  position<span class="pun">:</span> relative<span class="pun">;</span>
+  overflow<span class="pun">:</span> hidden<span class="pun">;</span>
+<span class="pun">}</span>
+
+<span class="cls">.card</span><span class="pun">::</span><span class="kw">before</span> <span class="pun">{</span>
+  content<span class="pun">:</span> <span class="str">''</span><span class="pun">;</span>
+  position<span class="pun">:</span> absolute<span class="pun">;</span>
+  inset<span class="pun">:</span> <span class="num">0</span><span class="pun">;</span>
+  background<span class="pun">:</span> linear-gradient<span class="pun">(</span><span class="num">135deg</span><span class="pun">,</span>
+    rgba<span class="pun">(</span><span class="num">139</span><span class="pun">,</span> <span class="num">92</span><span class="pun">,</span> <span class="num">246</span><span class="pun">,</span> <span class="num">0</span><span class="pun">),</span>
+    rgba<span class="pun">(</span><span class="num">99</span><span class="pun">,</span> <span class="num">102</span><span class="pun">,</span> <span class="num">241</span><span class="pun">,</span> <span class="num">0</span><span class="pun">)</span>
+  <span class="pun">);</span>
+  transition<span class="pun">:</span> opacity <span class="num">0.3s</span><span class="pun">;</span>
+  opacity<span class="pun">:</span> <span class="num">0</span><span class="pun">;</span>
+<span class="pun">}</span>
+
+<span class="cls">.card</span><span class="pun">:</span><span class="kw">hover</span> <span class="pun">{</span>
+  transform<span class="pun">:</span> translateY<span class="pun">(-</span><span class="num">6px</span><span class="pun">)</span> scale<span class="pun">(</span><span class="num">1.01</span><span class="pun">);</span>
+  box-shadow<span class="pun">:</span> <span class="num">0</span> <span class="num">20px</span> <span class="num">48px</span> rgba<span class="pun">(</span><span class="num">139</span><span class="pun">,</span> <span class="num">92</span><span class="pun">,</span> <span class="num">246</span><span class="pun">,</span> <span class="num">0.25</span><span class="pun">),</span>
+              <span class="num">0</span> <span class="num">0</span> <span class="num">0</span> <span class="num">1px</span> rgba<span class="pun">(</span><span class="num">139</span><span class="pun">,</span> <span class="num">92</span><span class="pun">,</span> <span class="num">246</span><span class="pun">,</span> <span class="num">0.4</span><span class="pun">);</span>
+<span class="pun">}</span>
+
+<span class="cls">.card</span><span class="pun">:</span><span class="kw">hover</span><span class="pun">::</span><span class="kw">before</span> <span class="pun">{</span>
+  background<span class="pun">:</span> linear-gradient<span class="pun">(</span><span class="num">135deg</span><span class="pun">,</span>
+    rgba<span class="pun">(</span><span class="num">139</span><span class="pun">,</span> <span class="num">92</span><span class="pun">,</span> <span class="num">246</span><span class="pun">,</span> <span class="num">0.08</span><span class="pun">),</span>
+    rgba<span class="pun">(</span><span class="num">99</span><span class="pun">,</span> <span class="num">102</span><span class="pun">,</span> <span class="num">241</span><span class="pun">,</span> <span class="num">0.08</span><span class="pun">)</span>
+  <span class="pun">);</span>
+  opacity<span class="pun">:</span> <span class="num">1</span><span class="pun">;</span>
+<span class="pun">}</span>
+
+<span class="cls">.card-title</span> <span class="pun">{</span>
+  font-size<span class="pun">:</span> <span class="num">1.125rem</span><span class="pun">;</span>
+  font-weight<span class="pun">:</span> <span class="num">700</span><span class="pun">;</span>
+  margin-bottom<span class="pun">:</span> <span class="num">8px</span><span class="pun">;</span>
+  background<span class="pun">:</span> linear-gradient<span class="pun">(</span><span class="num">135deg</span><span class="pun">,</span> <span class="str">#a78bfa</span><span class="pun">,</span> <span class="str">#818cf8</span><span class="pun">);</span>
+  <span class="attr">-webkit-background-clip</span><span class="pun">:</span> text<span class="pun">;</span>
+  <span class="attr">-webkit-text-fill-color</span><span class="pun">:</span> transparent<span class="pun">;</span>
+<span class="pun">}</span>
+
+<span class="cls">.card-body</span> <span class="pun">{</span>
+  font-size<span class="pun">:</span> <span class="num">0.875rem</span><span class="pun">;</span>
+  color<span class="pun">:</span> rgba<span class="pun">(</span><span class="num">255</span><span class="pun">,</span> <span class="num">255</span><span class="pun">,</span> <span class="num">255</span><span class="pun">,</span> <span class="num">0.6</span><span class="pun">);</span>
+  line-height<span class="pun">:</span> <span class="num">1.6</span><span class="pun">;</span>
+<span class="pun">}</span>
+
+<span class="cls">.card-footer</span> <span class="pun">{</span>
+  display<span class="pun">:</span> flex<span class="pun">;</span>
+  align-items<span class="pun">:</span> center<span class="pun">;</span>
+  justify-content<span class="pun">:</span> space-between<span class="pun">;</span>
+  margin-top<span class="pun">:</span> <span class="num">20px</span><span class="pun">;</span>
+  padding-top<span class="pun">:</span> <span class="num">16px</span><span class="pun">;</span>
+  border-top<span class="pun">:</span> <span class="num">1px</span> solid rgba<span class="pun">(</span><span class="num">255</span><span class="pun">,</span> <span class="num">255</span><span class="pun">,</span> <span class="num">255</span><span class="pun">,</span> <span class="num">0.06</span><span class="pun">);</span>
+<span class="pun">}</span>`,
+        rawCode: `.card {
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 16px;
+  padding: 24px;
+  transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.3s ease;
+}
+.card:hover {
+  transform: translateY(-6px) scale(1.01);
+  box-shadow: 0 20px 48px rgba(139,92,246,0.25);
+}`
+      },
+
+      {
+        keywords: ['fastapi', 'fast api', 'api 서버', 'rest api', '파이썬 서버', 'flask', 'django'],
+        lang: 'python',
+        intro: 'FastAPI로 만든 RESTful API 서버입니다. JWT 인증, CORS, Pydantic 모델이 포함된 프로덕션 수준의 구조입니다.',
+        code: `<span class="imp">from</span> fastapi <span class="imp">import</span> FastAPI<span class="pun">,</span> HTTPException<span class="pun">,</span> Depends<span class="pun">,</span> status
+<span class="imp">from</span> fastapi<span class="pun">.</span>middleware<span class="pun">.</span>cors <span class="imp">import</span> CORSMiddleware
+<span class="imp">from</span> fastapi<span class="pun">.</span>security <span class="imp">import</span> OAuth2PasswordBearer
+<span class="imp">from</span> pydantic <span class="imp">import</span> BaseModel<span class="pun">,</span> EmailStr
+<span class="imp">from</span> typing <span class="imp">import</span> List<span class="pun">,</span> Optional
+<span class="imp">import</span> uvicorn
+
+app <span class="pun">=</span> <span class="fn">FastAPI</span><span class="pun">(</span>
+    title<span class="pun">=</span><span class="str">"VibeAPI"</span><span class="pun">,</span>
+    version<span class="pun">=</span><span class="str">"1.0.0"</span><span class="pun">,</span>
+    description<span class="pun">=</span><span class="str">"AI가 생성한 RESTful API 서버"</span>
+<span class="pun">)</span>
+
+app<span class="pun">.</span><span class="fn">add_middleware</span><span class="pun">(</span>
+    CORSMiddleware<span class="pun">,</span>
+    allow_origins<span class="pun">=[</span><span class="str">"*"</span><span class="pun">],</span>
+    allow_methods<span class="pun">=[</span><span class="str">"*"</span><span class="pun">],</span>
+    allow_headers<span class="pun">=[</span><span class="str">"*"</span><span class="pun">],</span>
+<span class="pun">)</span>
+
+<span class="cmt"># Pydantic 모델</span>
+<span class="kw">class</span> <span class="cls">UserCreate</span><span class="pun">(</span>BaseModel<span class="pun">):</span>
+    username<span class="pun">:</span> <span class="typ">str</span>
+    email<span class="pun">:</span> <span class="typ">EmailStr</span>
+    password<span class="pun">:</span> <span class="typ">str</span>
+
+<span class="kw">class</span> <span class="cls">UserResponse</span><span class="pun">(</span>BaseModel<span class="pun">):</span>
+    id<span class="pun">:</span> <span class="typ">int</span>
+    username<span class="pun">:</span> <span class="typ">str</span>
+    email<span class="pun">:</span> <span class="typ">str</span>
+
+<span class="cmt"># 임시 데이터베이스</span>
+fake_db<span class="pun">: list =</span> <span class="pun">[]</span>
+
+<span class="dec">@app.get</span><span class="pun">(</span><span class="str">"/"</span><span class="pun">)</span>
+<span class="kw">async def</span> <span class="fn">root</span><span class="pun">():</span>
+    <span class="kw">return</span> <span class="pun">{</span><span class="str">"message"</span><span class="pun">:</span> <span class="str">"VibeAPI 서버 가동 중 🚀"</span><span class="pun">,</span> <span class="str">"version"</span><span class="pun">:</span> <span class="str">"1.0.0"</span><span class="pun">}</span>
+
+<span class="dec">@app.get</span><span class="pun">(</span><span class="str">"/users"</span><span class="pun">,</span> response_model<span class="pun">=</span>List<span class="pun">[</span>UserResponse<span class="pun">])</span>
+<span class="kw">async def</span> <span class="fn">get_users</span><span class="pun">(</span>skip<span class="pun">:</span> <span class="typ">int</span> <span class="pun">=</span> <span class="num">0</span><span class="pun">,</span> limit<span class="pun">:</span> <span class="typ">int</span> <span class="pun">=</span> <span class="num">10</span><span class="pun">):</span>
+    <span class="kw">return</span> fake_db<span class="pun">[</span>skip<span class="pun">:</span>skip <span class="pun">+</span> limit<span class="pun">]</span>
+
+<span class="dec">@app.post</span><span class="pun">(</span><span class="str">"/users"</span><span class="pun">,</span> response_model<span class="pun">=</span>UserResponse<span class="pun">,</span> status_code<span class="pun">=</span>status<span class="pun">.</span>HTTP_201_CREATED<span class="pun">)</span>
+<span class="kw">async def</span> <span class="fn">create_user</span><span class="pun">(</span>user<span class="pun">:</span> UserCreate<span class="pun">):</span>
+    new_user <span class="pun">= {</span>
+        <span class="str">"id"</span><span class="pun">:</span> <span class="fn">len</span><span class="pun">(</span>fake_db<span class="pun">) +</span> <span class="num">1</span><span class="pun">,</span>
+        <span class="str">"username"</span><span class="pun">:</span> user<span class="pun">.</span>username<span class="pun">,</span>
+        <span class="str">"email"</span><span class="pun">:</span> user<span class="pun">.</span>email
+    <span class="pun">}</span>
+    fake_db<span class="pun">.</span><span class="fn">append</span><span class="pun">(</span>new_user<span class="pun">)</span>
+    <span class="kw">return</span> new_user
+
+<span class="dec">@app.get</span><span class="pun">(</span><span class="str">"/users/{user_id}"</span><span class="pun">,</span> response_model<span class="pun">=</span>UserResponse<span class="pun">)</span>
+<span class="kw">async def</span> <span class="fn">get_user</span><span class="pun">(</span>user_id<span class="pun">:</span> <span class="typ">int</span><span class="pun">):</span>
+    user <span class="pun">=</span> <span class="fn">next</span><span class="pun">((</span>u <span class="kw">for</span> u <span class="kw">in</span> fake_db <span class="kw">if</span> u<span class="pun">[</span><span class="str">"id"</span><span class="pun">] ==</span> user_id<span class="pun">),</span> <span class="kw">None</span><span class="pun">)</span>
+    <span class="kw">if not</span> user<span class="pun">:</span>
+        <span class="kw">raise</span> <span class="fn">HTTPException</span><span class="pun">(</span>status_code<span class="pun">=</span><span class="num">404</span><span class="pun">,</span> detail<span class="pun">=</span><span class="str">"사용자를 찾을 수 없습니다"</span><span class="pun">)</span>
+    <span class="kw">return</span> user
+
+<span class="kw">if</span> __name__ <span class="pun">==</span> <span class="str">"__main__"</span><span class="pun">:</span>
+    uvicorn<span class="pun">.</span><span class="fn">run</span><span class="pun">(</span><span class="str">"main:app"</span><span class="pun">,</span> host<span class="pun">=</span><span class="str">"0.0.0.0"</span><span class="pun">,</span> port<span class="pun">=</span><span class="num">8000</span><span class="pun">,</span> reload<span class="pun">=</span><span class="kw">True</span><span class="pun">)</span>`,
+        rawCode: `from fastapi import FastAPI, HTTPException, status
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel, EmailStr
+from typing import List
+import uvicorn
+
+app = FastAPI(title="VibeAPI", version="1.0.0")
+app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
+
+class UserCreate(BaseModel):
+    username: str
+    email: EmailStr
+    password: str
+
+@app.get("/users")
+async def get_users(skip: int = 0, limit: int = 10):
+    return fake_db[skip:skip + limit]
+
+if __name__ == "__main__":
+    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)`
+      }
+    ];
+
+    // Default fallback
+    const defaultResponse = {
+      lang: 'javascript',
+      intro: '요청하신 내용에 대한 기본 JavaScript 모듈 구조를 생성했습니다. 필요에 맞게 수정해서 사용하세요.',
+      code: `<span class="cmt">/**
+ * VibeAI가 생성한 모듈
+ * 요청: 사용자 입력 기반 생성
+ */</span>
+<span class="kw">class</span> <span class="cls">VibeModule</span> <span class="pun">{</span>
+  <span class="fn">constructor</span><span class="pun">(</span>config <span class="pun">=</span> <span class="pun">{}) {</span>
+    this<span class="pun">.</span>config <span class="pun">= {</span>
+      debug<span class="pun">:</span> <span class="kw">false</span><span class="pun">,</span>
+      timeout<span class="pun">:</span> <span class="num">5000</span><span class="pun">,</span>
+      <span class="pun">...</span>config
+    <span class="pun">};</span>
+    this<span class="pun">.</span>initialized <span class="pun">=</span> <span class="kw">false</span><span class="pun">;</span>
+  <span class="pun">}</span>
+
+  <span class="kw">async</span> <span class="fn">init</span><span class="pun">() {</span>
+    <span class="kw">try</span> <span class="pun">{</span>
+      <span class="kw">await</span> this<span class="pun">.</span><span class="fn">setup</span><span class="pun">();</span>
+      this<span class="pun">.</span>initialized <span class="pun">=</span> <span class="kw">true</span><span class="pun">;</span>
+      <span class="kw">if</span> <span class="pun">(</span>this<span class="pun">.</span>config<span class="pun">.</span>debug<span class="pun">)</span>
+        console<span class="pun">.</span><span class="fn">log</span><span class="pun">(</span><span class="str">'[VibeModule] 초기화 완료'</span><span class="pun">);</span>
+    <span class="pun">}</span> <span class="kw">catch</span> <span class="pun">(</span>err<span class="pun">) {</span>
+      console<span class="pun">.</span><span class="fn">error</span><span class="pun">(</span><span class="str">'[VibeModule] 초기화 실패:'</span><span class="pun">,</span> err<span class="pun">);</span>
+      <span class="kw">throw</span> err<span class="pun">;</span>
+    <span class="pun">}</span>
+    <span class="kw">return</span> this<span class="pun">;</span>
+  <span class="pun">}</span>
+
+  <span class="kw">async</span> <span class="fn">setup</span><span class="pun">() {</span>
+    <span class="cmt">// TODO: 초기화 로직 구현</span>
+    <span class="kw">return</span> <span class="kw">new</span> <span class="fn">Promise</span><span class="pun">(</span>res <span class="pun">=></span> <span class="fn">setTimeout</span><span class="pun">(</span>res<span class="pun">,</span> <span class="num">100</span><span class="pun">));</span>
+  <span class="pun">}</span>
+
+  <span class="fn">destroy</span><span class="pun">() {</span>
+    this<span class="pun">.</span>initialized <span class="pun">=</span> <span class="kw">false</span><span class="pun">;</span>
+    <span class="cmt">// TODO: 정리 로직 구현</span>
+  <span class="pun">}</span>
+<span class="pun">}</span>
+
+<span class="kw">export default</span> VibeModule<span class="pun">;</span>
+
+<span class="cmt">// 사용 예시</span>
+<span class="kw">const</span> mod <span class="pun">=</span> <span class="kw">new</span> <span class="fn">VibeModule</span><span class="pun">({</span> debug<span class="pun">:</span> <span class="kw">true</span> <span class="pun">});</span>
+<span class="kw">await</span> mod<span class="pun">.</span><span class="fn">init</span><span class="pun">();</span>`,
+      rawCode: `class VibeModule {
+  constructor(config = {}) {
+    this.config = { debug: false, timeout: 5000, ...config };
+    this.initialized = false;
+  }
+  async init() {
+    await this.setup();
+    this.initialized = true;
+    return this;
+  }
+  destroy() { this.initialized = false; }
+}
+export default VibeModule;`
+    };
+
+    // ─── State ───────────────────────────────────────────────────────────────
+    let isTyping = false;
+    let messageCount = 0;
+    const chatArea = document.getElementById('chat-area');
+    const welcomeScreen = document.getElementById('welcome-screen');
+    const inputEl = document.getElementById('user-input');
+
+    // Language tab filter
+    let activeLang = 'all';
+    document.querySelectorAll('.lang-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.lang-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        activeLang = tab.dataset.lang;
+
+        // Pre-fill input with example query
+        const langExamples = {
+          react: '로그인 폼 만들어줘',
+          typescript: '타입스크립트 API 훅',
+          javascript: '자바스크립트 모듈 만들어줘',
+          python: '파이썬 크롤러',
+          css: '애니메이션 카드 컴포넌트'
+        };
+        if (activeLang !== 'all' && langExamples[activeLang]) {
+          inputEl.value = langExamples[activeLang];
+          autoResize(inputEl);
+          inputEl.focus();
+        }
+      });
+    });
+
+    // ─── Helpers ─────────────────────────────────────────────────────────────
+    function autoResize(el) {
+      el.style.height = 'auto';
+      el.style.height = Math.min(el.scrollHeight, 120) + 'px';
+    }
+
+    function handleKeyDown(e) {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        sendMessage();
+      }
+    }
+
+    function sendExample(text) {
+      inputEl.value = text;
+      autoResize(inputEl);
+      sendMessage();
+    }
+
+    function getTimestamp() {
+      return new Date().toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' });
+    }
+
+    function scrollToBottom() {
+      requestAnimationFrame(() => {
+        chatArea.scrollTop = chatArea.scrollHeight;
+      });
+    }
+
+    function findResponse(query) {
+      const q = query.toLowerCase();
+      for (const res of responses) {
+        if (res.keywords.some(k => q.includes(k.toLowerCase()))) {
+          return res;
+        }
+      }
+      return defaultResponse;
+    }
+
+    function getLangLabel(lang) {
+      const labels = {
+        react: 'React JSX',
+        python: 'Python',
+        typescript: 'TypeScript',
+        javascript: 'JavaScript',
+        css: 'CSS'
+      };
+      return labels[lang] || lang.toUpperCase();
+    }
+
+    // ─── Render functions ─────────────────────────────────────────────────────
+    function appendUserMessage(text) {
+      const div = document.createElement('div');
+      div.className = 'message msg-user';
+      div.innerHTML = `<div class="bubble">${text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>`;
+      chatArea.appendChild(div);
+      scrollToBottom();
+    }
+
+    function appendTypingIndicator() {
+      const div = document.createElement('div');
+      div.className = 'message msg-ai';
+      div.id = 'typing-indicator';
+      div.innerHTML = `
+        <div class="msg-ai-header">
+          <div class="ai-avatar">⚡</div>
+          <span class="ai-name">VibeAI</span>
+        </div>
+        <div class="typing-indicator">
+          <div class="typing-dots">
+            <div class="typing-dot"></div>
+            <div class="typing-dot"></div>
+            <div class="typing-dot"></div>
+          </div>
+          <span class="typing-text">코드 생성 중...</span>
+        </div>`;
+      chatArea.appendChild(div);
+      scrollToBottom();
+    }
+
+    function removeTypingIndicator() {
+      const el = document.getElementById('typing-indicator');
+      if (el) el.remove();
+    }
+
+    function appendAIMessage(response) {
+      const div = document.createElement('div');
+      div.className = 'message msg-ai';
+      const id = 'code-' + (++messageCount);
+      div.innerHTML = `
+        <div class="msg-ai-header">
+          <div class="ai-avatar">⚡</div>
+          <span class="ai-name">VibeAI</span>
+          <span class="ai-time">${getTimestamp()}</span>
+        </div>
+        <div class="msg-ai-body">
+          <p class="ai-text">${response.intro}</p>
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-lang">
+                <div class="code-dots">
+                  <div class="dot dot-red"></div>
+                  <div class="dot dot-yellow"></div>
+                  <div class="dot dot-green"></div>
+                </div>
+                <span class="lang-label">${getLangLabel(response.lang)}</span>
+              </div>
+              <button class="copy-btn" id="copy-${id}" onclick="copyCode('${id}')">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                  <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path>
+                </svg>
+                복사
+              </button>
+            </div>
+            <div class="code-scroll">
+              <pre id="${id}">${response.code}</pre>
+            </div>
+          </div>
+        </div>`;
+      chatArea.appendChild(div);
+
+      // Store raw code for copying
+      document.getElementById(id).dataset.raw = response.rawCode || '';
+
+      scrollToBottom();
+    }
+
+    function copyCode(id) {
+      const pre = document.getElementById(id);
+      const rawCode = pre.dataset.raw || pre.innerText;
+      const btn = document.getElementById('copy-' + id);
+
+      navigator.clipboard.writeText(rawCode).then(() => {
+        btn.classList.add('copied');
+        btn.innerHTML = `
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+          복사됨!`;
+        setTimeout(() => {
+          btn.classList.remove('copied');
+          btn.innerHTML = `
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+              <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path>
+            </svg>
+            복사`;
+        }, 2000);
+      }).catch(() => {
+        // Fallback
+        const textarea = document.createElement('textarea');
+        textarea.value = rawCode;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+        btn.classList.add('copied');
+        btn.textContent = '복사됨!';
+        setTimeout(() => {
+          btn.classList.remove('copied');
+          btn.textContent = '복사';
+        }, 2000);
+      });
+    }
+
+    // ─── Send logic ───────────────────────────────────────────────────────────
+    function sendMessage() {
+      const text = inputEl.value.trim();
+      if (!text || isTyping) return;
+
+      // Hide welcome screen
+      if (welcomeScreen) welcomeScreen.style.display = 'none';
+
+      inputEl.value = '';
+      autoResize(inputEl);
+      isTyping = true;
+
+      appendUserMessage(text);
+      appendTypingIndicator();
+
+      // Simulate AI thinking time
+      const delay = 800 + Math.random() * 600;
+      setTimeout(() => {
+        removeTypingIndicator();
+        const response = findResponse(text);
+        appendAIMessage(response);
+        isTyping = false;
+      }, delay);
+    }
+  </script>
+</body>
+</html>
