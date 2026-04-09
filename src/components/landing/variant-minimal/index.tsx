@@ -475,8 +475,8 @@ function DarkProjectListItem({
       <span className="w-8 shrink-0 text-center text-sm font-medium text-neutral-600">
         {String(rank).padStart(2, "0")}
       </span>
-      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-neutral-800 text-lg">
-        {icon}
+      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-neutral-800 overflow-hidden">
+        <img src={icon} alt={title} className="h-full w-full object-cover" />
       </div>
       <div className="min-w-0 flex-1">
         <p className="truncate text-sm font-semibold">{title}</p>

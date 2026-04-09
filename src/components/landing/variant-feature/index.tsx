@@ -613,8 +613,8 @@ function DummyCard({ title, icon, category, tagline, votes, score, slug }: {
       <div>
         <div className="flex items-start justify-between">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-neutral-800 text-lg">
-              {icon}
+            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-neutral-800 overflow-hidden">
+              <img src={icon} alt={title} className="h-full w-full object-cover" />
             </div>
             <h3 className="text-sm font-bold">{title}</h3>
           </div>
@@ -682,8 +682,8 @@ function DummyNewRow({ title, icon, category, tagline, votes, rank, slug }: {
   return (
     <Link href={`/p/${slug}`} className="flex items-center gap-4 px-5 py-4 transition hover:bg-neutral-800/50">
       <span className="w-6 text-center text-sm font-bold text-neutral-600">{rank}</span>
-      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-neutral-800 text-lg">
-        {icon}
+      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-neutral-800 overflow-hidden">
+        <img src={icon} alt={title} className="h-full w-full object-cover" />
       </div>
       <div className="min-w-0 flex-1">
         <div className="flex items-center gap-2">
@@ -751,8 +751,8 @@ function DummyFeedbackCard({ title, icon, category, tagline, feedback }: {
     <div className="flex flex-col justify-between rounded-2xl border border-neutral-800 bg-neutral-900/50 p-5 transition hover:-translate-y-1 hover:border-neutral-600">
       <div>
         <div className="flex items-center gap-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-neutral-800 text-base">
-            {icon}
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-neutral-800 overflow-hidden">
+            <img src={icon} alt={title} className="h-full w-full object-cover" />
           </div>
           <p className="text-sm font-bold">{title}</p>
           <CategoryBadge category={category} />
