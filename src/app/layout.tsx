@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { Poiret_One } from "next/font/google";
 import "./globals.css";
+
+const GA_ID = process.env.NEXT_PUBLIC_GA_ID || "G-RFBRJBW1BC";
 
 export const dynamic = "force-dynamic";
 
@@ -67,6 +70,10 @@ export default async function RootLayout({
   return (
     <html lang={locale} data-theme="dark">
       <head />
+      <Script src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`} strategy="afterInteractive" />
+      <Script id="ga-init" strategy="afterInteractive">
+        {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${GA_ID}');`}
+      </Script>
       <body className={`min-h-screen text-foreground antialiased ${logoFont.variable}`}>
         <LocaleProvider initialLocale={locale}>
           <ThemeProvider>
