@@ -340,6 +340,7 @@ export function toFeatureIndexShape(p: DemoProject) {
     score: p.score,
     feedback: p.feedbackQuestion,
     slug: p.slug,
+    liveUrl: p.liveUrl,
   };
 }
 
@@ -399,5 +400,6 @@ export function toMinimalFeedbackShape(p: DemoProject, i: number) {
     icon: p.icon,
     question: p.question,
     replies: p.replies,
+    slug: p.slug,
   };
 }

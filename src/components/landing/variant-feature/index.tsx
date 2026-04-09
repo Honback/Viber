@@ -740,12 +740,14 @@ function FeedbackCard({ project }: { project: SerializedProjectCard }) {
   );
 }
 
-function DummyFeedbackCard({ title, icon, category, tagline, feedback }: {
+function DummyFeedbackCard({ title, icon, category, tagline, feedback, slug, liveUrl }: {
   title: string;
   icon: string;
   category: string;
   tagline: string;
   feedback: string;
+  slug: string;
+  liveUrl: string;
 }) {
   return (
     <div className="flex flex-col justify-between rounded-2xl border border-neutral-800 bg-neutral-900/50 p-5 transition hover:-translate-y-1 hover:border-neutral-600">
@@ -766,15 +768,21 @@ function DummyFeedbackCard({ title, icon, category, tagline, feedback }: {
         )}
       </div>
       <div className="mt-4 flex gap-2">
-        <button
+        <Link
+          href={`/p/${slug}#comments`}
           className="flex-1 rounded-full py-2 text-center text-xs font-semibold text-white transition hover:opacity-90"
           style={{ backgroundColor: "#22C55E" }}
         >
           Give Feedback
-        </button>
-        <button className="rounded-full border border-neutral-700 px-4 py-2 text-xs font-semibold text-neutral-300 transition hover:border-neutral-500">
+        </Link>
+        <a
+          href={liveUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="rounded-full border border-neutral-700 px-4 py-2 text-xs font-semibold text-neutral-300 transition hover:border-neutral-500"
+        >
           Try
-        </button>
+        </a>
       </div>
     </div>
   );

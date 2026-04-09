@@ -139,10 +139,13 @@ export function MinimalFeedback() {
                       <MessageCircle className="h-3.5 w-3.5" />
                       <span>{p.replies}개의 답변</span>
                     </div>
-                    <button className="inline-flex items-center gap-1.5 rounded-lg border border-neutral-700 px-3 py-1.5 text-xs font-medium text-white transition hover:border-neutral-500 hover:bg-neutral-800">
+                    <Link
+                      href={`/p/${p.slug}#comments`}
+                      className="inline-flex items-center gap-1.5 rounded-lg border border-neutral-700 px-3 py-1.5 text-xs font-medium text-white transition hover:border-neutral-500 hover:bg-neutral-800"
+                    >
                       <Send className="h-3 w-3" />
                       피드백 보내기
-                    </button>
+                    </Link>
                   </div>
                 </div>
               </AnimateIn>
