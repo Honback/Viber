@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800">
+  <rect width="1200" height="800" fill="#0A0A0A"/>
+  <!-- Top bar -->
+  <rect width="1200" height="48" fill="#111111"/>
+  <rect x="0" y="48" width="1200" height="1" fill="#333"/>
+  <text x="600" y="30" fill="white" font-family="sans-serif" font-size="16" font-weight="bold" text-anchor="middle">VibeAI</text>
+  <circle cx="20" cy="24" r="6" fill="#EF4444"/>
+  <circle cx="40" cy="24" r="6" fill="#F59E0B"/>
+  <circle cx="60" cy="24" r="6" fill="#10B981"/>
+  <!-- User message -->
+  <rect x="560" y="80" width="600" height="44" rx="12" fill="#d76542"/>
+  <text x="580" y="107" fill="white" font-family="sans-serif" font-size="14">React 로그인 폼 만들어줘</text>
+  <text x="1130" y="107" fill="rgba(255,255,255,0.5)" font-family="sans-serif" font-size="10" text-anchor="end">오후 3:24</text>
+  <!-- AI avatar and intro -->
+  <circle cx="60" cy="155" r="14" fill="#d76542"/>
+  <text x="60" y="160" fill="white" font-family="sans-serif" font-size="10" font-weight="bold" text-anchor="middle">AI</text>
+  <text x="85" y="160" fill="#a3a3a3" font-family="sans-serif" font-size="13">React 로그인 폼 컴포넌트를 작성했습니다. 이메일/비밀번호 유효성 검사를 포함합니다.</text>
+  <!-- Code block -->
+  <rect x="40" y="180" width="720" height="480" rx="8" fill="#1a1a1a"/>
+  <rect x="40" y="180" width="720" height="30" rx="8" fill="#252525"/>
+  <rect x="40" y="200" width="720" height="10" fill="#252525"/>
+  <text x="55" y="200" fill="#a3a3a3" font-family="sans-serif" font-size="11">LoginForm.tsx</text>
+  <text x="670" y="200" fill="#60A5FA" font-family="sans-serif" font-size="11">TSX</text>
+  <rect x="710" y="186" width="40" height="20" rx="4" fill="#333"/>
+  <text x="730" y="200" fill="#a3a3a3" font-family="monospace" font-size="10" text-anchor="middle">Copy</text>
+  <!-- Code lines -->
+  <text x="55" y="232" fill="#555" font-family="monospace" font-size="11"> 1</text>
+  <text x="55" y="250" fill="#555" font-family="monospace" font-size="11"> 2</text>
+  <text x="55" y="268" fill="#555" font-family="monospace" font-size="11"> 3</text>
+  <text x="55" y="286" fill="#555" font-family="monospace" font-size="11"> 4</text>
+  <text x="55" y="304" fill="#555" font-family="monospace" font-size="11"> 5</text>
+  <text x="55" y="322" fill="#555" font-family="monospace" font-size="11"> 6</text>
+  <text x="55" y="340" fill="#555" font-family="monospace" font-size="11"> 7</text>
+  <text x="55" y="358" fill="#555" font-family="monospace" font-size="11"> 8</text>
+  <text x="55" y="376" fill="#555" font-family="monospace" font-size="11"> 9</text>
+  <text x="55" y="394" fill="#555" font-family="monospace" font-size="11">10</text>
+  <text x="55" y="412" fill="#555" font-family="monospace" font-size="11">11</text>
+  <text x="55" y="430" fill="#555" font-family="monospace" font-size="11">12</text>
+  <text x="55" y="448" fill="#555" font-family="monospace" font-size="11">13</text>
+  <text x="55" y="466" fill="#555" font-family="monospace" font-size="11">14</text>
+  <text x="55" y="484" fill="#555" font-family="monospace" font-size="11">15</text>
+  <text x="55" y="502" fill="#555" font-family="monospace" font-size="11">16</text>
+  <text x="55" y="520" fill="#555" font-family="monospace" font-size="11">17</text>
+  <text x="55" y="538" fill="#555" font-family="monospace" font-size="11">18</text>
+  <text x="55" y="556" fill="#555" font-family="monospace" font-size="11">19</text>
+  <text x="55" y="574" fill="#555" font-family="monospace" font-size="11">20</text>
+  <text x="55" y="592" fill="#555" font-family="monospace" font-size="11">21</text>
+  <text x="55" y="610" fill="#555" font-family="monospace" font-size="11">22</text>
+  <text x="55" y="628" fill="#555" font-family="monospace" font-size="11">23</text>
+  <text x="55" y="646" fill="#555" font-family="monospace" font-size="11">24</text>
+  <!-- Code -->
+  <text x="80" y="232" fill="#C084FC" font-family="monospace" font-size="12">import</text><text x="125" y="232" fill="white" font-family="monospace" font-size="12"> { useState } </text><text x="250" y="232" fill="#C084FC" font-family="monospace" font-size="12">from</text><text x="285" y="232" fill="#86EFAC" font-family="monospace" font-size="12"> 'react'</text><text x="345" y="232" fill="white" font-family="monospace" font-size="12">;</text>
+  <text x="80" y="268" fill="#C084FC" font-family="monospace" font-size="12">export default function</text><text x="275" y="268" fill="#60A5FA" font-family="monospace" font-size="12"> LoginForm</text><text x="370" y="268" fill="white" font-family="monospace" font-size="12">() {</text>
+  <text x="100" y="286" fill="#C084FC" font-family="monospace" font-size="12">const</text><text x="143" y="286" fill="white" font-family="monospace" font-size="12"> [email, setEmail] = useState(</text><text x="410" y="286" fill="#86EFAC" font-family="monospace" font-size="12">''</text><text x="425" y="286" fill="white" font-family="monospace" font-size="12">);</text>
+  <text x="100" y="304" fill="#C084FC" font-family="monospace" font-size="12">const</text><text x="143" y="304" fill="white" font-family="monospace" font-size="12"> [password, setPw] = useState(</text><text x="407" y="304" fill="#86EFAC" font-family="monospace" font-size="12">''</text><text x="422" y="304" fill="white" font-family="monospace" font-size="12">);</text>
+  <text x="100" y="322" fill="#C084FC" font-family="monospace" font-size="12">const</text><text x="143" y="322" fill="white" font-family="monospace" font-size="12"> [error, setError] = useState(</text><text x="407" y="322" fill="#86EFAC" font-family="monospace" font-size="12">''</text><text x="422" y="322" fill="white" font-family="monospace" font-size="12">);</text>
+  <text x="100" y="358" fill="#C084FC" font-family="monospace" font-size="12">return</text><text x="147" y="358" fill="white" font-family="monospace" font-size="12"> (</text>
+  <text x="120" y="376" fill="#7DD3FC" font-family="monospace" font-size="12">&lt;form</text><text x="158" y="376" fill="#F9A8D4" font-family="monospace" font-size="12"> className</text><text x="235" y="376" fill="white" font-family="monospace" font-size="12">=</text><text x="243" y="376" fill="#86EFAC" font-family="monospace" font-size="12">"login-form"</text><text x="335" y="376" fill="#7DD3FC" font-family="monospace" font-size="12">&gt;</text>
+  <text x="140" y="394" fill="#7DD3FC" font-family="monospace" font-size="12">&lt;h2&gt;</text><text x="172" y="394" fill="white" font-family="monospace" font-size="12">로그인</text><text x="212" y="394" fill="#7DD3FC" font-family="monospace" font-size="12">&lt;/h2&gt;</text>
+  <text x="140" y="412" fill="white" font-family="monospace" font-size="12">{error &amp;&amp; </text><text x="230" y="412" fill="#7DD3FC" font-family="monospace" font-size="12">&lt;p</text><text x="250" y="412" fill="#F9A8D4" font-family="monospace" font-size="12"> className</text><text x="325" y="412" fill="white" font-family="monospace" font-size="12">=</text><text x="333" y="412" fill="#86EFAC" font-family="monospace" font-size="12">"error"</text><text x="385" y="412" fill="#7DD3FC" font-family="monospace" font-size="12">&gt;</text><text x="395" y="412" fill="white" font-family="monospace" font-size="12">{error}</text><text x="445" y="412" fill="#7DD3FC" font-family="monospace" font-size="12">&lt;/p&gt;</text><text x="475" y="412" fill="white" font-family="monospace" font-size="12">}</text>
+  <text x="140" y="430" fill="#7DD3FC" font-family="monospace" font-size="12">&lt;input</text>
+  <text x="160" y="448" fill="#F9A8D4" font-family="monospace" font-size="12">type</text><text x="190" y="448" fill="white" font-family="monospace" font-size="12">=</text><text x="198" y="448" fill="#86EFAC" font-family="monospace" font-size="12">"email"</text>
+  <text x="160" y="466" fill="#F9A8D4" font-family="monospace" font-size="12">placeholder</text><text x="240" y="466" fill="white" font-family="monospace" font-size="12">=</text><text x="248" y="466" fill="#86EFAC" font-family="monospace" font-size="12">"이메일 주소"</text>
+  <text x="160" y="484" fill="#F9A8D4" font-family="monospace" font-size="12">value</text><text x="200" y="484" fill="white" font-family="monospace" font-size="12">={email}</text>
+  <text x="160" y="502" fill="#F9A8D4" font-family="monospace" font-size="12">onChange</text><text x="225" y="502" fill="white" font-family="monospace" font-size="12">={(e) =&gt; setEmail(e.target.value)}</text>
+  <text x="140" y="520" fill="#7DD3FC" font-family="monospace" font-size="12">/&gt;</text>
+  <text x="140" y="538" fill="#7DD3FC" font-family="monospace" font-size="12">&lt;input</text>
+  <text x="160" y="556" fill="#F9A8D4" font-family="monospace" font-size="12">type</text><text x="190" y="556" fill="white" font-family="monospace" font-size="12">=</text><text x="198" y="556" fill="#86EFAC" font-family="monospace" font-size="12">"password"</text>
+  <text x="160" y="574" fill="#F9A8D4" font-family="monospace" font-size="12">placeholder</text><text x="240" y="574" fill="white" font-family="monospace" font-size="12">=</text><text x="248" y="574" fill="#86EFAC" font-family="monospace" font-size="12">"비밀번호"</text>
+  <text x="140" y="592" fill="#7DD3FC" font-family="monospace" font-size="12">/&gt;</text>
+  <text x="140" y="610" fill="#7DD3FC" font-family="monospace" font-size="12">&lt;button</text><text x="195" y="610" fill="#F9A8D4" font-family="monospace" font-size="12"> type</text><text x="225" y="610" fill="white" font-family="monospace" font-size="12">=</text><text x="233" y="610" fill="#86EFAC" font-family="monospace" font-size="12">"submit"</text><text x="298" y="610" fill="#7DD3FC" font-family="monospace" font-size="12">&gt;</text><text x="310" y="610" fill="white" font-family="monospace" font-size="12">로그인</text><text x="350" y="610" fill="#7DD3FC" font-family="monospace" font-size="12">&lt;/button&gt;</text>
+  <text x="120" y="628" fill="#7DD3FC" font-family="monospace" font-size="12">&lt;/form&gt;</text>
+  <text x="100" y="646" fill="white" font-family="monospace" font-size="12">);</text>
+  <!-- Typing indicator -->
+  <rect x="40" y="690" width="100" height="32" rx="16" fill="#1a1a1a"/>
+  <circle cx="65" cy="706" r="4" fill="#666"><animate attributeName="opacity" values="0.3;1;0.3" dur="1.5s" repeatCount="indefinite"/></circle>
+  <circle cx="83" cy="706" r="4" fill="#666"><animate attributeName="opacity" values="0.3;1;0.3" dur="1.5s" begin="0.3s" repeatCount="indefinite"/></circle>
+  <circle cx="101" cy="706" r="4" fill="#666"><animate attributeName="opacity" values="0.3;1;0.3" dur="1.5s" begin="0.6s" repeatCount="indefinite"/></circle>
+  <!-- Input bar -->
+  <rect x="0" y="740" width="1200" height="60" fill="#111111"/>
+  <rect x="0" y="740" width="1200" height="1" fill="#333"/>
+  <rect x="24" y="752" width="1110" height="40" rx="20" fill="#1a1a1a" stroke="#333" stroke-width="1"/>
+  <text x="50" y="777" fill="#666" font-family="sans-serif" font-size="14">메시지를 입력하세요...</text>
+  <circle cx="1110" cy="772" r="16" fill="#d76542"/>
+  <path d="M1104 772 L1110 766 L1116 772 M1110 766 L1110 780" stroke="white" stroke-width="2" fill="none"/>
+</svg>

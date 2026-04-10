@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800">
+  <rect width="1200" height="800" fill="#0A0A0A"/>
+  <!-- Game container (faded background) -->
+  <rect x="150" y="50" width="900" height="700" rx="8" fill="#050510" stroke="#333" stroke-width="1"/>
+  <!-- Faded game elements -->
+  <g opacity="0.15">
+    <rect x="300" y="200" width="30" height="30" rx="4" fill="#EF4444"/>
+    <rect x="500" y="300" width="30" height="30" rx="4" fill="#EF4444"/>
+    <rect x="700" y="250" width="30" height="30" rx="4" fill="#EF4444"/>
+    <rect x="400" y="400" width="30" height="30" rx="4" fill="#EF4444"/>
+    <rect x="800" y="350" width="30" height="30" rx="4" fill="#EF4444"/>
+    <rect x="250" y="450" width="30" height="30" rx="4" fill="#EF4444"/>
+    <rect x="600" y="500" width="30" height="30" rx="4" fill="#EF4444"/>
+    <rect x="900" y="420" width="30" height="30" rx="4" fill="#EF4444"/>
+    <rect x="575" y="600" width="50" height="50" rx="6" fill="#10B981"/>
+    <circle cx="450" cy="350" r="10" fill="#FBBF24"/>
+    <circle cx="750" cy="500" r="10" fill="#FBBF24"/>
+  </g>
+  <!-- Dimming overlay -->
+  <rect x="150" y="50" width="900" height="700" rx="8" fill="rgba(0,0,0,0.7)"/>
+  <!-- Game Over text -->
+  <text x="600" y="260" fill="#EF4444" font-family="monospace" font-size="72" font-weight="bold" text-anchor="middle" letter-spacing="6">GAME OVER</text>
+  <!-- Decorative line -->
+  <line x1="350" y1="280" x2="850" y2="280" stroke="#EF4444" stroke-width="2" opacity="0.4"/>
+  <!-- Score display -->
+  <rect x="400" y="310" width="400" height="120" rx="12" fill="#1a1a1a" stroke="#333" stroke-width="1"/>
+  <text x="600" y="350" fill="#a3a3a3" font-family="sans-serif" font-size="16" text-anchor="middle">Final Score</text>
+  <text x="600" y="400" fill="white" font-family="monospace" font-size="52" font-weight="bold" text-anchor="middle">127</text>
+  <!-- Stats -->
+  <rect x="380" y="450" width="140" height="70" rx="8" fill="#1a1a1a" stroke="#333" stroke-width="1"/>
+  <text x="450" y="475" fill="#a3a3a3" font-family="sans-serif" font-size="11" text-anchor="middle">Level</text>
+  <text x="450" y="505" fill="white" font-family="monospace" font-size="24" font-weight="bold" text-anchor="middle">5</text>
+  <rect x="530" y="450" width="140" height="70" rx="8" fill="#1a1a1a" stroke="#333" stroke-width="1"/>
+  <text x="600" y="475" fill="#a3a3a3" font-family="sans-serif" font-size="11" text-anchor="middle">Time</text>
+  <text x="600" y="505" fill="white" font-family="monospace" font-size="24" font-weight="bold" text-anchor="middle">2:34</text>
+  <rect x="680" y="450" width="140" height="70" rx="8" fill="#1a1a1a" stroke="#333" stroke-width="1"/>
+  <text x="750" y="475" fill="#a3a3a3" font-family="sans-serif" font-size="11" text-anchor="middle">Coins</text>
+  <text x="750" y="505" fill="#FBBF24" font-family="monospace" font-size="24" font-weight="bold" text-anchor="middle">18</text>
+  <!-- New High Score badge -->
+  <rect x="480" y="540" width="240" height="36" rx="18" fill="#FBBF24" opacity="0.15"/>
+  <text x="600" y="564" fill="#FBBF24" font-family="sans-serif" font-size="14" font-weight="bold" text-anchor="middle">New High Score!</text>
+  <!-- Restart button -->
+  <rect x="430" y="600" width="340" height="56" rx="12" fill="#d76542"/>
+  <rect x="433" y="603" width="334" height="50" rx="10" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+  <text x="600" y="635" fill="white" font-family="sans-serif" font-size="20" font-weight="bold" text-anchor="middle">Restart</text>
+  <!-- Main menu link -->
+  <text x="600" y="690" fill="#a3a3a3" font-family="sans-serif" font-size="14" text-anchor="middle" text-decoration="underline">Main Menu</text>
+</svg>

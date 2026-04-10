@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" fill="none">
+  <rect width="1200" height="800" fill="#0A0A0A"/>
+  <!-- Top bar -->
+  <rect x="0" y="0" width="1200" height="52" fill="#111111"/>
+  <rect x="0" y="52" width="1200" height="1" fill="#333"/>
+  <text x="30" y="33" font-family="sans-serif" font-size="16" fill="white" font-weight="bold">TinyAnalytics</text>
+  <!-- Date range tabs -->
+  <rect x="880" y="14" width="40" height="26" rx="4" fill="#d76542"/>
+  <text x="900" y="32" font-family="sans-serif" font-size="12" fill="white" text-anchor="middle">7d</text>
+  <rect x="928" y="14" width="40" height="26" rx="4" fill="#1f1f1f" stroke="#333" stroke-width="1"/>
+  <text x="948" y="32" font-family="sans-serif" font-size="12" fill="#a3a3a3" text-anchor="middle">30d</text>
+  <rect x="976" y="14" width="40" height="26" rx="4" fill="#1f1f1f" stroke="#333" stroke-width="1"/>
+  <text x="996" y="32" font-family="sans-serif" font-size="12" fill="#a3a3a3" text-anchor="middle">90d</text>
+
+  <!-- Stat cards row -->
+  <!-- Card 1 -->
+  <rect x="30" y="75" width="270" height="90" rx="10" fill="#1a1a1a" stroke="#333" stroke-width="1"/>
+  <text x="50" y="103" font-family="sans-serif" font-size="12" fill="#a3a3a3">Page Views</text>
+  <text x="50" y="138" font-family="sans-serif" font-size="30" fill="white" font-weight="bold">12.4K</text>
+  <text x="150" y="138" font-family="sans-serif" font-size="13" fill="#22c55e">+14.2%</text>
+  <!-- Card 2 -->
+  <rect x="320" y="75" width="270" height="90" rx="10" fill="#1a1a1a" stroke="#333" stroke-width="1"/>
+  <text x="340" y="103" font-family="sans-serif" font-size="12" fill="#a3a3a3">Visitors</text>
+  <text x="340" y="138" font-family="sans-serif" font-size="30" fill="white" font-weight="bold">3.2K</text>
+  <text x="430" y="138" font-family="sans-serif" font-size="13" fill="#22c55e">+8.7%</text>
+  <!-- Card 3 -->
+  <rect x="610" y="75" width="270" height="90" rx="10" fill="#1a1a1a" stroke="#333" stroke-width="1"/>
+  <text x="630" y="103" font-family="sans-serif" font-size="12" fill="#a3a3a3">Avg Session</text>
+  <text x="630" y="138" font-family="sans-serif" font-size="30" fill="white" font-weight="bold">2m 34s</text>
+  <text x="770" y="138" font-family="sans-serif" font-size="13" fill="#22c55e">+3.1%</text>
+  <!-- Card 4 -->
+  <rect x="900" y="75" width="270" height="90" rx="10" fill="#1a1a1a" stroke="#333" stroke-width="1"/>
+  <text x="920" y="103" font-family="sans-serif" font-size="12" fill="#a3a3a3">Bounce Rate</text>
+  <text x="920" y="138" font-family="sans-serif" font-size="30" fill="white" font-weight="bold">42%</text>
+  <text x="1000" y="138" font-family="sans-serif" font-size="13" fill="#ef4444">+2.3%</text>
+
+  <!-- Line chart area -->
+  <rect x="30" y="190" width="750" height="380" rx="10" fill="#1a1a1a" stroke="#333" stroke-width="1"/>
+  <text x="50" y="220" font-family="sans-serif" font-size="14" fill="white" font-weight="bold">Page Views - Last 7 Days</text>
+  <!-- Y axis labels -->
+  <text x="55" y="260" font-family="monospace" font-size="10" fill="#555">2.0K</text>
+  <text x="55" y="310" font-family="monospace" font-size="10" fill="#555">1.5K</text>
+  <text x="55" y="360" font-family="monospace" font-size="10" fill="#555">1.0K</text>
+  <text x="55" y="410" font-family="monospace" font-size="10" fill="#555">500</text>
+  <text x="55" y="460" font-family="monospace" font-size="10" fill="#555">0</text>
+  <!-- Grid lines -->
+  <line x1="90" y1="255" x2="760" y2="255" stroke="#222" stroke-width="1"/>
+  <line x1="90" y1="305" x2="760" y2="305" stroke="#222" stroke-width="1"/>
+  <line x1="90" y1="355" x2="760" y2="355" stroke="#222" stroke-width="1"/>
+  <line x1="90" y1="405" x2="760" y2="405" stroke="#222" stroke-width="1"/>
+  <line x1="90" y1="455" x2="760" y2="455" stroke="#222" stroke-width="1"/>
+  <!-- Line chart -->
+  <polyline points="90,380 200,340 310,310 420,290 530,260 640,280 750,250" fill="none" stroke="#d76542" stroke-width="2.5"/>
+  <!-- Area fill -->
+  <polygon points="90,380 200,340 310,310 420,290 530,260 640,280 750,250 750,455 90,455" fill="#d76542" fill-opacity="0.08"/>
+  <!-- Data points -->
+  <circle cx="90" cy="380" r="4" fill="#d76542"/>
+  <circle cx="200" cy="340" r="4" fill="#d76542"/>
+  <circle cx="310" cy="310" r="4" fill="#d76542"/>
+  <circle cx="420" cy="290" r="4" fill="#d76542"/>
+  <circle cx="530" cy="260" r="4" fill="#d76542"/>
+  <circle cx="640" cy="280" r="4" fill="#d76542"/>
+  <circle cx="750" cy="250" r="4" fill="#d76542"/>
+  <!-- X axis labels -->
+  <text x="90" y="480" font-family="sans-serif" font-size="10" fill="#555" text-anchor="middle">Mon</text>
+  <text x="200" y="480" font-family="sans-serif" font-size="10" fill="#555" text-anchor="middle">Tue</text>
+  <text x="310" y="480" font-family="sans-serif" font-size="10" fill="#555" text-anchor="middle">Wed</text>
+  <text x="420" y="480" font-family="sans-serif" font-size="10" fill="#555" text-anchor="middle">Thu</text>
+  <text x="530" y="480" font-family="sans-serif" font-size="10" fill="#555" text-anchor="middle">Fri</text>
+  <text x="640" y="480" font-family="sans-serif" font-size="10" fill="#555" text-anchor="middle">Sat</text>
+  <text x="750" y="480" font-family="sans-serif" font-size="10" fill="#555" text-anchor="middle">Sun</text>
+
+  <!-- Top Pages table -->
+  <rect x="800" y="190" width="370" height="380" rx="10" fill="#1a1a1a" stroke="#333" stroke-width="1"/>
+  <text x="820" y="220" font-family="sans-serif" font-size="14" fill="white" font-weight="bold">Top Pages</text>
+  <!-- Table header -->
+  <text x="820" y="250" font-family="sans-serif" font-size="11" fill="#555">Page</text>
+  <text x="1100" y="250" font-family="sans-serif" font-size="11" fill="#555" text-anchor="end">Views</text>
+  <line x1="820" y1="260" x2="1150" y2="260" stroke="#222" stroke-width="1"/>
+  <!-- Row 1 -->
+  <text x="820" y="285" font-family="monospace" font-size="13" fill="#e0e0e0">/</text>
+  <text x="1100" y="285" font-family="monospace" font-size="13" fill="white" text-anchor="end">4,218</text>
+  <line x1="820" y1="295" x2="1150" y2="295" stroke="#1f1f1f" stroke-width="1"/>
+  <!-- Row 2 -->
+  <text x="820" y="320" font-family="monospace" font-size="13" fill="#e0e0e0">/about</text>
+  <text x="1100" y="320" font-family="monospace" font-size="13" fill="white" text-anchor="end">2,847</text>
+  <line x1="820" y1="330" x2="1150" y2="330" stroke="#1f1f1f" stroke-width="1"/>
+  <!-- Row 3 -->
+  <text x="820" y="355" font-family="monospace" font-size="13" fill="#e0e0e0">/pricing</text>
+  <text x="1100" y="355" font-family="monospace" font-size="13" fill="white" text-anchor="end">2,103</text>
+  <line x1="820" y1="365" x2="1150" y2="365" stroke="#1f1f1f" stroke-width="1"/>
+  <!-- Row 4 -->
+  <text x="820" y="390" font-family="monospace" font-size="13" fill="#e0e0e0">/blog</text>
+  <text x="1100" y="390" font-family="monospace" font-size="13" fill="white" text-anchor="end">1,892</text>
+  <line x1="820" y1="400" x2="1150" y2="400" stroke="#1f1f1f" stroke-width="1"/>
+  <!-- Row 5 -->
+  <text x="820" y="425" font-family="monospace" font-size="13" fill="#e0e0e0">/docs</text>
+  <text x="1100" y="425" font-family="monospace" font-size="13" fill="white" text-anchor="end">1,340</text>
+
+  <!-- Bottom bar -->
+  <rect x="0" y="770" width="1200" height="30" fill="#111111"/>
+  <rect x="0" y="770" width="1200" height="1" fill="#333"/>
+  <text x="16" y="790" font-family="sans-serif" font-size="11" fill="#555">Last updated: 2 minutes ago</text>
+  <circle cx="1160" cy="785" r="4" fill="#22c55e"/>
+  <text x="1150" y="790" font-family="sans-serif" font-size="11" fill="#555" text-anchor="end">Live  </text>
+</svg>

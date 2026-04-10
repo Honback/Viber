@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800">
+  <rect width="1200" height="800" fill="#0A0A0A"/>
+  <!-- Game container -->
+  <rect x="150" y="50" width="900" height="700" rx="8" fill="#050510" stroke="#333" stroke-width="1"/>
+  <!-- Stars -->
+  <circle cx="250" cy="150" r="1" fill="#555"/>
+  <circle cx="400" cy="100" r="1.5" fill="#444"/>
+  <circle cx="600" cy="120" r="1" fill="#555"/>
+  <circle cx="800" cy="80" r="1.5" fill="#444"/>
+  <circle cx="950" cy="150" r="1" fill="#666"/>
+  <!-- Decorative pixels/shapes -->
+  <rect x="200" y="600" width="8" height="8" fill="#333" opacity="0.5"/>
+  <rect x="220" y="610" width="6" height="6" fill="#333" opacity="0.3"/>
+  <rect x="900" y="590" width="8" height="8" fill="#333" opacity="0.5"/>
+  <rect x="880" y="605" width="6" height="6" fill="#333" opacity="0.3"/>
+  <rect x="350" y="620" width="5" height="5" fill="#333" opacity="0.4"/>
+  <rect x="750" y="615" width="7" height="7" fill="#333" opacity="0.4"/>
+  <!-- Main title -->
+  <text x="600" y="280" fill="white" font-family="monospace" font-size="64" font-weight="bold" text-anchor="middle" letter-spacing="8">IndieCraft</text>
+  <!-- Subtitle -->
+  <text x="600" y="320" fill="#d76542" font-family="monospace" font-size="16" text-anchor="middle">2D Dodge Game</text>
+  <!-- Decorative line -->
+  <line x1="400" y1="340" x2="800" y2="340" stroke="#333" stroke-width="1"/>
+  <!-- Start button -->
+  <rect x="450" y="380" width="300" height="60" rx="12" fill="#d76542"/>
+  <rect x="453" y="383" width="294" height="54" rx="10" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+  <text x="600" y="417" fill="white" font-family="sans-serif" font-size="22" font-weight="bold" text-anchor="middle">Press Start</text>
+  <!-- High Score -->
+  <rect x="430" y="470" width="340" height="60" rx="8" fill="#1a1a1a" stroke="#333" stroke-width="1"/>
+  <text x="460" y="495" fill="#FBBF24" font-family="sans-serif" font-size="14">&#9733;</text>
+  <text x="480" y="495" fill="#a3a3a3" font-family="sans-serif" font-size="14">High Score</text>
+  <text x="600" y="518" fill="white" font-family="monospace" font-size="22" font-weight="bold" text-anchor="middle">127</text>
+  <!-- Controls info -->
+  <rect x="380" y="560" width="440" height="80" rx="8" fill="rgba(26,26,26,0.8)"/>
+  <text x="600" y="585" fill="#a3a3a3" font-family="sans-serif" font-size="13" text-anchor="middle">Controls</text>
+  <text x="480" y="615" fill="#666" font-family="sans-serif" font-size="12" text-anchor="middle">Move</text>
+  <rect x="450" y="622" width="60" height="20" rx="4" fill="#252525" stroke="#444" stroke-width="1"/>
+  <text x="480" y="636" fill="white" font-family="monospace" font-size="10" text-anchor="middle">Arrow</text>
+  <text x="640" y="615" fill="#666" font-family="sans-serif" font-size="12" text-anchor="middle">Pause</text>
+  <rect x="620" y="622" width="40" height="20" rx="4" fill="#252525" stroke="#444" stroke-width="1"/>
+  <text x="640" y="636" fill="white" font-family="monospace" font-size="10" text-anchor="middle">P</text>
+  <text x="740" y="615" fill="#666" font-family="sans-serif" font-size="12" text-anchor="middle">Restart</text>
+  <rect x="720" y="622" width="40" height="20" rx="4" fill="#252525" stroke="#444" stroke-width="1"/>
+  <text x="740" y="636" fill="white" font-family="monospace" font-size="10" text-anchor="middle">R</text>
+  <!-- Version -->
+  <text x="600" y="730" fill="#444" font-family="sans-serif" font-size="11" text-anchor="middle">v1.2.0</text>
+</svg>

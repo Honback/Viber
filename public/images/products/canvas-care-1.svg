@@ -1,0 +1,148 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800">
+  <rect width="1200" height="800" fill="#0A0A0A"/>
+  <rect width="1200" height="48" fill="#111111"/>
+  <rect x="0" y="48" width="1200" height="1" fill="#333"/>
+  <circle cx="20" cy="24" r="6" fill="#d76542"/>
+  <text x="40" y="30" fill="white" font-family="sans-serif" font-size="16" font-weight="bold">Canvas Care</text>
+  <text x="180" y="30" fill="#a3a3a3" font-family="sans-serif" font-size="12">/ Weekly Report</text>
+
+  <!-- Weekly Vitals Chart -->
+  <rect x="40" y="70" width="740" height="340" rx="12" fill="#1a1a1a" stroke="#333" stroke-width="1"/>
+  <text x="60" y="100" fill="white" font-family="sans-serif" font-size="16" font-weight="600">Weekly Vitals Trend</text>
+  <text x="750" y="100" fill="#a3a3a3" font-family="sans-serif" font-size="11" text-anchor="end">Apr 1 - Apr 8</text>
+
+  <!-- Legend -->
+  <line x1="500" y1="92" x2="520" y2="92" stroke="#d76542" stroke-width="2"/>
+  <text x="525" y="96" fill="#a3a3a3" font-family="sans-serif" font-size="10">Systolic</text>
+  <line x1="590" y1="92" x2="610" y2="92" stroke="#3B82F6" stroke-width="2"/>
+  <text x="615" y="96" fill="#a3a3a3" font-family="sans-serif" font-size="10">Diastolic</text>
+
+  <!-- Y axis -->
+  <text x="60" y="140" fill="#555" font-family="sans-serif" font-size="10">150</text>
+  <text x="60" y="190" fill="#555" font-family="sans-serif" font-size="10">140</text>
+  <text x="60" y="240" fill="#555" font-family="sans-serif" font-size="10">130</text>
+  <text x="60" y="290" fill="#555" font-family="sans-serif" font-size="10">120</text>
+  <text x="60" y="340" fill="#555" font-family="sans-serif" font-size="10">80</text>
+  <text x="60" y="370" fill="#555" font-family="sans-serif" font-size="10">70</text>
+  <!-- Grid -->
+  <line x1="95" y1="135" x2="750" y2="135" stroke="#222" stroke-width="1"/>
+  <line x1="95" y1="185" x2="750" y2="185" stroke="#222" stroke-width="1"/>
+  <line x1="95" y1="235" x2="750" y2="235" stroke="#222" stroke-width="1"/>
+  <line x1="95" y1="285" x2="750" y2="285" stroke="#222" stroke-width="1"/>
+  <line x1="95" y1="335" x2="750" y2="335" stroke="#222" stroke-width="1"/>
+  <!-- Normal range band -->
+  <rect x="95" y="235" width="655" height="50" fill="#10B981" opacity="0.05"/>
+  <text x="750" y="260" fill="#10B981" font-family="sans-serif" font-size="9" text-anchor="end" opacity="0.5">Normal</text>
+  <!-- Systolic line -->
+  <polyline points="140,260 230,250 320,245 410,255 500,240 590,230 680,220 750,215" fill="none" stroke="#d76542" stroke-width="2"/>
+  <circle cx="750" cy="215" r="4" fill="#d76542"/>
+  <!-- Diastolic line -->
+  <polyline points="140,345 230,340 320,338 410,342 500,335 590,330 680,328 750,325" fill="none" stroke="#3B82F6" stroke-width="2"/>
+  <circle cx="750" cy="325" r="4" fill="#3B82F6"/>
+  <!-- X axis -->
+  <text x="140" y="395" fill="#555" font-family="sans-serif" font-size="10" text-anchor="middle">Apr 1</text>
+  <text x="320" y="395" fill="#555" font-family="sans-serif" font-size="10" text-anchor="middle">Apr 3</text>
+  <text x="500" y="395" fill="#555" font-family="sans-serif" font-size="10" text-anchor="middle">Apr 5</text>
+  <text x="680" y="395" fill="#555" font-family="sans-serif" font-size="10" text-anchor="middle">Apr 7</text>
+  <text x="750" y="395" fill="#d76542" font-family="sans-serif" font-size="10" text-anchor="middle">Today</text>
+
+  <!-- Summary cards -->
+  <rect x="800" y="70" width="360" height="100" rx="12" fill="#1a1a1a" stroke="#333" stroke-width="1"/>
+  <text x="820" y="100" fill="#a3a3a3" font-family="sans-serif" font-size="11">Avg. Blood Pressure</text>
+  <text x="820" y="130" fill="white" font-family="sans-serif" font-size="28" font-weight="bold">130/84</text>
+  <text x="820" y="150" fill="#F59E0B" font-family="sans-serif" font-size="11">Trending upward +5/+4</text>
+
+  <rect x="800" y="180" width="170" height="100" rx="12" fill="#1a1a1a" stroke="#333" stroke-width="1"/>
+  <text x="820" y="210" fill="#a3a3a3" font-family="sans-serif" font-size="11">Avg. Heart Rate</text>
+  <text x="820" y="240" fill="white" font-family="sans-serif" font-size="24" font-weight="bold">74</text>
+  <text x="855" y="240" fill="#a3a3a3" font-family="sans-serif" font-size="11">bpm</text>
+  <text x="820" y="260" fill="#10B981" font-family="sans-serif" font-size="10">Normal</text>
+
+  <rect x="980" y="180" width="180" height="100" rx="12" fill="#1a1a1a" stroke="#333" stroke-width="1"/>
+  <text x="1000" y="210" fill="#a3a3a3" font-family="sans-serif" font-size="11">Medications</text>
+  <text x="1000" y="240" fill="white" font-family="sans-serif" font-size="24" font-weight="bold">96%</text>
+  <text x="1000" y="260" fill="#10B981" font-family="sans-serif" font-size="10">Compliance rate</text>
+
+  <rect x="800" y="290" width="360" height="120" rx="12" fill="#1a1a1a" stroke="#333" stroke-width="1"/>
+  <text x="820" y="320" fill="white" font-family="sans-serif" font-size="14" font-weight="600">Weekly Mood</text>
+  <rect x="820" y="340" width="40" height="40" rx="8" fill="#10B981" opacity="0.2"/>
+  <text x="840" y="365" fill="#10B981" font-family="sans-serif" font-size="16" text-anchor="middle">4</text>
+  <rect x="870" y="340" width="40" height="40" rx="8" fill="#10B981" opacity="0.2"/>
+  <text x="890" y="365" fill="#10B981" font-family="sans-serif" font-size="16" text-anchor="middle">5</text>
+  <rect x="920" y="340" width="40" height="40" rx="8" fill="#3B82F6" opacity="0.2"/>
+  <text x="940" y="365" fill="#3B82F6" font-family="sans-serif" font-size="16" text-anchor="middle">3</text>
+  <rect x="970" y="340" width="40" height="40" rx="8" fill="#10B981" opacity="0.2"/>
+  <text x="990" y="365" fill="#10B981" font-family="sans-serif" font-size="16" text-anchor="middle">4</text>
+  <rect x="1020" y="340" width="40" height="40" rx="8" fill="#F59E0B" opacity="0.2"/>
+  <text x="1040" y="365" fill="#F59E0B" font-family="sans-serif" font-size="16" text-anchor="middle">3</text>
+  <text x="820" y="395" fill="#a3a3a3" font-family="sans-serif" font-size="10">Mon  Tue  Wed  Thu  Fri</text>
+
+  <!-- Meal tracking -->
+  <rect x="40" y="430" width="550" height="340" rx="12" fill="#1a1a1a" stroke="#333" stroke-width="1"/>
+  <text x="60" y="460" fill="white" font-family="sans-serif" font-size="14" font-weight="600">Nutrition Log</text>
+
+  <rect x="60" y="480" width="510" height="40" rx="6" fill="#0A0A0A"/>
+  <text x="80" y="505" fill="#a3a3a3" font-family="sans-serif" font-size="11">Breakfast - 7:30 AM</text>
+  <text x="350" y="505" fill="white" font-family="sans-serif" font-size="11">Oatmeal, fruit, juice</text>
+  <rect x="520" y="492" width="32" height="16" rx="4" fill="#10B981" opacity="0.2"/>
+  <text x="536" y="504" fill="#10B981" font-family="sans-serif" font-size="9" text-anchor="middle">80%</text>
+
+  <rect x="60" y="530" width="510" height="40" rx="6" fill="#0A0A0A"/>
+  <text x="80" y="555" fill="#a3a3a3" font-family="sans-serif" font-size="11">Lunch - 12:30 PM</text>
+  <text x="350" y="555" fill="white" font-family="sans-serif" font-size="11">Grilled chicken, rice, salad</text>
+  <rect x="520" y="542" width="32" height="16" rx="4" fill="#10B981" opacity="0.2"/>
+  <text x="536" y="554" fill="#10B981" font-family="sans-serif" font-size="9" text-anchor="middle">100%</text>
+
+  <rect x="60" y="580" width="510" height="40" rx="6" fill="#0A0A0A"/>
+  <text x="80" y="605" fill="#a3a3a3" font-family="sans-serif" font-size="11">Snack - 3:00 PM</text>
+  <text x="350" y="605" fill="white" font-family="sans-serif" font-size="11">Crackers, apple slices</text>
+  <rect x="520" y="592" width="32" height="16" rx="4" fill="#10B981" opacity="0.2"/>
+  <text x="536" y="604" fill="#10B981" font-family="sans-serif" font-size="9" text-anchor="middle">90%</text>
+
+  <rect x="60" y="630" width="510" height="40" rx="6" fill="#0A0A0A" stroke="#333" stroke-width="1" stroke-dasharray="4"/>
+  <text x="80" y="655" fill="#555" font-family="sans-serif" font-size="11">Dinner - 6:00 PM</text>
+  <text x="350" y="655" fill="#555" font-family="sans-serif" font-size="11">Not logged yet</text>
+
+  <text x="60" y="710" fill="#a3a3a3" font-family="sans-serif" font-size="11">Daily fluid intake:</text>
+  <rect x="170" y="698" width="380" height="8" rx="4" fill="#2a2a2a"/>
+  <rect x="170" y="698" width="260" height="8" rx="4" fill="#3B82F6"/>
+  <text x="170" y="725" fill="#a3a3a3" font-family="sans-serif" font-size="10">1,200 mL / 1,800 mL target (67%)</text>
+
+  <!-- Sleep data -->
+  <rect x="610" y="430" width="550" height="340" rx="12" fill="#1a1a1a" stroke="#333" stroke-width="1"/>
+  <text x="630" y="460" fill="white" font-family="sans-serif" font-size="14" font-weight="600">Sleep Quality</text>
+  <text x="1130" y="460" fill="#a3a3a3" font-family="sans-serif" font-size="11" text-anchor="end">Last night</text>
+
+  <text x="630" y="510" fill="white" font-family="sans-serif" font-size="36" font-weight="bold">6h 45m</text>
+  <text x="630" y="535" fill="#F59E0B" font-family="sans-serif" font-size="12">Below target (7-8 hrs)</text>
+
+  <!-- Sleep stages bar -->
+  <text x="630" y="570" fill="#a3a3a3" font-family="sans-serif" font-size="11">Sleep stages</text>
+  <rect x="630" y="580" width="510" height="24" rx="6" fill="#0A0A0A"/>
+  <rect x="630" y="580" width="100" height="24" rx="6" fill="#3B82F6" opacity="0.5"/>
+  <rect x="730" y="580" width="180" height="24" fill="#3B82F6" opacity="0.3"/>
+  <rect x="910" y="580" width="120" height="24" fill="#8B5CF6" opacity="0.4"/>
+  <rect x="1030" y="580" width="110" height="24" rx="0 6 6 0" fill="#10B981" opacity="0.3"/>
+  <text x="680" y="596" fill="white" font-family="sans-serif" font-size="9" text-anchor="middle">Awake</text>
+  <text x="820" y="596" fill="white" font-family="sans-serif" font-size="9" text-anchor="middle">Light</text>
+  <text x="970" y="596" fill="white" font-family="sans-serif" font-size="9" text-anchor="middle">Deep</text>
+  <text x="1085" y="596" fill="white" font-family="sans-serif" font-size="9" text-anchor="middle">REM</text>
+
+  <!-- Week sleep bars -->
+  <text x="630" y="640" fill="#a3a3a3" font-family="sans-serif" font-size="11">This week</text>
+  <rect x="630" y="655" width="65" height="80" rx="4" fill="#0A0A0A"/>
+  <rect x="630" y="680" width="65" height="55" rx="4" fill="#3B82F6" opacity="0.3"/>
+  <text x="662" y="750" fill="#555" font-family="sans-serif" font-size="9" text-anchor="middle">Mon</text>
+  <rect x="705" y="655" width="65" height="80" rx="4" fill="#0A0A0A"/>
+  <rect x="705" y="670" width="65" height="65" rx="4" fill="#3B82F6" opacity="0.3"/>
+  <text x="737" y="750" fill="#555" font-family="sans-serif" font-size="9" text-anchor="middle">Tue</text>
+  <rect x="780" y="655" width="65" height="80" rx="4" fill="#0A0A0A"/>
+  <rect x="780" y="665" width="65" height="70" rx="4" fill="#10B981" opacity="0.3"/>
+  <text x="812" y="750" fill="#555" font-family="sans-serif" font-size="9" text-anchor="middle">Wed</text>
+  <rect x="855" y="655" width="65" height="80" rx="4" fill="#0A0A0A"/>
+  <rect x="855" y="675" width="65" height="60" rx="4" fill="#3B82F6" opacity="0.3"/>
+  <text x="887" y="750" fill="#555" font-family="sans-serif" font-size="9" text-anchor="middle">Thu</text>
+  <rect x="930" y="655" width="65" height="80" rx="4" fill="#0A0A0A"/>
+  <rect x="930" y="685" width="65" height="50" rx="4" fill="#F59E0B" opacity="0.3"/>
+  <text x="962" y="750" fill="#d76542" font-family="sans-serif" font-size="9" text-anchor="middle" font-weight="bold">Fri</text>
+</svg>

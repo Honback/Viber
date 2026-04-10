@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" fill="none">
+  <rect width="1200" height="800" fill="#0A0A0A"/>
+  <!-- Top bar -->
+  <rect x="0" y="0" width="1200" height="56" fill="#111111"/>
+  <rect x="0" y="56" width="1200" height="1" fill="#333"/>
+  <text x="30" y="35" font-family="sans-serif" font-size="18" fill="white" font-weight="bold">PaletteAI</text>
+
+  <!-- Search input -->
+  <rect x="300" y="12" width="400" height="32" rx="8" fill="#1f1f1f" stroke="#444" stroke-width="1"/>
+  <text x="320" y="33" font-family="sans-serif" font-size="14" fill="#e0e0e0">ocean</text>
+  <rect x="660" y="14" width="60" height="28" rx="6" fill="#d76542"/>
+  <text x="690" y="33" font-family="sans-serif" font-size="12" fill="white" text-anchor="middle">Go</text>
+
+  <!-- Harmony mode tabs -->
+  <rect x="800" y="14" width="110" height="28" rx="6" fill="#d76542"/>
+  <text x="855" y="33" font-family="sans-serif" font-size="11" fill="white" text-anchor="middle">Complementary</text>
+  <rect x="918" y="14" width="80" height="28" rx="6" fill="#1f1f1f" stroke="#333" stroke-width="1"/>
+  <text x="958" y="33" font-family="sans-serif" font-size="11" fill="#a3a3a3" text-anchor="middle">Analogous</text>
+  <rect x="1006" y="14" width="65" height="28" rx="6" fill="#1f1f1f" stroke="#333" stroke-width="1"/>
+  <text x="1038" y="33" font-family="sans-serif" font-size="11" fill="#a3a3a3" text-anchor="middle">Triadic</text>
+
+  <!-- Randomize button -->
+  <rect x="1090" y="14" width="80" height="28" rx="6" fill="#1f1f1f" stroke="#444" stroke-width="1"/>
+  <text x="1130" y="33" font-family="sans-serif" font-size="11" fill="#a3a3a3" text-anchor="middle">Shuffle</text>
+
+  <!-- 5 vertical color swatches -->
+  <!-- Swatch 1 -->
+  <rect x="40" y="80" width="216" height="580" rx="12" fill="#1B4965"/>
+  <!-- Lock icon -->
+  <rect x="130" y="612" width="28" height="28" rx="6" fill="rgba(0,0,0,0.3)"/>
+  <text x="144" y="631" font-family="sans-serif" font-size="14" fill="white" text-anchor="middle">&#x1F513;</text>
+  <rect x="40" y="670" width="216" height="80" rx="0 0 12 12" fill="#0A0A0A" fill-opacity="0.7"/>
+  <text x="148" y="700" font-family="monospace" font-size="18" fill="white" text-anchor="middle" font-weight="bold">#1B4965</text>
+  <text x="148" y="725" font-family="sans-serif" font-size="12" fill="#a3a3a3" text-anchor="middle">Deep Ocean</text>
+
+  <!-- Swatch 2 -->
+  <rect x="276" y="80" width="216" height="580" rx="12" fill="#5FA8D3"/>
+  <rect x="366" y="612" width="28" height="28" rx="6" fill="rgba(0,0,0,0.3)"/>
+  <text x="380" y="631" font-family="sans-serif" font-size="14" fill="white" text-anchor="middle">&#x1F513;</text>
+  <rect x="276" y="670" width="216" height="80" fill="#0A0A0A" fill-opacity="0.7"/>
+  <text x="384" y="700" font-family="monospace" font-size="18" fill="white" text-anchor="middle" font-weight="bold">#5FA8D3</text>
+  <text x="384" y="725" font-family="sans-serif" font-size="12" fill="#a3a3a3" text-anchor="middle">Sky Blue</text>
+
+  <!-- Swatch 3 -->
+  <rect x="512" y="80" width="216" height="580" rx="12" fill="#62B6CB"/>
+  <rect x="602" y="612" width="28" height="28" rx="6" fill="rgba(0,0,0,0.3)"/>
+  <text x="616" y="631" font-family="sans-serif" font-size="14" fill="white" text-anchor="middle">&#x1F512;</text>
+  <rect x="512" y="670" width="216" height="80" fill="#0A0A0A" fill-opacity="0.7"/>
+  <text x="620" y="700" font-family="monospace" font-size="18" fill="white" text-anchor="middle" font-weight="bold">#62B6CB</text>
+  <text x="620" y="725" font-family="sans-serif" font-size="12" fill="#a3a3a3" text-anchor="middle">Aqua</text>
+
+  <!-- Swatch 4 -->
+  <rect x="748" y="80" width="216" height="580" rx="12" fill="#BEE9E8"/>
+  <rect x="838" y="612" width="28" height="28" rx="6" fill="rgba(0,0,0,0.3)"/>
+  <text x="852" y="631" font-family="sans-serif" font-size="14" fill="#333" text-anchor="middle">&#x1F513;</text>
+  <rect x="748" y="670" width="216" height="80" fill="#0A0A0A" fill-opacity="0.7"/>
+  <text x="856" y="700" font-family="monospace" font-size="18" fill="white" text-anchor="middle" font-weight="bold">#BEE9E8</text>
+  <text x="856" y="725" font-family="sans-serif" font-size="12" fill="#a3a3a3" text-anchor="middle">Pale Teal</text>
+
+  <!-- Swatch 5 -->
+  <rect x="984" y="80" width="216" height="580" rx="12" fill="#CAE9FF"/>
+  <rect x="1074" y="612" width="28" height="28" rx="6" fill="rgba(0,0,0,0.3)"/>
+  <text x="1088" y="631" font-family="sans-serif" font-size="14" fill="#333" text-anchor="middle">&#x1F513;</text>
+  <rect x="984" y="670" width="216" height="80" fill="#0A0A0A" fill-opacity="0.7"/>
+  <text x="1092" y="700" font-family="monospace" font-size="18" fill="white" text-anchor="middle" font-weight="bold">#CAE9FF</text>
+  <text x="1092" y="725" font-family="sans-serif" font-size="12" fill="#a3a3a3" text-anchor="middle">Ice Blue</text>
+
+  <!-- Bottom bar -->
+  <rect x="0" y="770" width="1200" height="30" fill="#111111"/>
+  <rect x="0" y="770" width="1200" height="1" fill="#333"/>
+  <text x="600" y="790" font-family="sans-serif" font-size="11" fill="#555" text-anchor="middle">Click any swatch to copy hex code</text>
+</svg>

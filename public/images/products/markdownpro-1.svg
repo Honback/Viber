@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" fill="none">
+  <rect width="1200" height="800" fill="#0A0A0A"/>
+  <!-- Top toolbar -->
+  <rect x="0" y="0" width="1200" height="48" fill="#111111"/>
+  <rect x="0" y="48" width="1200" height="1" fill="#333"/>
+  <rect x="16" y="10" width="28" height="28" rx="4" fill="#1f1f1f" stroke="#444" stroke-width="1"/>
+  <text x="30" y="30" font-family="monospace" font-size="14" fill="white" text-anchor="middle" font-weight="bold">B</text>
+  <rect x="52" y="10" width="28" height="28" rx="4" fill="#1f1f1f" stroke="#444" stroke-width="1"/>
+  <text x="66" y="30" font-family="monospace" font-size="14" fill="white" text-anchor="middle" font-style="italic">I</text>
+  <rect x="88" y="10" width="28" height="28" rx="4" fill="#1f1f1f" stroke="#444" stroke-width="1"/>
+  <text x="102" y="30" font-family="monospace" font-size="13" fill="white" text-anchor="middle">H</text>
+  <rect x="124" y="10" width="28" height="28" rx="4" fill="#1f1f1f" stroke="#444" stroke-width="1"/>
+  <text x="138" y="28" font-family="monospace" font-size="10" fill="#a3a3a3" text-anchor="middle">Link</text>
+  <rect x="160" y="10" width="28" height="28" rx="4" fill="#1f1f1f" stroke="#444" stroke-width="1"/>
+  <text x="174" y="30" font-family="monospace" font-size="11" fill="#a3a3a3" text-anchor="middle">&lt;/&gt;</text>
+  <rect x="196" y="10" width="28" height="28" rx="4" fill="#1f1f1f" stroke="#444" stroke-width="1"/>
+  <text x="210" y="30" font-family="monospace" font-size="15" fill="#a3a3a3" text-anchor="middle">&#x2261;</text>
+  <text x="520" y="30" font-family="sans-serif" font-size="13" fill="#d76542" font-weight="bold">Editor</text>
+  <rect x="515" y="40" width="50" height="2" fill="#d76542"/>
+  <text x="620" y="30" font-family="sans-serif" font-size="13" fill="#555">Preview</text>
+  <text x="1100" y="30" font-family="sans-serif" font-size="12" fill="#555" text-anchor="end">MarkdownPro</text>
+
+  <!-- Line numbers gutter -->
+  <rect x="0" y="49" width="48" height="721" fill="#111111"/>
+  <rect x="48" y="49" width="1" height="721" fill="#222"/>
+
+  <text x="38" y="80" font-family="monospace" font-size="12" fill="#444" text-anchor="end">1</text>
+  <text x="38" y="100" font-family="monospace" font-size="12" fill="#444" text-anchor="end">2</text>
+  <text x="38" y="120" font-family="monospace" font-size="12" fill="#444" text-anchor="end">3</text>
+  <text x="38" y="140" font-family="monospace" font-size="12" fill="#444" text-anchor="end">4</text>
+  <text x="38" y="160" font-family="monospace" font-size="12" fill="#444" text-anchor="end">5</text>
+  <text x="38" y="180" font-family="monospace" font-size="12" fill="#444" text-anchor="end">6</text>
+  <text x="38" y="200" font-family="monospace" font-size="12" fill="#444" text-anchor="end">7</text>
+  <text x="38" y="220" font-family="monospace" font-size="12" fill="#444" text-anchor="end">8</text>
+  <text x="38" y="240" font-family="monospace" font-size="12" fill="#444" text-anchor="end">9</text>
+  <text x="38" y="260" font-family="monospace" font-size="12" fill="#444" text-anchor="end">10</text>
+  <text x="38" y="280" font-family="monospace" font-size="12" fill="#444" text-anchor="end">11</text>
+  <text x="38" y="300" font-family="monospace" font-size="12" fill="#444" text-anchor="end">12</text>
+  <text x="38" y="320" font-family="monospace" font-size="12" fill="#444" text-anchor="end">13</text>
+  <text x="38" y="340" font-family="monospace" font-size="12" fill="#444" text-anchor="end">14</text>
+  <text x="38" y="360" font-family="monospace" font-size="12" fill="#444" text-anchor="end">15</text>
+  <text x="38" y="380" font-family="monospace" font-size="12" fill="#444" text-anchor="end">16</text>
+  <text x="38" y="400" font-family="monospace" font-size="12" fill="#444" text-anchor="end">17</text>
+  <text x="38" y="420" font-family="monospace" font-size="12" fill="#444" text-anchor="end">18</text>
+  <text x="38" y="440" font-family="monospace" font-size="12" fill="#444" text-anchor="end">19</text>
+  <text x="38" y="460" font-family="monospace" font-size="12" fill="#444" text-anchor="end">20</text>
+  <text x="38" y="480" font-family="monospace" font-size="12" fill="#444" text-anchor="end">21</text>
+  <text x="38" y="500" font-family="monospace" font-size="12" fill="#444" text-anchor="end">22</text>
+  <text x="38" y="520" font-family="monospace" font-size="12" fill="#444" text-anchor="end">23</text>
+  <text x="38" y="540" font-family="monospace" font-size="12" fill="#444" text-anchor="end">24</text>
+  <text x="38" y="560" font-family="monospace" font-size="12" fill="#444" text-anchor="end">25</text>
+  <text x="38" y="580" font-family="monospace" font-size="12" fill="#444" text-anchor="end">26</text>
+  <text x="38" y="600" font-family="monospace" font-size="12" fill="#444" text-anchor="end">27</text>
+  <text x="38" y="620" font-family="monospace" font-size="12" fill="#444" text-anchor="end">28</text>
+
+  <!-- Cursor highlight line -->
+  <rect x="49" y="189" width="1151" height="20" fill="#1a1a1a"/>
+  <rect x="262" y="190" width="2" height="18" fill="#d76542"/>
+
+  <!-- Editor content -->
+  <text x="60" y="80" font-family="monospace" font-size="13" fill="#d76542"># Project Documentation</text>
+  <text x="60" y="120" font-family="monospace" font-size="13" fill="#e0e0e0">This document covers the **architecture**</text>
+  <text x="60" y="140" font-family="monospace" font-size="13" fill="#e0e0e0">and **design decisions** for the project.</text>
+  <text x="60" y="180" font-family="monospace" font-size="13" fill="#d76542">## Table of Contents</text>
+  <text x="60" y="200" font-family="monospace" font-size="13" fill="#e0e0e0">1. Introduction</text>
+  <text x="60" y="220" font-family="monospace" font-size="13" fill="#e0e0e0">2. Architecture Overview</text>
+  <text x="60" y="240" font-family="monospace" font-size="13" fill="#e0e0e0">3. API Reference</text>
+  <text x="60" y="260" font-family="monospace" font-size="13" fill="#e0e0e0">4. Deployment Guide</text>
+  <text x="60" y="300" font-family="monospace" font-size="13" fill="#d76542">## Introduction</text>
+  <text x="60" y="340" font-family="monospace" font-size="13" fill="#e0e0e0">The application is built with a</text>
+  <text x="60" y="360" font-family="monospace" font-size="13" fill="#e0e0e0">*microservice* architecture using:</text>
+  <text x="60" y="400" font-family="monospace" font-size="13" fill="#e0e0e0">- **Node.js** for the backend</text>
+  <text x="60" y="420" font-family="monospace" font-size="13" fill="#e0e0e0">- **React** for the frontend</text>
+  <text x="60" y="440" font-family="monospace" font-size="13" fill="#e0e0e0">- **PostgreSQL** for data storage</text>
+  <text x="60" y="460" font-family="monospace" font-size="13" fill="#e0e0e0">- **Redis** for caching</text>
+  <text x="60" y="500" font-family="monospace" font-size="13" fill="#888">```bash</text>
+  <text x="60" y="520" font-family="monospace" font-size="13" fill="#7ec8e3">npm install</text>
+  <text x="60" y="540" font-family="monospace" font-size="13" fill="#7ec8e3">npm run dev</text>
+  <text x="60" y="560" font-family="monospace" font-size="13" fill="#888">```</text>
+  <text x="60" y="600" font-family="monospace" font-size="13" fill="#e0e0e0">&gt; **Note**: Ensure Docker is running</text>
+  <text x="60" y="620" font-family="monospace" font-size="13" fill="#e0e0e0">&gt; before starting the dev server.</text>
+
+  <!-- Bottom status bar -->
+  <rect x="0" y="770" width="1200" height="30" fill="#111111"/>
+  <rect x="0" y="770" width="1200" height="1" fill="#333"/>
+  <text x="16" y="790" font-family="monospace" font-size="12" fill="#666">Ln 7, Col 28</text>
+  <text x="160" y="790" font-family="monospace" font-size="12" fill="#666">Words: 89</text>
+  <text x="270" y="790" font-family="monospace" font-size="12" fill="#666">UTF-8</text>
+  <text x="1180" y="790" font-family="monospace" font-size="12" fill="#444" text-anchor="end">Markdown</text>
+</svg>

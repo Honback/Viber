@@ -1,0 +1,159 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800">
+  <rect width="1200" height="800" fill="#0A0A0A"/>
+  <rect width="1200" height="48" fill="#111111"/>
+  <rect x="0" y="48" width="1200" height="1" fill="#333"/>
+  <circle cx="20" cy="24" r="6" fill="#d76542"/>
+  <text x="40" y="30" fill="white" font-family="sans-serif" font-size="16" font-weight="bold">Lesson Loop</text>
+  <text x="180" y="30" fill="#a3a3a3" font-family="sans-serif" font-size="12">/ Analytics</text>
+
+  <!-- Question trends chart -->
+  <rect x="40" y="70" width="740" height="320" rx="12" fill="#1a1a1a" stroke="#333" stroke-width="1"/>
+  <text x="60" y="100" fill="white" font-family="sans-serif" font-size="14" font-weight="600">Question Trends - This Week</text>
+  <!-- Y axis -->
+  <text x="60" y="140" fill="#555" font-family="sans-serif" font-size="10">30</text>
+  <text x="60" y="190" fill="#555" font-family="sans-serif" font-size="10">20</text>
+  <text x="60" y="240" fill="#555" font-family="sans-serif" font-size="10">10</text>
+  <text x="60" y="290" fill="#555" font-family="sans-serif" font-size="10">0</text>
+  <line x1="90" y1="135" x2="720" y2="135" stroke="#222" stroke-width="1"/>
+  <line x1="90" y1="185" x2="720" y2="185" stroke="#222" stroke-width="1"/>
+  <line x1="90" y1="235" x2="720" y2="235" stroke="#222" stroke-width="1"/>
+  <line x1="90" y1="285" x2="720" y2="285" stroke="#222" stroke-width="1"/>
+  <!-- Stacked bars -->
+  <rect x="120" y="195" width="60" height="90" rx="4" fill="#3B82F6" opacity="0.6"/>
+  <rect x="120" y="175" width="60" height="20" rx="0" fill="#10B981" opacity="0.6"/>
+  <rect x="120" y="160" width="60" height="15" rx="4" fill="#F59E0B" opacity="0.6"/>
+  <text x="150" y="305" fill="#555" font-family="sans-serif" font-size="10" text-anchor="middle">Mon</text>
+
+  <rect x="230" y="180" width="60" height="105" rx="4" fill="#3B82F6" opacity="0.6"/>
+  <rect x="230" y="160" width="60" height="20" rx="0" fill="#10B981" opacity="0.6"/>
+  <rect x="230" y="145" width="60" height="15" rx="4" fill="#F59E0B" opacity="0.6"/>
+  <text x="260" y="305" fill="#555" font-family="sans-serif" font-size="10" text-anchor="middle">Tue</text>
+
+  <rect x="340" y="170" width="60" height="115" rx="4" fill="#3B82F6" opacity="0.6"/>
+  <rect x="340" y="145" width="60" height="25" rx="0" fill="#10B981" opacity="0.6"/>
+  <rect x="340" y="130" width="60" height="15" rx="4" fill="#F59E0B" opacity="0.6"/>
+  <rect x="340" y="120" width="60" height="10" rx="4" fill="#8B5CF6" opacity="0.6"/>
+  <text x="370" y="305" fill="#555" font-family="sans-serif" font-size="10" text-anchor="middle">Wed</text>
+
+  <rect x="450" y="190" width="60" height="95" rx="4" fill="#3B82F6" opacity="0.6"/>
+  <rect x="450" y="175" width="60" height="15" rx="0" fill="#10B981" opacity="0.6"/>
+  <rect x="450" y="162" width="60" height="13" rx="4" fill="#F59E0B" opacity="0.6"/>
+  <text x="480" y="305" fill="#555" font-family="sans-serif" font-size="10" text-anchor="middle">Thu</text>
+
+  <rect x="560" y="165" width="60" height="120" rx="4" fill="#3B82F6" opacity="0.7"/>
+  <rect x="560" y="140" width="60" height="25" rx="0" fill="#10B981" opacity="0.7"/>
+  <rect x="560" y="120" width="60" height="20" rx="4" fill="#F59E0B" opacity="0.7"/>
+  <rect x="560" y="110" width="60" height="10" rx="4" fill="#8B5CF6" opacity="0.7"/>
+  <text x="590" y="305" fill="#d76542" font-family="sans-serif" font-size="10" text-anchor="middle" font-weight="bold">Fri</text>
+
+  <!-- Legend -->
+  <rect x="60" y="330" width="12" height="12" rx="2" fill="#3B82F6" opacity="0.6"/>
+  <text x="78" y="341" fill="#a3a3a3" font-family="sans-serif" font-size="10">Math</text>
+  <rect x="130" y="330" width="12" height="12" rx="2" fill="#10B981" opacity="0.6"/>
+  <text x="148" y="341" fill="#a3a3a3" font-family="sans-serif" font-size="10">Science</text>
+  <rect x="210" y="330" width="12" height="12" rx="2" fill="#F59E0B" opacity="0.6"/>
+  <text x="228" y="341" fill="#a3a3a3" font-family="sans-serif" font-size="10">English</text>
+  <rect x="290" y="330" width="12" height="12" rx="2" fill="#8B5CF6" opacity="0.6"/>
+  <text x="308" y="341" fill="#a3a3a3" font-family="sans-serif" font-size="10">History</text>
+
+  <!-- Top topics -->
+  <rect x="800" y="70" width="360" height="320" rx="12" fill="#1a1a1a" stroke="#333" stroke-width="1"/>
+  <text x="820" y="100" fill="white" font-family="sans-serif" font-size="14" font-weight="600">Hot Topics</text>
+
+  <rect x="820" y="120" width="320" height="36" rx="6" fill="#0A0A0A" stroke="#d76542" stroke-width="1"/>
+  <text x="840" y="142" fill="white" font-family="sans-serif" font-size="12">Balancing chemical equations</text>
+  <rect x="1080" y="128" width="44" height="18" rx="4" fill="#d76542" opacity="0.2"/>
+  <text x="1102" y="141" fill="#d76542" font-family="sans-serif" font-size="10" text-anchor="middle">12</text>
+
+  <rect x="820" y="164" width="320" height="36" rx="6" fill="#0A0A0A" stroke="#333" stroke-width="1"/>
+  <text x="840" y="186" fill="white" font-family="sans-serif" font-size="12">Quadratic formula</text>
+  <rect x="1080" y="172" width="44" height="18" rx="4" fill="#2a2a2a"/>
+  <text x="1102" y="185" fill="#a3a3a3" font-family="sans-serif" font-size="10" text-anchor="middle">8</text>
+
+  <rect x="820" y="208" width="320" height="36" rx="6" fill="#0A0A0A" stroke="#333" stroke-width="1"/>
+  <text x="840" y="230" fill="white" font-family="sans-serif" font-size="12">Literary devices</text>
+  <rect x="1080" y="216" width="44" height="18" rx="4" fill="#2a2a2a"/>
+  <text x="1102" y="229" fill="#a3a3a3" font-family="sans-serif" font-size="10" text-anchor="middle">6</text>
+
+  <rect x="820" y="252" width="320" height="36" rx="6" fill="#0A0A0A" stroke="#333" stroke-width="1"/>
+  <text x="840" y="274" fill="white" font-family="sans-serif" font-size="12">French Revolution causes</text>
+  <rect x="1080" y="260" width="44" height="18" rx="4" fill="#2a2a2a"/>
+  <text x="1102" y="273" fill="#a3a3a3" font-family="sans-serif" font-size="10" text-anchor="middle">5</text>
+
+  <rect x="820" y="296" width="320" height="36" rx="6" fill="#0A0A0A" stroke="#333" stroke-width="1"/>
+  <text x="840" y="318" fill="white" font-family="sans-serif" font-size="12">Photosynthesis process</text>
+  <rect x="1080" y="304" width="44" height="18" rx="4" fill="#2a2a2a"/>
+  <text x="1102" y="317" fill="#a3a3a3" font-family="sans-serif" font-size="10" text-anchor="middle">4</text>
+
+  <!-- Student engagement heatmap -->
+  <rect x="40" y="410" width="1120" height="360" rx="12" fill="#1a1a1a" stroke="#333" stroke-width="1"/>
+  <text x="60" y="440" fill="white" font-family="sans-serif" font-size="14" font-weight="600">Student Engagement Heatmap</text>
+  <text x="1130" y="440" fill="#a3a3a3" font-family="sans-serif" font-size="11" text-anchor="end">This week</text>
+
+  <!-- Student rows -->
+  <text x="60" y="480" fill="#a3a3a3" font-family="sans-serif" font-size="11">Emma T.</text>
+  <rect x="160" y="468" width="90" height="18" rx="3" fill="#d76542" opacity="0.8"/>
+  <rect x="260" y="468" width="90" height="18" rx="3" fill="#d76542" opacity="0.6"/>
+  <rect x="360" y="468" width="90" height="18" rx="3" fill="#d76542" opacity="0.9"/>
+  <rect x="460" y="468" width="90" height="18" rx="3" fill="#d76542" opacity="0.5"/>
+  <rect x="560" y="468" width="90" height="18" rx="3" fill="#d76542" opacity="0.7"/>
+
+  <text x="60" y="505" fill="#a3a3a3" font-family="sans-serif" font-size="11">Jake R.</text>
+  <rect x="160" y="493" width="90" height="18" rx="3" fill="#d76542" opacity="0.5"/>
+  <rect x="260" y="493" width="90" height="18" rx="3" fill="#d76542" opacity="0.7"/>
+  <rect x="360" y="493" width="90" height="18" rx="3" fill="#d76542" opacity="0.4"/>
+  <rect x="460" y="493" width="90" height="18" rx="3" fill="#d76542" opacity="0.8"/>
+  <rect x="560" y="493" width="90" height="18" rx="3" fill="#d76542" opacity="0.9"/>
+
+  <text x="60" y="530" fill="#a3a3a3" font-family="sans-serif" font-size="11">Sophia L.</text>
+  <rect x="160" y="518" width="90" height="18" rx="3" fill="#d76542" opacity="0.3"/>
+  <rect x="260" y="518" width="90" height="18" rx="3" fill="#d76542" opacity="0.4"/>
+  <rect x="360" y="518" width="90" height="18" rx="3" fill="#d76542" opacity="0.6"/>
+  <rect x="460" y="518" width="90" height="18" rx="3" fill="#d76542" opacity="0.7"/>
+  <rect x="560" y="518" width="90" height="18" rx="3" fill="#d76542" opacity="0.5"/>
+
+  <text x="60" y="555" fill="#a3a3a3" font-family="sans-serif" font-size="11">Marcus K.</text>
+  <rect x="160" y="543" width="90" height="18" rx="3" fill="#d76542" opacity="0.2"/>
+  <rect x="260" y="543" width="90" height="18" rx="3" fill="#d76542" opacity="0.3"/>
+  <rect x="360" y="543" width="90" height="18" rx="3" fill="#d76542" opacity="0.5"/>
+  <rect x="460" y="543" width="90" height="18" rx="3" fill="#d76542" opacity="0.4"/>
+  <rect x="560" y="543" width="90" height="18" rx="3" fill="#d76542" opacity="0.6"/>
+
+  <text x="60" y="580" fill="#a3a3a3" font-family="sans-serif" font-size="11">Aiden W.</text>
+  <rect x="160" y="568" width="90" height="18" rx="3" fill="#d76542" opacity="0.6"/>
+  <rect x="260" y="568" width="90" height="18" rx="3" fill="#d76542" opacity="0.5"/>
+  <rect x="360" y="568" width="90" height="18" rx="3" fill="#d76542" opacity="0.7"/>
+  <rect x="460" y="568" width="90" height="18" rx="3" fill="#d76542" opacity="0.6"/>
+  <rect x="560" y="568" width="90" height="18" rx="3" fill="#d76542" opacity="0.4"/>
+
+  <text x="60" y="605" fill="#555" font-family="sans-serif" font-size="11">+27 more students</text>
+
+  <!-- Day headers -->
+  <text x="205" y="460" fill="#555" font-family="sans-serif" font-size="10" text-anchor="middle">Mon</text>
+  <text x="305" y="460" fill="#555" font-family="sans-serif" font-size="10" text-anchor="middle">Tue</text>
+  <text x="405" y="460" fill="#555" font-family="sans-serif" font-size="10" text-anchor="middle">Wed</text>
+  <text x="505" y="460" fill="#555" font-family="sans-serif" font-size="10" text-anchor="middle">Thu</text>
+  <text x="605" y="460" fill="#d76542" font-family="sans-serif" font-size="10" text-anchor="middle" font-weight="bold">Fri</text>
+
+  <!-- Insight panel -->
+  <rect x="700" y="460" width="440" height="140" rx="8" fill="#0A0A0A" stroke="#d76542" stroke-width="1"/>
+  <text x="720" y="485" fill="#d76542" font-family="sans-serif" font-size="12" font-weight="500">AI Insights</text>
+  <text x="720" y="510" fill="#a3a3a3" font-family="sans-serif" font-size="11">- Emma T. is highly engaged this week (top contributor)</text>
+  <text x="720" y="530" fill="#a3a3a3" font-family="sans-serif" font-size="11">- Marcus K. engagement increased on Thu-Fri (+40%)</text>
+  <text x="720" y="550" fill="#a3a3a3" font-family="sans-serif" font-size="11">- Science topics generating 2x more questions than avg</text>
+  <text x="720" y="570" fill="#a3a3a3" font-family="sans-serif" font-size="11">- 4 students haven't asked questions this week</text>
+  <text x="720" y="590" fill="#d76542" font-family="sans-serif" font-size="10">Suggestion: Try cold-calling or group activities for quieter students</text>
+
+  <!-- Summary stats -->
+  <rect x="700" y="615" width="140" height="60" rx="8" fill="#0A0A0A"/>
+  <text x="770" y="640" fill="white" font-family="sans-serif" font-size="20" font-weight="bold" text-anchor="middle">87%</text>
+  <text x="770" y="660" fill="#a3a3a3" font-family="sans-serif" font-size="10" text-anchor="middle">Participation</text>
+
+  <rect x="850" y="615" width="140" height="60" rx="8" fill="#0A0A0A"/>
+  <text x="920" y="640" fill="white" font-family="sans-serif" font-size="20" font-weight="bold" text-anchor="middle">124</text>
+  <text x="920" y="660" fill="#a3a3a3" font-family="sans-serif" font-size="10" text-anchor="middle">Total Questions</text>
+
+  <rect x="1000" y="615" width="140" height="60" rx="8" fill="#0A0A0A"/>
+  <text x="1070" y="640" fill="white" font-family="sans-serif" font-size="20" font-weight="bold" text-anchor="middle">4.2</text>
+  <text x="1070" y="660" fill="#a3a3a3" font-family="sans-serif" font-size="10" text-anchor="middle">Avg per student</text>
+</svg>

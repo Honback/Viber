@@ -1,0 +1,150 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800">
+  <rect width="1200" height="800" fill="#0A0A0A"/>
+  <rect width="1200" height="48" fill="#111111"/>
+  <rect x="0" y="48" width="1200" height="1" fill="#333"/>
+  <circle cx="20" cy="24" r="6" fill="#d76542"/>
+  <text x="40" y="30" fill="white" font-family="sans-serif" font-size="16" font-weight="bold">Shipyard Notes</text>
+  <rect x="1040" y="10" width="120" height="28" rx="6" fill="#d76542"/>
+  <text x="1100" y="28" fill="white" font-family="sans-serif" font-size="11" text-anchor="middle">+ New Release</text>
+
+  <!-- Left sidebar - Version list -->
+  <rect x="40" y="70" width="280" height="700" rx="12" fill="#1a1a1a" stroke="#333" stroke-width="1"/>
+  <text x="60" y="100" fill="white" font-family="sans-serif" font-size="14" font-weight="600">Releases</text>
+  <text x="290" y="100" fill="#a3a3a3" font-family="sans-serif" font-size="11" text-anchor="end">12 versions</text>
+
+  <!-- Version entries with timeline dots -->
+  <circle cx="72" cy="135" r="6" fill="#d76542"/>
+  <line x1="72" y1="141" x2="72" y2="185" stroke="#333" stroke-width="1"/>
+  <rect x="88" y="118" width="212" height="50" rx="6" fill="#d76542" opacity="0.1" stroke="#d76542" stroke-width="1"/>
+  <text x="100" y="138" fill="white" font-family="sans-serif" font-size="13" font-weight="600">v2.4.0</text>
+  <text x="260" y="138" fill="#d76542" font-family="sans-serif" font-size="10" text-anchor="end">Latest</text>
+  <text x="100" y="157" fill="#a3a3a3" font-family="sans-serif" font-size="10">Apr 8, 2026 - 5 changes</text>
+
+  <circle cx="72" cy="195" r="5" fill="#a3a3a3"/>
+  <line x1="72" y1="200" x2="72" y2="245" stroke="#333" stroke-width="1"/>
+  <rect x="88" y="178" width="212" height="50" rx="6" fill="#0A0A0A" stroke="#333" stroke-width="1"/>
+  <text x="100" y="198" fill="white" font-family="sans-serif" font-size="13">v2.3.1</text>
+  <text x="260" y="198" fill="#555" font-family="sans-serif" font-size="10" text-anchor="end">Patch</text>
+  <text x="100" y="217" fill="#a3a3a3" font-family="sans-serif" font-size="10">Apr 3, 2026 - 2 fixes</text>
+
+  <circle cx="72" cy="255" r="5" fill="#a3a3a3"/>
+  <line x1="72" y1="260" x2="72" y2="305" stroke="#333" stroke-width="1"/>
+  <rect x="88" y="238" width="212" height="50" rx="6" fill="#0A0A0A" stroke="#333" stroke-width="1"/>
+  <text x="100" y="258" fill="white" font-family="sans-serif" font-size="13">v2.3.0</text>
+  <text x="260" y="258" fill="#555" font-family="sans-serif" font-size="10" text-anchor="end">Minor</text>
+  <text x="100" y="277" fill="#a3a3a3" font-family="sans-serif" font-size="10">Mar 28, 2026 - 8 changes</text>
+
+  <circle cx="72" cy="315" r="5" fill="#a3a3a3"/>
+  <line x1="72" y1="320" x2="72" y2="365" stroke="#333" stroke-width="1"/>
+  <rect x="88" y="298" width="212" height="50" rx="6" fill="#0A0A0A" stroke="#333" stroke-width="1"/>
+  <text x="100" y="318" fill="white" font-family="sans-serif" font-size="13">v2.2.0</text>
+  <text x="100" y="337" fill="#a3a3a3" font-family="sans-serif" font-size="10">Mar 15, 2026 - 6 changes</text>
+
+  <circle cx="72" cy="375" r="5" fill="#EF4444"/>
+  <line x1="72" y1="380" x2="72" y2="425" stroke="#333" stroke-width="1"/>
+  <rect x="88" y="358" width="212" height="50" rx="6" fill="#0A0A0A" stroke="#EF4444" stroke-width="1"/>
+  <text x="100" y="378" fill="white" font-family="sans-serif" font-size="13">v2.0.0</text>
+  <text x="260" y="378" fill="#EF4444" font-family="sans-serif" font-size="10" text-anchor="end">Major</text>
+  <text x="100" y="397" fill="#a3a3a3" font-family="sans-serif" font-size="10">Feb 20, 2026 - Breaking</text>
+
+  <circle cx="72" cy="435" r="5" fill="#a3a3a3"/>
+  <line x1="72" y1="440" x2="72" y2="485" stroke="#333" stroke-width="1"/>
+  <rect x="88" y="418" width="212" height="50" rx="6" fill="#0A0A0A" stroke="#333" stroke-width="1"/>
+  <text x="100" y="438" fill="white" font-family="sans-serif" font-size="13">v1.9.2</text>
+  <text x="100" y="457" fill="#a3a3a3" font-family="sans-serif" font-size="10">Feb 10, 2026 - 3 fixes</text>
+
+  <circle cx="72" cy="495" r="5" fill="#a3a3a3"/>
+  <rect x="88" y="478" width="212" height="50" rx="6" fill="#0A0A0A" stroke="#333" stroke-width="1"/>
+  <text x="100" y="498" fill="white" font-family="sans-serif" font-size="13">v1.9.0</text>
+  <text x="100" y="517" fill="#a3a3a3" font-family="sans-serif" font-size="10">Jan 30, 2026 - 4 changes</text>
+
+  <text x="160" y="560" fill="#555" font-family="sans-serif" font-size="11" text-anchor="middle">+5 earlier versions</text>
+
+  <!-- Stats -->
+  <rect x="60" y="590" width="240" height="160" rx="8" fill="#0A0A0A" stroke="#333" stroke-width="1"/>
+  <text x="80" y="615" fill="white" font-family="sans-serif" font-size="12" font-weight="500">Release Stats</text>
+  <text x="80" y="640" fill="#a3a3a3" font-family="sans-serif" font-size="11">Total releases: 12</text>
+  <text x="80" y="660" fill="#a3a3a3" font-family="sans-serif" font-size="11">Avg days between: 8.3</text>
+  <text x="80" y="680" fill="#a3a3a3" font-family="sans-serif" font-size="11">Breaking changes: 2</text>
+  <text x="80" y="700" fill="#a3a3a3" font-family="sans-serif" font-size="11">Total features: 34</text>
+  <text x="80" y="720" fill="#a3a3a3" font-family="sans-serif" font-size="11">Total fixes: 28</text>
+
+  <!-- Right - Release note content -->
+  <rect x="340" y="70" width="820" height="700" rx="12" fill="#1a1a1a" stroke="#333" stroke-width="1"/>
+
+  <!-- Version header -->
+  <text x="370" y="108" fill="white" font-family="sans-serif" font-size="24" font-weight="bold">v2.4.0</text>
+  <text x="370" y="132" fill="#a3a3a3" font-family="sans-serif" font-size="12">Released April 8, 2026 by JT King</text>
+
+  <!-- Tag badges -->
+  <rect x="370" y="145" width="65" height="22" rx="6" fill="#10B981" opacity="0.15"/>
+  <text x="402" y="160" fill="#10B981" font-family="sans-serif" font-size="10" text-anchor="middle">Feature</text>
+  <rect x="443" y="145" width="40" height="22" rx="6" fill="#3B82F6" opacity="0.15"/>
+  <text x="463" y="160" fill="#3B82F6" font-family="sans-serif" font-size="10" text-anchor="middle">Fix</text>
+  <rect x="491" y="145" width="45" height="22" rx="6" fill="#8B5CF6" opacity="0.15"/>
+  <text x="513" y="160" fill="#8B5CF6" font-family="sans-serif" font-size="10" text-anchor="middle">Docs</text>
+
+  <!-- Markdown content -->
+  <text x="370" y="200" fill="white" font-family="sans-serif" font-size="16" font-weight="600">New Features</text>
+  <rect x="370" y="208" width="100" height="2" fill="#d76542"/>
+
+  <rect x="370" y="225" width="770" height="50" rx="6" fill="#0A0A0A"/>
+  <rect x="370" y="225" width="4" height="50" fill="#10B981"/>
+  <rect x="386" y="233" width="55" height="16" rx="4" fill="#10B981" opacity="0.15"/>
+  <text x="413" y="245" fill="#10B981" font-family="sans-serif" font-size="9" text-anchor="middle">Feature</text>
+  <text x="450" y="245" fill="white" font-family="sans-serif" font-size="12">AI-powered release note generation from git commits</text>
+  <text x="386" y="265" fill="#a3a3a3" font-family="sans-serif" font-size="10">Automatically summarize commits into human-readable changelogs (#142)</text>
+
+  <rect x="370" y="285" width="770" height="50" rx="6" fill="#0A0A0A"/>
+  <rect x="370" y="285" width="4" height="50" fill="#10B981"/>
+  <rect x="386" y="293" width="55" height="16" rx="4" fill="#10B981" opacity="0.15"/>
+  <text x="413" y="305" fill="#10B981" font-family="sans-serif" font-size="9" text-anchor="middle">Feature</text>
+  <text x="450" y="305" fill="white" font-family="sans-serif" font-size="12">Multi-project changelog support</text>
+  <text x="386" y="325" fill="#a3a3a3" font-family="sans-serif" font-size="10">Manage release notes for multiple repos in one dashboard (#138)</text>
+
+  <rect x="370" y="345" width="770" height="50" rx="6" fill="#0A0A0A"/>
+  <rect x="370" y="345" width="4" height="50" fill="#10B981"/>
+  <rect x="386" y="353" width="55" height="16" rx="4" fill="#10B981" opacity="0.15"/>
+  <text x="413" y="365" fill="#10B981" font-family="sans-serif" font-size="9" text-anchor="middle">Feature</text>
+  <text x="450" y="365" fill="white" font-family="sans-serif" font-size="12">Embeddable changelog widget</text>
+  <text x="386" y="385" fill="#a3a3a3" font-family="sans-serif" font-size="10">Drop-in script tag to show changelog on your site (#135)</text>
+
+  <!-- Bug Fixes -->
+  <text x="370" y="425" fill="white" font-family="sans-serif" font-size="16" font-weight="600">Bug Fixes</text>
+  <rect x="370" y="433" width="70" height="2" fill="#3B82F6"/>
+
+  <rect x="370" y="450" width="770" height="40" rx="6" fill="#0A0A0A"/>
+  <rect x="370" y="450" width="4" height="40" fill="#3B82F6"/>
+  <rect x="386" y="458" width="30" height="16" rx="4" fill="#3B82F6" opacity="0.15"/>
+  <text x="401" y="470" fill="#3B82F6" font-family="sans-serif" font-size="9" text-anchor="middle">Fix</text>
+  <text x="425" y="470" fill="white" font-family="sans-serif" font-size="12">Fixed markdown rendering for code blocks with special characters (#140)</text>
+
+  <rect x="370" y="500" width="770" height="40" rx="6" fill="#0A0A0A"/>
+  <rect x="370" y="500" width="4" height="40" fill="#3B82F6"/>
+  <rect x="386" y="508" width="30" height="16" rx="4" fill="#3B82F6" opacity="0.15"/>
+  <text x="401" y="520" fill="#3B82F6" font-family="sans-serif" font-size="9" text-anchor="middle">Fix</text>
+  <text x="425" y="520" fill="white" font-family="sans-serif" font-size="12">Resolved date parsing issue for non-UTC timezones (#139)</text>
+
+  <!-- Breaking Changes -->
+  <text x="370" y="575" fill="white" font-family="sans-serif" font-size="16" font-weight="600">Documentation</text>
+  <rect x="370" y="583" width="100" height="2" fill="#8B5CF6"/>
+
+  <rect x="370" y="600" width="770" height="40" rx="6" fill="#0A0A0A"/>
+  <rect x="370" y="600" width="4" height="40" fill="#8B5CF6"/>
+  <rect x="386" y="608" width="40" height="16" rx="4" fill="#8B5CF6" opacity="0.15"/>
+  <text x="406" y="620" fill="#8B5CF6" font-family="sans-serif" font-size="9" text-anchor="middle">Docs</text>
+  <text x="435" y="620" fill="white" font-family="sans-serif" font-size="12">Updated API reference for widget integration</text>
+
+  <!-- Actions -->
+  <rect x="370" y="660" width="100" height="30" rx="6" fill="#d76542"/>
+  <text x="420" y="679" fill="white" font-family="sans-serif" font-size="11" text-anchor="middle">Edit</text>
+  <rect x="480" y="660" width="100" height="30" rx="6" fill="#2a2a2a" stroke="#333" stroke-width="1"/>
+  <text x="530" y="679" fill="#a3a3a3" font-family="sans-serif" font-size="11" text-anchor="middle">Copy Link</text>
+  <rect x="590" y="660" width="120" height="30" rx="6" fill="#2a2a2a" stroke="#333" stroke-width="1"/>
+  <text x="650" y="679" fill="#a3a3a3" font-family="sans-serif" font-size="11" text-anchor="middle">Export MD</text>
+  <rect x="720" y="660" width="120" height="30" rx="6" fill="#2a2a2a" stroke="#333" stroke-width="1"/>
+  <text x="780" y="679" fill="#a3a3a3" font-family="sans-serif" font-size="11" text-anchor="middle">Publish</text>
+
+  <text x="370" y="730" fill="#555" font-family="sans-serif" font-size="10">Published to: changelog.example.com/v2.4.0</text>
+  <text x="370" y="748" fill="#555" font-family="sans-serif" font-size="10">Commit range: abc1234...def5678 (23 commits)</text>
+</svg>

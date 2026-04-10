@@ -1,0 +1,108 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" fill="none">
+  <rect width="1200" height="800" fill="#0A0A0A"/>
+  <!-- Top bar -->
+  <rect x="0" y="0" width="1200" height="60" fill="#111111"/>
+  <rect x="0" y="60" width="1200" height="1" fill="#333"/>
+  <text x="30" y="38" font-family="sans-serif" font-size="20" fill="white" font-weight="bold">SoundScape</text>
+  <!-- Master volume -->
+  <text x="600" y="32" font-family="sans-serif" font-size="12" fill="#a3a3a3">Master Volume</text>
+  <rect x="700" y="28" width="200" height="6" rx="3" fill="#1f1f1f"/>
+  <rect x="700" y="28" width="140" height="6" rx="3" fill="#d76542"/>
+  <circle cx="840" cy="31" r="8" fill="#d76542"/>
+  <text x="920" y="36" font-family="sans-serif" font-size="13" fill="white">70%</text>
+
+  <!-- 2x3 grid of sound channels -->
+  <!-- Row 1 -->
+  <!-- Rain - ON -->
+  <rect x="50" y="90" width="350" height="190" rx="12" fill="#1a1a1a" stroke="#333" stroke-width="1"/>
+  <circle cx="90" cy="135" r="20" fill="#1f1f1f" stroke="#444" stroke-width="1"/>
+  <text x="90" y="140" font-family="sans-serif" font-size="16" fill="#7ec8e3" text-anchor="middle">&#x2602;</text>
+  <text x="125" y="130" font-family="sans-serif" font-size="18" fill="white" font-weight="bold">Rain</text>
+  <text x="125" y="148" font-family="sans-serif" font-size="11" fill="#a3a3a3">Gentle rain on roof</text>
+  <!-- Volume slider ON -->
+  <rect x="70" y="180" width="260" height="6" rx="3" fill="#1f1f1f"/>
+  <rect x="70" y="180" width="182" height="6" rx="3" fill="#d76542"/>
+  <circle cx="252" cy="183" r="7" fill="#d76542"/>
+  <!-- Toggle ON -->
+  <rect x="345" y="125" width="36" height="20" rx="10" fill="#22c55e"/>
+  <circle cx="369" cy="135" r="7" fill="white"/>
+  <text x="70" y="220" font-family="monospace" font-size="11" fill="#555">Vol: 70%</text>
+  <!-- Waveform bars -->
+  <rect x="70" y="235" width="4" height="15" rx="1" fill="#d76542" opacity="0.6"/>
+  <rect x="78" y="230" width="4" height="20" rx="1" fill="#d76542" opacity="0.6"/>
+  <rect x="86" y="238" width="4" height="12" rx="1" fill="#d76542" opacity="0.6"/>
+  <rect x="94" y="232" width="4" height="18" rx="1" fill="#d76542" opacity="0.6"/>
+  <rect x="102" y="240" width="4" height="10" rx="1" fill="#d76542" opacity="0.6"/>
+
+  <!-- Thunder - OFF -->
+  <rect x="425" y="90" width="350" height="190" rx="12" fill="#1a1a1a" stroke="#333" stroke-width="1"/>
+  <circle cx="465" cy="135" r="20" fill="#1f1f1f" stroke="#444" stroke-width="1"/>
+  <text x="465" y="141" font-family="sans-serif" font-size="18" fill="#888" text-anchor="middle">&#x26A1;</text>
+  <text x="500" y="130" font-family="sans-serif" font-size="18" fill="#888">Thunder</text>
+  <text x="500" y="148" font-family="sans-serif" font-size="11" fill="#555">Distant thunder</text>
+  <rect x="445" y="180" width="260" height="6" rx="3" fill="#1f1f1f"/>
+  <rect x="728" y="125" width="36" height="20" rx="10" fill="#333"/>
+  <circle cx="740" cy="135" r="7" fill="#555"/>
+  <text x="445" y="220" font-family="monospace" font-size="11" fill="#555">Vol: 0%</text>
+
+  <!-- Wind - ON -->
+  <rect x="800" y="90" width="350" height="190" rx="12" fill="#1a1a1a" stroke="#333" stroke-width="1"/>
+  <circle cx="840" cy="135" r="20" fill="#1f1f1f" stroke="#444" stroke-width="1"/>
+  <text x="840" y="140" font-family="sans-serif" font-size="14" fill="#7ec8e3" text-anchor="middle">&#x2744;</text>
+  <text x="875" y="130" font-family="sans-serif" font-size="18" fill="white" font-weight="bold">Wind</text>
+  <text x="875" y="148" font-family="sans-serif" font-size="11" fill="#a3a3a3">Gentle breeze</text>
+  <rect x="820" y="180" width="260" height="6" rx="3" fill="#1f1f1f"/>
+  <rect x="820" y="180" width="130" height="6" rx="3" fill="#d76542"/>
+  <circle cx="950" cy="183" r="7" fill="#d76542"/>
+  <rect x="1098" y="125" width="36" height="20" rx="10" fill="#22c55e"/>
+  <circle cx="1122" cy="135" r="7" fill="white"/>
+  <text x="820" y="220" font-family="monospace" font-size="11" fill="#555">Vol: 50%</text>
+  <rect x="820" y="235" width="4" height="10" rx="1" fill="#d76542" opacity="0.6"/>
+  <rect x="828" y="238" width="4" height="7" rx="1" fill="#d76542" opacity="0.6"/>
+  <rect x="836" y="233" width="4" height="12" rx="1" fill="#d76542" opacity="0.6"/>
+  <rect x="844" y="236" width="4" height="9" rx="1" fill="#d76542" opacity="0.6"/>
+
+  <!-- Row 2 -->
+  <!-- Fire - OFF -->
+  <rect x="50" y="305" width="350" height="190" rx="12" fill="#1a1a1a" stroke="#333" stroke-width="1"/>
+  <circle cx="90" cy="350" r="20" fill="#1f1f1f" stroke="#444" stroke-width="1"/>
+  <text x="90" y="356" font-family="sans-serif" font-size="16" fill="#888" text-anchor="middle">&#x1F525;</text>
+  <text x="125" y="345" font-family="sans-serif" font-size="18" fill="#888">Fire</text>
+  <text x="125" y="363" font-family="sans-serif" font-size="11" fill="#555">Crackling fireplace</text>
+  <rect x="70" y="395" width="260" height="6" rx="3" fill="#1f1f1f"/>
+  <rect x="345" y="340" width="36" height="20" rx="10" fill="#333"/>
+  <circle cx="357" cy="350" r="7" fill="#555"/>
+  <text x="70" y="435" font-family="monospace" font-size="11" fill="#555">Vol: 0%</text>
+
+  <!-- Waves - OFF -->
+  <rect x="425" y="305" width="350" height="190" rx="12" fill="#1a1a1a" stroke="#333" stroke-width="1"/>
+  <circle cx="465" cy="350" r="20" fill="#1f1f1f" stroke="#444" stroke-width="1"/>
+  <text x="465" y="356" font-family="sans-serif" font-size="14" fill="#888" text-anchor="middle">&#x223C;</text>
+  <text x="500" y="345" font-family="sans-serif" font-size="18" fill="#888">Waves</text>
+  <text x="500" y="363" font-family="sans-serif" font-size="11" fill="#555">Ocean waves</text>
+  <rect x="445" y="395" width="260" height="6" rx="3" fill="#1f1f1f"/>
+  <rect x="728" y="340" width="36" height="20" rx="10" fill="#333"/>
+  <circle cx="740" cy="350" r="7" fill="#555"/>
+  <text x="445" y="435" font-family="monospace" font-size="11" fill="#555">Vol: 0%</text>
+
+  <!-- Forest - OFF -->
+  <rect x="800" y="305" width="350" height="190" rx="12" fill="#1a1a1a" stroke="#333" stroke-width="1"/>
+  <circle cx="840" cy="350" r="20" fill="#1f1f1f" stroke="#444" stroke-width="1"/>
+  <text x="840" y="355" font-family="sans-serif" font-size="14" fill="#888" text-anchor="middle">&#x2663;</text>
+  <text x="875" y="345" font-family="sans-serif" font-size="18" fill="#888">Forest</text>
+  <text x="875" y="363" font-family="sans-serif" font-size="11" fill="#555">Birds and trees</text>
+  <rect x="820" y="395" width="260" height="6" rx="3" fill="#1f1f1f"/>
+  <rect x="1098" y="340" width="36" height="20" rx="10" fill="#333"/>
+  <circle cx="1110" cy="350" r="7" fill="#555"/>
+  <text x="820" y="435" font-family="monospace" font-size="11" fill="#555">Vol: 0%</text>
+
+  <!-- Preset buttons -->
+  <rect x="0" y="740" width="1200" height="60" fill="#111111"/>
+  <rect x="0" y="740" width="1200" height="1" fill="#333"/>
+  <rect x="380" y="752" width="120" height="36" rx="8" fill="#d76542"/>
+  <text x="440" y="775" font-family="sans-serif" font-size="14" fill="white" text-anchor="middle" font-weight="bold">Focus</text>
+  <rect x="520" y="752" width="120" height="36" rx="8" fill="#1f1f1f" stroke="#333" stroke-width="1"/>
+  <text x="580" y="775" font-family="sans-serif" font-size="14" fill="#a3a3a3" text-anchor="middle">Relax</text>
+  <rect x="660" y="752" width="120" height="36" rx="8" fill="#1f1f1f" stroke="#333" stroke-width="1"/>
+  <text x="720" y="775" font-family="sans-serif" font-size="14" fill="#a3a3a3" text-anchor="middle">Sleep</text>
+</svg>

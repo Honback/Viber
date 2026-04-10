@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800">
+  <rect width="1200" height="800" fill="#0A0A0A"/>
+  <!-- Top bar -->
+  <rect width="1200" height="48" fill="#111111"/>
+  <rect x="0" y="48" width="1200" height="1" fill="#333"/>
+  <text x="40" y="30" fill="white" font-family="sans-serif" font-size="16" font-weight="bold">FormFlow</text>
+  <circle cx="20" cy="24" r="6" fill="#EF4444"/>
+  <circle cx="40" cy="24" r="6" fill="#F59E0B"/>
+  <circle cx="60" cy="24" r="6" fill="#10B981"/>
+  <!-- Undo/Redo -->
+  <text x="1060" y="30" fill="#a3a3a3" font-family="sans-serif" font-size="12">Undo</text>
+  <text x="1110" y="30" fill="#666" font-family="sans-serif" font-size="12">Redo</text>
+  <!-- Left sidebar -->
+  <rect x="0" y="49" width="260" height="751" fill="#111111"/>
+  <rect x="260" y="49" width="1" height="751" fill="#333"/>
+  <text x="20" y="80" fill="white" font-family="sans-serif" font-size="14" font-weight="600">Components</text>
+  <!-- Sidebar items -->
+  <rect x="15" y="100" width="230" height="44" rx="8" fill="#1a1a1a" stroke="#333" stroke-width="1"/>
+  <text x="50" y="127" fill="white" font-family="sans-serif" font-size="13">Text Input</text>
+  <rect x="15" y="152" width="230" height="44" rx="8" fill="#1a1a1a" stroke="#333" stroke-width="1"/>
+  <text x="50" y="179" fill="white" font-family="sans-serif" font-size="13">Email</text>
+  <!-- Dragging indicator - textarea being dragged -->
+  <rect x="15" y="204" width="230" height="44" rx="8" fill="#1a1a1a" stroke="#d76542" stroke-width="2" stroke-dasharray="4,4"/>
+  <text x="50" y="231" fill="#d76542" font-family="sans-serif" font-size="13">Textarea</text>
+  <!-- Drag ghost element -->
+  <g opacity="0.7">
+    <rect x="340" y="460" width="200" height="44" rx="8" fill="#d76542" opacity="0.2" stroke="#d76542" stroke-width="1"/>
+    <text x="370" y="487" fill="#d76542" font-family="sans-serif" font-size="13">Textarea</text>
+  </g>
+  <!-- Drag line -->
+  <line x1="245" y1="226" x2="340" y2="482" stroke="#d76542" stroke-width="1" stroke-dasharray="4,4" opacity="0.4"/>
+  <rect x="15" y="256" width="230" height="44" rx="8" fill="#1a1a1a" stroke="#333" stroke-width="1"/>
+  <text x="50" y="283" fill="white" font-family="sans-serif" font-size="13">Select</text>
+  <rect x="15" y="308" width="230" height="44" rx="8" fill="#1a1a1a" stroke="#333" stroke-width="1"/>
+  <text x="50" y="335" fill="white" font-family="sans-serif" font-size="13">Checkbox</text>
+  <!-- Main form area -->
+  <rect x="290" y="70" width="580" height="700" rx="8" fill="#111111"/>
+  <!-- Form card -->
+  <rect x="340" y="90" width="480" height="660" rx="12" fill="#1a1a1a" stroke="#333" stroke-width="1"/>
+  <text x="380" y="130" fill="white" font-family="sans-serif" font-size="18" font-weight="600">Registration Form</text>
+  <!-- Field 1: Name -->
+  <text x="380" y="170" fill="#a3a3a3" font-family="sans-serif" font-size="13">Full Name</text>
+  <rect x="380" y="180" width="400" height="40" rx="6" fill="#252525" stroke="#333" stroke-width="1"/>
+  <text x="395" y="205" fill="#555" font-family="sans-serif" font-size="12">Enter full name</text>
+  <!-- Field 2: Email - SELECTED -->
+  <rect x="365" y="235" width="440" height="90" rx="8" fill="transparent" stroke="#3B82F6" stroke-width="2"/>
+  <text x="380" y="260" fill="#a3a3a3" font-family="sans-serif" font-size="13">Email Address</text>
+  <rect x="380" y="270" width="400" height="40" rx="6" fill="#252525" stroke="#3B82F6" stroke-width="1"/>
+  <text x="395" y="295" fill="#555" font-family="sans-serif" font-size="12">name@example.com</text>
+  <!-- Selection handles -->
+  <circle cx="365" cy="280" r="4" fill="#3B82F6"/>
+  <circle cx="805" cy="280" r="4" fill="#3B82F6"/>
+  <!-- Field 3: Phone -->
+  <text x="380" y="360" fill="#a3a3a3" font-family="sans-serif" font-size="13">Phone Number</text>
+  <rect x="380" y="370" width="400" height="40" rx="6" fill="#252525" stroke="#333" stroke-width="1"/>
+  <text x="395" y="395" fill="#555" font-family="sans-serif" font-size="12">+82 10-0000-0000</text>
+  <!-- Field 4: Company -->
+  <text x="380" y="445" fill="#a3a3a3" font-family="sans-serif" font-size="13">Company</text>
+  <rect x="380" y="455" width="400" height="40" rx="6" fill="#252525" stroke="#333" stroke-width="1"/>
+  <text x="395" y="480" fill="#555" font-family="sans-serif" font-size="12">Company name</text>
+  <!-- Drop zone indicator -->
+  <rect x="380" y="515" width="400" height="50" rx="6" fill="transparent" stroke="#d76542" stroke-width="2" stroke-dasharray="6,4"/>
+  <text x="580" y="545" fill="#d76542" font-family="sans-serif" font-size="13" text-anchor="middle">Drop field here</text>
+  <!-- Submit button -->
+  <rect x="380" y="590" width="400" height="44" rx="8" fill="#d76542"/>
+  <text x="580" y="618" fill="white" font-family="sans-serif" font-size="15" font-weight="600" text-anchor="middle">Submit</text>
+  <!-- Right panel - Field properties -->
+  <rect x="900" y="49" width="300" height="751" fill="#111111"/>
+  <rect x="900" y="49" width="1" height="751" fill="#333"/>
+  <text x="920" y="80" fill="white" font-family="sans-serif" font-size="14" font-weight="600">Field Properties</text>
+  <text x="920" y="100" fill="#666" font-family="sans-serif" font-size="11">Email Address field</text>
+  <rect x="920" y="115" width="260" height="1" fill="#333"/>
+  <!-- Label editing -->
+  <text x="920" y="145" fill="#a3a3a3" font-family="sans-serif" font-size="12">Label</text>
+  <rect x="920" y="155" width="260" height="36" rx="6" fill="#252525" stroke="#3B82F6" stroke-width="1"/>
+  <text x="935" y="178" fill="white" font-family="sans-serif" font-size="13">Email Address</text>
+  <!-- Blinking cursor -->
+  <line x1="1030" y1="163" x2="1030" y2="183" stroke="#3B82F6" stroke-width="1.5">
+    <animate attributeName="opacity" values="1;0;1" dur="1s" repeatCount="indefinite"/>
+  </line>
+  <!-- Placeholder -->
+  <text x="920" y="215" fill="#a3a3a3" font-family="sans-serif" font-size="12">Placeholder</text>
+  <rect x="920" y="225" width="260" height="36" rx="6" fill="#252525" stroke="#333" stroke-width="1"/>
+  <text x="935" y="248" fill="#666" font-family="sans-serif" font-size="13">name@example.com</text>
+  <!-- Required toggle -->
+  <text x="920" y="290" fill="#a3a3a3" font-family="sans-serif" font-size="12">Required</text>
+  <rect x="1140" y="276" width="40" height="22" rx="11" fill="#d76542"/>
+  <circle cx="1169" cy="287" r="8" fill="white"/>
+  <!-- Validation -->
+  <text x="920" y="330" fill="#a3a3a3" font-family="sans-serif" font-size="12">Validation</text>
+  <rect x="920" y="340" width="260" height="36" rx="6" fill="#252525" stroke="#333" stroke-width="1"/>
+  <text x="935" y="363" fill="white" font-family="sans-serif" font-size="13">Email format</text>
+  <path d="M1165 355 L1170 360 L1175 355" stroke="#666" stroke-width="1.5" fill="none"/>
+</svg>

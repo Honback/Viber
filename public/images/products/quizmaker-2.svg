@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" fill="none">
+  <rect width="1200" height="800" fill="#0A0A0A"/>
+  <!-- Top bar -->
+  <rect x="0" y="0" width="1200" height="52" fill="#111111"/>
+  <rect x="0" y="52" width="1200" height="1" fill="#333"/>
+  <text x="30" y="33" font-family="sans-serif" font-size="18" fill="white" font-weight="bold">QuizMaker</text>
+  <text x="200" y="33" font-family="sans-serif" font-size="14" fill="#a3a3a3">Results</text>
+
+  <!-- Results card -->
+  <rect x="100" y="80" width="1000" height="680" rx="16" fill="#1a1a1a" stroke="#333" stroke-width="1"/>
+
+  <!-- Score circle -->
+  <circle cx="600" cy="220" r="90" fill="none" stroke="#1f1f1f" stroke-width="12"/>
+  <!-- Score arc (80% = ~288 degrees) -->
+  <circle cx="600" cy="220" r="90" fill="none" stroke="#d76542" stroke-width="12" stroke-dasharray="452 565" stroke-dashoffset="0" stroke-linecap="round" transform="rotate(-90 600 220)"/>
+  <text x="600" y="210" font-family="sans-serif" font-size="42" fill="white" text-anchor="middle" font-weight="bold">80%</text>
+  <text x="600" y="240" font-family="sans-serif" font-size="16" fill="#a3a3a3" text-anchor="middle">4/5 &#xC815;&#xB2F5;</text>
+
+  <text x="600" y="340" font-family="sans-serif" font-size="18" fill="white" text-anchor="middle" font-weight="bold">&#xD034;&#xC988; &#xACB0;&#xACFC;</text>
+
+  <!-- Answer review -->
+  <line x1="130" y1="365" x2="1070" y2="365" stroke="#333" stroke-width="1"/>
+
+  <!-- Q1 - Correct -->
+  <rect x="130" y="380" width="940" height="48" rx="8" fill="#111111" stroke="#333" stroke-width="1"/>
+  <rect x="140" y="390" width="28" height="28" rx="6" fill="#22c55e" fill-opacity="0.15"/>
+  <path d="M148,404 L153,409 L163,399" stroke="#22c55e" stroke-width="2.5" fill="none"/>
+  <text x="180" y="409" font-family="sans-serif" font-size="13" fill="#e0e0e0">Q1. HTML&#xC5D0;&#xC11C; &#xC81C;&#xBAA9;&#xC744; &#xB098;&#xD0C0;&#xB0B4;&#xB294; &#xD0DC;&#xADF8;&#xB294;?</text>
+  <text x="1050" y="409" font-family="sans-serif" font-size="12" fill="#22c55e" text-anchor="end">&#xC815;&#xB2F5;</text>
+
+  <!-- Q2 - Correct -->
+  <rect x="130" y="440" width="940" height="48" rx="8" fill="#111111" stroke="#333" stroke-width="1"/>
+  <rect x="140" y="450" width="28" height="28" rx="6" fill="#22c55e" fill-opacity="0.15"/>
+  <path d="M148,464 L153,469 L163,459" stroke="#22c55e" stroke-width="2.5" fill="none"/>
+  <text x="180" y="469" font-family="sans-serif" font-size="13" fill="#e0e0e0">Q2. JavaScript&#xC5D0;&#xC11C; &#xBCC0;&#xC218;&#xB97C; &#xC120;&#xC5B8;&#xD558;&#xB294; &#xD0A4;&#xC6CC;&#xB4DC;&#xB294;?</text>
+  <text x="1050" y="469" font-family="sans-serif" font-size="12" fill="#22c55e" text-anchor="end">&#xC815;&#xB2F5;</text>
+
+  <!-- Q3 - Wrong -->
+  <rect x="130" y="500" width="940" height="48" rx="8" fill="#111111" stroke="#ef4444" stroke-width="1"/>
+  <rect x="140" y="510" width="28" height="28" rx="6" fill="#ef4444" fill-opacity="0.15"/>
+  <text x="154" y="530" font-family="sans-serif" font-size="16" fill="#ef4444" text-anchor="middle">&#x2715;</text>
+  <text x="180" y="529" font-family="sans-serif" font-size="13" fill="#e0e0e0">Q3. CSS&#xC5D0;&#xC11C; &#xD14D;&#xC2A4;&#xD2B8; &#xC0C9;&#xC0C1;&#xC744; &#xBCC0;&#xACBD;&#xD558;&#xB294; &#xC18D;&#xC131;&#xC740;?</text>
+  <text x="1050" y="529" font-family="sans-serif" font-size="12" fill="#ef4444" text-anchor="end">&#xC624;&#xB2F5;</text>
+
+  <!-- Q4 - Correct -->
+  <rect x="130" y="560" width="940" height="48" rx="8" fill="#111111" stroke="#333" stroke-width="1"/>
+  <rect x="140" y="570" width="28" height="28" rx="6" fill="#22c55e" fill-opacity="0.15"/>
+  <path d="M148,584 L153,589 L163,579" stroke="#22c55e" stroke-width="2.5" fill="none"/>
+  <text x="180" y="589" font-family="sans-serif" font-size="13" fill="#e0e0e0">Q4. &#xB300;&#xD55C;&#xBBFC;&#xAD6D;&#xC758; &#xC218;&#xB3C4;&#xB294;?</text>
+  <text x="1050" y="589" font-family="sans-serif" font-size="12" fill="#22c55e" text-anchor="end">&#xC815;&#xB2F5;</text>
+
+  <!-- Q5 - Correct -->
+  <rect x="130" y="620" width="940" height="48" rx="8" fill="#111111" stroke="#333" stroke-width="1"/>
+  <rect x="140" y="630" width="28" height="28" rx="6" fill="#22c55e" fill-opacity="0.15"/>
+  <path d="M148,644 L153,649 L163,639" stroke="#22c55e" stroke-width="2.5" fill="none"/>
+  <text x="180" y="649" font-family="sans-serif" font-size="13" fill="#e0e0e0">Q5. React&#xC5D0;&#xC11C; &#xC0C1;&#xD0DC;&#xB97C; &#xAD00;&#xB9AC;&#xD558;&#xB294; Hook&#xC740;?</text>
+  <text x="1050" y="649" font-family="sans-serif" font-size="12" fill="#22c55e" text-anchor="end">&#xC815;&#xB2F5;</text>
+
+  <!-- Retry button -->
+  <rect x="430" y="695" width="340" height="46" rx="10" fill="#d76542"/>
+  <text x="600" y="724" font-family="sans-serif" font-size="16" fill="white" text-anchor="middle" font-weight="bold">Retry Quiz</text>
+</svg>

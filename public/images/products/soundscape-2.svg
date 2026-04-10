@@ -1,0 +1,117 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" fill="none">
+  <rect width="1200" height="800" fill="#0A0A0A"/>
+  <!-- Top bar -->
+  <rect x="0" y="0" width="1200" height="60" fill="#111111"/>
+  <rect x="0" y="60" width="1200" height="1" fill="#333"/>
+  <text x="30" y="38" font-family="sans-serif" font-size="20" fill="white" font-weight="bold">SoundScape</text>
+  <text x="600" y="32" font-family="sans-serif" font-size="12" fill="#a3a3a3">Master Volume</text>
+  <rect x="700" y="28" width="200" height="6" rx="3" fill="#1f1f1f"/>
+  <rect x="700" y="28" width="120" height="6" rx="3" fill="#d76542"/>
+  <circle cx="820" cy="31" r="8" fill="#d76542"/>
+  <text x="920" y="36" font-family="sans-serif" font-size="13" fill="white">60%</text>
+  <circle cx="1140" cy="30" r="5" fill="#22c55e"/>
+  <text x="1125" y="35" font-family="sans-serif" font-size="11" fill="#22c55e" text-anchor="end">Playing</text>
+
+  <!-- Mood indicator -->
+  <rect x="400" y="640" width="400" height="50" rx="12" fill="#1a1a1a" stroke="#333" stroke-width="1"/>
+  <text x="600" y="670" font-family="sans-serif" font-size="16" fill="#a3a3a3" text-anchor="middle">Mood: Calm &amp; Peaceful</text>
+
+  <!-- Rain - OFF -->
+  <rect x="50" y="90" width="350" height="240" rx="12" fill="#1a1a1a" stroke="#333" stroke-width="1"/>
+  <circle cx="90" cy="135" r="20" fill="#1f1f1f" stroke="#444" stroke-width="1"/>
+  <text x="90" y="140" font-family="sans-serif" font-size="16" fill="#555" text-anchor="middle">&#x2602;</text>
+  <text x="125" y="130" font-family="sans-serif" font-size="18" fill="#555">Rain</text>
+  <text x="125" y="148" font-family="sans-serif" font-size="11" fill="#444">Gentle rain on roof</text>
+  <rect x="345" y="125" width="36" height="20" rx="10" fill="#333"/>
+  <circle cx="357" cy="135" r="7" fill="#555"/>
+  <rect x="70" y="180" width="260" height="6" rx="3" fill="#1f1f1f"/>
+
+  <!-- Thunder - OFF -->
+  <rect x="425" y="90" width="350" height="240" rx="12" fill="#1a1a1a" stroke="#333" stroke-width="1"/>
+  <circle cx="465" cy="135" r="20" fill="#1f1f1f" stroke="#444" stroke-width="1"/>
+  <text x="465" y="141" font-family="sans-serif" font-size="18" fill="#555" text-anchor="middle">&#x26A1;</text>
+  <text x="500" y="130" font-family="sans-serif" font-size="18" fill="#555">Thunder</text>
+  <text x="500" y="148" font-family="sans-serif" font-size="11" fill="#444">Distant thunder</text>
+  <rect x="728" y="125" width="36" height="20" rx="10" fill="#333"/>
+  <circle cx="740" cy="135" r="7" fill="#555"/>
+  <rect x="445" y="180" width="260" height="6" rx="3" fill="#1f1f1f"/>
+
+  <!-- Wind - OFF -->
+  <rect x="800" y="90" width="350" height="240" rx="12" fill="#1a1a1a" stroke="#333" stroke-width="1"/>
+  <circle cx="840" cy="135" r="20" fill="#1f1f1f" stroke="#444" stroke-width="1"/>
+  <text x="840" y="140" font-family="sans-serif" font-size="14" fill="#555" text-anchor="middle">&#x2744;</text>
+  <text x="875" y="130" font-family="sans-serif" font-size="18" fill="#555">Wind</text>
+  <text x="875" y="148" font-family="sans-serif" font-size="11" fill="#444">Gentle breeze</text>
+  <rect x="1098" y="125" width="36" height="20" rx="10" fill="#333"/>
+  <circle cx="1110" cy="135" r="7" fill="#555"/>
+  <rect x="820" y="180" width="260" height="6" rx="3" fill="#1f1f1f"/>
+
+  <!-- Fire - OFF -->
+  <rect x="50" y="355" width="350" height="260" rx="12" fill="#1a1a1a" stroke="#333" stroke-width="1"/>
+  <circle cx="90" cy="400" r="20" fill="#1f1f1f" stroke="#444" stroke-width="1"/>
+  <text x="90" y="405" font-family="sans-serif" font-size="14" fill="#555" text-anchor="middle">&#x2666;</text>
+  <text x="125" y="395" font-family="sans-serif" font-size="18" fill="#555">Fire</text>
+  <text x="125" y="413" font-family="sans-serif" font-size="11" fill="#444">Crackling fireplace</text>
+  <rect x="345" y="390" width="36" height="20" rx="10" fill="#333"/>
+  <circle cx="357" cy="400" r="7" fill="#555"/>
+  <rect x="70" y="445" width="260" height="6" rx="3" fill="#1f1f1f"/>
+
+  <!-- Waves - ON, Active -->
+  <rect x="425" y="355" width="350" height="260" rx="12" fill="#1a1a1a" stroke="#d76542" stroke-width="1"/>
+  <circle cx="465" cy="400" r="20" fill="#1f1f1f" stroke="#d76542" stroke-width="1"/>
+  <text x="465" y="405" font-family="sans-serif" font-size="14" fill="#7ec8e3" text-anchor="middle">&#x223C;</text>
+  <text x="500" y="395" font-family="sans-serif" font-size="18" fill="white" font-weight="bold">Waves</text>
+  <text x="500" y="413" font-family="sans-serif" font-size="11" fill="#a3a3a3">Ocean waves</text>
+  <rect x="728" y="390" width="36" height="20" rx="10" fill="#22c55e"/>
+  <circle cx="752" cy="400" r="7" fill="white"/>
+  <rect x="445" y="445" width="260" height="6" rx="3" fill="#1f1f1f"/>
+  <rect x="445" y="445" width="234" height="6" rx="3" fill="#d76542"/>
+  <circle cx="679" cy="448" r="7" fill="#d76542"/>
+  <text x="720" y="452" font-family="monospace" font-size="12" fill="white">90%</text>
+  <!-- Waveform -->
+  <rect x="445" y="480" width="6" height="40" rx="2" fill="#d76542" opacity="0.7"/>
+  <rect x="457" y="490" width="6" height="30" rx="2" fill="#d76542" opacity="0.7"/>
+  <rect x="469" y="475" width="6" height="45" rx="2" fill="#d76542" opacity="0.7"/>
+  <rect x="481" y="485" width="6" height="35" rx="2" fill="#d76542" opacity="0.7"/>
+  <rect x="493" y="495" width="6" height="25" rx="2" fill="#d76542" opacity="0.7"/>
+  <rect x="505" y="478" width="6" height="42" rx="2" fill="#d76542" opacity="0.7"/>
+  <rect x="517" y="488" width="6" height="32" rx="2" fill="#d76542" opacity="0.7"/>
+  <rect x="529" y="482" width="6" height="38" rx="2" fill="#d76542" opacity="0.7"/>
+  <rect x="541" y="492" width="6" height="28" rx="2" fill="#d76542" opacity="0.7"/>
+  <rect x="553" y="483" width="6" height="37" rx="2" fill="#d76542" opacity="0.7"/>
+  <rect x="565" y="497" width="6" height="23" rx="2" fill="#d76542" opacity="0.7"/>
+  <rect x="577" y="479" width="6" height="41" rx="2" fill="#d76542" opacity="0.7"/>
+
+  <!-- Forest - ON, Active -->
+  <rect x="800" y="355" width="350" height="260" rx="12" fill="#1a1a1a" stroke="#d76542" stroke-width="1"/>
+  <circle cx="840" cy="400" r="20" fill="#1f1f1f" stroke="#d76542" stroke-width="1"/>
+  <text x="840" y="405" font-family="sans-serif" font-size="14" fill="#7ec8e3" text-anchor="middle">&#x2663;</text>
+  <text x="875" y="395" font-family="sans-serif" font-size="18" fill="white" font-weight="bold">Forest</text>
+  <text x="875" y="413" font-family="sans-serif" font-size="11" fill="#a3a3a3">Birds and trees</text>
+  <rect x="1098" y="390" width="36" height="20" rx="10" fill="#22c55e"/>
+  <circle cx="1122" cy="400" r="7" fill="white"/>
+  <rect x="820" y="445" width="260" height="6" rx="3" fill="#1f1f1f"/>
+  <rect x="820" y="445" width="182" height="6" rx="3" fill="#d76542"/>
+  <circle cx="1002" cy="448" r="7" fill="#d76542"/>
+  <text x="1040" y="452" font-family="monospace" font-size="12" fill="white">70%</text>
+  <!-- Waveform -->
+  <rect x="820" y="480" width="6" height="30" rx="2" fill="#d76542" opacity="0.6"/>
+  <rect x="832" y="488" width="6" height="22" rx="2" fill="#d76542" opacity="0.6"/>
+  <rect x="844" y="476" width="6" height="34" rx="2" fill="#d76542" opacity="0.6"/>
+  <rect x="856" y="484" width="6" height="26" rx="2" fill="#d76542" opacity="0.6"/>
+  <rect x="868" y="492" width="6" height="18" rx="2" fill="#d76542" opacity="0.6"/>
+  <rect x="880" y="479" width="6" height="31" rx="2" fill="#d76542" opacity="0.6"/>
+  <rect x="892" y="486" width="6" height="24" rx="2" fill="#d76542" opacity="0.6"/>
+  <rect x="904" y="481" width="6" height="29" rx="2" fill="#d76542" opacity="0.6"/>
+  <rect x="916" y="490" width="6" height="20" rx="2" fill="#d76542" opacity="0.6"/>
+
+  <!-- Preset buttons - Relax active -->
+  <rect x="0" y="740" width="1200" height="60" fill="#111111"/>
+  <rect x="0" y="740" width="1200" height="1" fill="#333"/>
+  <rect x="380" y="752" width="120" height="36" rx="8" fill="#1f1f1f" stroke="#333" stroke-width="1"/>
+  <text x="440" y="775" font-family="sans-serif" font-size="14" fill="#a3a3a3" text-anchor="middle">Focus</text>
+  <rect x="520" y="752" width="120" height="36" rx="8" fill="#d76542"/>
+  <text x="580" y="775" font-family="sans-serif" font-size="14" fill="white" text-anchor="middle" font-weight="bold">Relax</text>
+  <rect x="660" y="752" width="120" height="36" rx="8" fill="#1f1f1f" stroke="#333" stroke-width="1"/>
+  <text x="720" y="775" font-family="sans-serif" font-size="14" fill="#a3a3a3" text-anchor="middle">Sleep</text>
+</svg>

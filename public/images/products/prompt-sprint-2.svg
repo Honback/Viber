@@ -1,0 +1,134 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800">
+  <rect width="1200" height="800" fill="#0A0A0A"/>
+  <rect width="1200" height="48" fill="#111111"/>
+  <rect x="0" y="48" width="1200" height="1" fill="#333"/>
+  <circle cx="20" cy="24" r="6" fill="#d76542"/>
+  <text x="40" y="30" fill="white" font-family="sans-serif" font-size="16" font-weight="bold">Prompt Sprint</text>
+  <text x="180" y="30" fill="#a3a3a3" font-family="sans-serif" font-size="12">/ Prompt Library</text>
+
+  <!-- Prompt library grid -->
+  <text x="40" y="90" fill="white" font-family="sans-serif" font-size="16" font-weight="600">Prompt Library</text>
+  <rect x="1020" y="72" width="140" height="28" rx="6" fill="#d76542"/>
+  <text x="1090" y="90" fill="white" font-family="sans-serif" font-size="11" text-anchor="middle">+ New Prompt</text>
+
+  <!-- Search bar -->
+  <rect x="40" y="110" width="1120" height="36" rx="8" fill="#1a1a1a" stroke="#333" stroke-width="1"/>
+  <text x="60" y="132" fill="#555" font-family="sans-serif" font-size="12">Search prompts...</text>
+  <!-- Filter tags -->
+  <rect x="700" y="117" width="70" height="22" rx="4" fill="#d76542" opacity="0.2"/>
+  <text x="735" y="132" fill="#d76542" font-family="sans-serif" font-size="10" text-anchor="middle">Code Review</text>
+  <rect x="780" y="117" width="70" height="22" rx="4" fill="#2a2a2a"/>
+  <text x="815" y="132" fill="#a3a3a3" font-family="sans-serif" font-size="10" text-anchor="middle">Writing</text>
+  <rect x="860" y="117" width="70" height="22" rx="4" fill="#2a2a2a"/>
+  <text x="895" y="132" fill="#a3a3a3" font-family="sans-serif" font-size="10" text-anchor="middle">Analysis</text>
+  <rect x="940" y="117" width="70" height="22" rx="4" fill="#2a2a2a"/>
+  <text x="975" y="132" fill="#a3a3a3" font-family="sans-serif" font-size="10" text-anchor="middle">Data</text>
+
+  <!-- Prompt cards row 1 -->
+  <rect x="40" y="165" width="350" height="200" rx="12" fill="#1a1a1a" stroke="#d76542" stroke-width="1.5"/>
+  <text x="60" y="195" fill="white" font-family="sans-serif" font-size="14" font-weight="600">Code Security Reviewer</text>
+  <rect x="60" y="205" width="80" height="18" rx="4" fill="#d76542" opacity="0.2"/>
+  <text x="100" y="218" fill="#d76542" font-family="sans-serif" font-size="9" text-anchor="middle">Code Review</text>
+  <rect x="150" y="205" width="50" height="18" rx="4" fill="#2a2a2a"/>
+  <text x="175" y="218" fill="#a3a3a3" font-family="sans-serif" font-size="9" text-anchor="middle">v1.3</text>
+  <text x="60" y="245" fill="#a3a3a3" font-family="sans-serif" font-size="11">Reviews code for security vulnerabilities,</text>
+  <text x="60" y="262" fill="#a3a3a3" font-family="sans-serif" font-size="11">performance issues, and best practices.</text>
+  <text x="60" y="295" fill="#555" font-family="sans-serif" font-size="10">12 runs | Avg 87% consistency</text>
+  <text x="60" y="315" fill="#555" font-family="sans-serif" font-size="10">Last run: 2 hours ago</text>
+  <rect x="60" y="330" width="80" height="24" rx="6" fill="#d76542"/>
+  <text x="100" y="346" fill="white" font-family="sans-serif" font-size="10" text-anchor="middle">Run</text>
+  <rect x="150" y="330" width="60" height="24" rx="6" fill="#2a2a2a"/>
+  <text x="180" y="346" fill="#a3a3a3" font-family="sans-serif" font-size="10" text-anchor="middle">Edit</text>
+
+  <rect x="410" y="165" width="350" height="200" rx="12" fill="#1a1a1a" stroke="#333" stroke-width="1"/>
+  <text x="430" y="195" fill="white" font-family="sans-serif" font-size="14" font-weight="600">API Doc Generator</text>
+  <rect x="430" y="205" width="60" height="18" rx="4" fill="#3B82F6" opacity="0.2"/>
+  <text x="460" y="218" fill="#3B82F6" font-family="sans-serif" font-size="9" text-anchor="middle">Writing</text>
+  <rect x="500" y="205" width="50" height="18" rx="4" fill="#2a2a2a"/>
+  <text x="525" y="218" fill="#a3a3a3" font-family="sans-serif" font-size="9" text-anchor="middle">v2.1</text>
+  <text x="430" y="245" fill="#a3a3a3" font-family="sans-serif" font-size="11">Generates comprehensive API</text>
+  <text x="430" y="262" fill="#a3a3a3" font-family="sans-serif" font-size="11">documentation from code snippets.</text>
+  <text x="430" y="295" fill="#555" font-family="sans-serif" font-size="10">8 runs | Avg 92% consistency</text>
+  <text x="430" y="315" fill="#555" font-family="sans-serif" font-size="10">Last run: Yesterday</text>
+  <rect x="430" y="330" width="80" height="24" rx="6" fill="#2a2a2a" stroke="#333" stroke-width="1"/>
+  <text x="470" y="346" fill="#a3a3a3" font-family="sans-serif" font-size="10" text-anchor="middle">Run</text>
+
+  <rect x="780" y="165" width="380" height="200" rx="12" fill="#1a1a1a" stroke="#333" stroke-width="1"/>
+  <text x="800" y="195" fill="white" font-family="sans-serif" font-size="14" font-weight="600">Data Schema Analyzer</text>
+  <rect x="800" y="205" width="50" height="18" rx="4" fill="#10B981" opacity="0.2"/>
+  <text x="825" y="218" fill="#10B981" font-family="sans-serif" font-size="9" text-anchor="middle">Data</text>
+  <rect x="860" y="205" width="50" height="18" rx="4" fill="#2a2a2a"/>
+  <text x="885" y="218" fill="#a3a3a3" font-family="sans-serif" font-size="9" text-anchor="middle">v1.0</text>
+  <text x="800" y="245" fill="#a3a3a3" font-family="sans-serif" font-size="11">Analyzes database schemas and suggests</text>
+  <text x="800" y="262" fill="#a3a3a3" font-family="sans-serif" font-size="11">optimizations and normalization fixes.</text>
+  <text x="800" y="295" fill="#555" font-family="sans-serif" font-size="10">5 runs | Avg 79% consistency</text>
+  <text x="800" y="315" fill="#555" font-family="sans-serif" font-size="10">Last run: 3 days ago</text>
+  <rect x="800" y="330" width="80" height="24" rx="6" fill="#2a2a2a" stroke="#333" stroke-width="1"/>
+  <text x="840" y="346" fill="#a3a3a3" font-family="sans-serif" font-size="10" text-anchor="middle">Run</text>
+
+  <!-- Row 2 -->
+  <rect x="40" y="385" width="350" height="200" rx="12" fill="#1a1a1a" stroke="#333" stroke-width="1"/>
+  <text x="60" y="415" fill="white" font-family="sans-serif" font-size="14" font-weight="600">Test Case Writer</text>
+  <rect x="60" y="425" width="80" height="18" rx="4" fill="#8B5CF6" opacity="0.2"/>
+  <text x="100" y="438" fill="#8B5CF6" font-family="sans-serif" font-size="9" text-anchor="middle">Testing</text>
+  <text x="60" y="465" fill="#a3a3a3" font-family="sans-serif" font-size="11">Generates unit and integration tests</text>
+  <text x="60" y="482" fill="#a3a3a3" font-family="sans-serif" font-size="11">from function signatures.</text>
+  <text x="60" y="515" fill="#555" font-family="sans-serif" font-size="10">15 runs | Avg 91% consistency</text>
+
+  <rect x="410" y="385" width="350" height="200" rx="12" fill="#1a1a1a" stroke="#333" stroke-width="1"/>
+  <text x="430" y="415" fill="white" font-family="sans-serif" font-size="14" font-weight="600">PR Description Writer</text>
+  <rect x="430" y="425" width="60" height="18" rx="4" fill="#3B82F6" opacity="0.2"/>
+  <text x="460" y="438" fill="#3B82F6" font-family="sans-serif" font-size="9" text-anchor="middle">Writing</text>
+  <text x="430" y="465" fill="#a3a3a3" font-family="sans-serif" font-size="11">Creates pull request descriptions from</text>
+  <text x="430" y="482" fill="#a3a3a3" font-family="sans-serif" font-size="11">git diffs and commit messages.</text>
+  <text x="430" y="515" fill="#555" font-family="sans-serif" font-size="10">22 runs | Avg 88% consistency</text>
+
+  <rect x="780" y="385" width="380" height="200" rx="12" fill="#1a1a1a" stroke="#333" stroke-width="1"/>
+  <text x="800" y="415" fill="white" font-family="sans-serif" font-size="14" font-weight="600">Error Log Analyzer</text>
+  <rect x="800" y="425" width="60" height="18" rx="4" fill="#F59E0B" opacity="0.2"/>
+  <text x="830" y="438" fill="#F59E0B" font-family="sans-serif" font-size="9" text-anchor="middle">Analysis</text>
+  <text x="800" y="465" fill="#a3a3a3" font-family="sans-serif" font-size="11">Parses error logs, identifies patterns,</text>
+  <text x="800" y="482" fill="#a3a3a3" font-family="sans-serif" font-size="11">and suggests root cause fixes.</text>
+  <text x="800" y="515" fill="#555" font-family="sans-serif" font-size="10">7 runs | Avg 83% consistency</text>
+
+  <!-- Stats bar -->
+  <rect x="40" y="610" width="1120" height="160" rx="12" fill="#1a1a1a" stroke="#333" stroke-width="1"/>
+  <text x="60" y="640" fill="white" font-family="sans-serif" font-size="14" font-weight="600">Usage Stats</text>
+  <text x="60" y="670" fill="#a3a3a3" font-family="sans-serif" font-size="12">Total prompts: 6</text>
+  <text x="60" y="690" fill="#a3a3a3" font-family="sans-serif" font-size="12">Total runs: 69</text>
+  <text x="60" y="710" fill="#a3a3a3" font-family="sans-serif" font-size="12">Total cost: $2.14</text>
+  <text x="60" y="730" fill="#a3a3a3" font-family="sans-serif" font-size="12">Avg consistency: 87%</text>
+
+  <!-- Usage chart -->
+  <text x="400" y="640" fill="white" font-family="sans-serif" font-size="12" font-weight="500">Runs This Week</text>
+  <rect x="400" y="660" width="50" height="80" rx="4" fill="#0A0A0A"/>
+  <rect x="400" y="710" width="50" height="30" rx="4" fill="#d76542" opacity="0.4"/>
+  <text x="425" y="755" fill="#555" font-family="sans-serif" font-size="9" text-anchor="middle">Mon</text>
+  <rect x="460" y="660" width="50" height="80" rx="4" fill="#0A0A0A"/>
+  <rect x="460" y="690" width="50" height="50" rx="4" fill="#d76542" opacity="0.5"/>
+  <text x="485" y="755" fill="#555" font-family="sans-serif" font-size="9" text-anchor="middle">Tue</text>
+  <rect x="520" y="660" width="50" height="80" rx="4" fill="#0A0A0A"/>
+  <rect x="520" y="680" width="50" height="60" rx="4" fill="#d76542" opacity="0.6"/>
+  <text x="545" y="755" fill="#555" font-family="sans-serif" font-size="9" text-anchor="middle">Wed</text>
+  <rect x="580" y="660" width="50" height="80" rx="4" fill="#0A0A0A"/>
+  <rect x="580" y="700" width="50" height="40" rx="4" fill="#d76542" opacity="0.5"/>
+  <text x="605" y="755" fill="#555" font-family="sans-serif" font-size="9" text-anchor="middle">Thu</text>
+  <rect x="640" y="660" width="50" height="80" rx="4" fill="#0A0A0A"/>
+  <rect x="640" y="670" width="50" height="70" rx="4" fill="#d76542"/>
+  <text x="665" y="755" fill="#d76542" font-family="sans-serif" font-size="9" text-anchor="middle" font-weight="bold">Fri</text>
+
+  <!-- Model usage -->
+  <text x="780" y="640" fill="white" font-family="sans-serif" font-size="12" font-weight="500">Model Usage</text>
+  <text x="780" y="670" fill="#a3a3a3" font-family="sans-serif" font-size="11">GPT-4o</text>
+  <rect x="870" y="660" width="280" height="8" rx="4" fill="#2a2a2a"/>
+  <rect x="870" y="660" width="200" height="8" rx="4" fill="#d76542"/>
+  <text x="1080" y="670" fill="#555" font-family="sans-serif" font-size="10">42 runs</text>
+  <text x="780" y="695" fill="#a3a3a3" font-family="sans-serif" font-size="11">Claude 3.5</text>
+  <rect x="870" y="685" width="280" height="8" rx="4" fill="#2a2a2a"/>
+  <rect x="870" y="685" width="120" height="8" rx="4" fill="#3B82F6"/>
+  <text x="1000" y="695" fill="#555" font-family="sans-serif" font-size="10">18 runs</text>
+  <text x="780" y="720" fill="#a3a3a3" font-family="sans-serif" font-size="11">Gemini Pro</text>
+  <rect x="870" y="710" width="280" height="8" rx="4" fill="#2a2a2a"/>
+  <rect x="870" y="710" width="60" height="8" rx="4" fill="#10B981"/>
+  <text x="940" y="720" fill="#555" font-family="sans-serif" font-size="10">9 runs</text>
+</svg>

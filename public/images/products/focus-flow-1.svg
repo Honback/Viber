@@ -1,0 +1,121 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800">
+  <rect width="1200" height="800" fill="#0A0A0A"/>
+  <!-- Top bar -->
+  <rect width="1200" height="48" fill="#111111"/>
+  <rect x="0" y="48" width="1200" height="1" fill="#333"/>
+  <circle cx="20" cy="24" r="6" fill="#d76542"/>
+  <text x="40" y="30" fill="white" font-family="sans-serif" font-size="16" font-weight="bold">Focus Flow</text>
+  <text x="180" y="30" fill="#a3a3a3" font-family="sans-serif" font-size="12">/ Sprint 14 / Timeline</text>
+
+  <!-- Timeline View -->
+  <text x="40" y="90" fill="white" font-family="sans-serif" font-size="18" font-weight="600">Sprint Timeline</text>
+  <text x="1140" y="90" fill="#d76542" font-family="sans-serif" font-size="12" text-anchor="end">Apr 1 - Apr 10</text>
+
+  <!-- Day headers -->
+  <rect x="240" y="110" width="960" height="30" rx="4" fill="#1a1a1a"/>
+  <text x="288" y="130" fill="#555" font-family="sans-serif" font-size="10" text-anchor="middle">Apr 1</text>
+  <text x="384" y="130" fill="#555" font-family="sans-serif" font-size="10" text-anchor="middle">Apr 2</text>
+  <text x="480" y="130" fill="#555" font-family="sans-serif" font-size="10" text-anchor="middle">Apr 3</text>
+  <text x="576" y="130" fill="#555" font-family="sans-serif" font-size="10" text-anchor="middle">Apr 4</text>
+  <text x="672" y="130" fill="#555" font-family="sans-serif" font-size="10" text-anchor="middle">Apr 5</text>
+  <text x="768" y="130" fill="#555" font-family="sans-serif" font-size="10" text-anchor="middle">Apr 6</text>
+  <text x="864" y="130" fill="#555" font-family="sans-serif" font-size="10" text-anchor="middle">Apr 7</text>
+  <text x="960" y="130" fill="#d76542" font-family="sans-serif" font-size="10" text-anchor="middle" font-weight="bold">Apr 8</text>
+  <text x="1056" y="130" fill="#555" font-family="sans-serif" font-size="10" text-anchor="middle">Apr 9</text>
+  <text x="1152" y="130" fill="#555" font-family="sans-serif" font-size="10" text-anchor="middle">Apr 10</text>
+  <!-- Today line -->
+  <line x1="960" y1="140" x2="960" y2="700" stroke="#d76542" stroke-width="1" stroke-dasharray="4"/>
+
+  <!-- Task rows -->
+  <!-- Task 1 -->
+  <text x="40" y="175" fill="white" font-family="sans-serif" font-size="12">CI/CD Pipeline</text>
+  <text x="40" y="190" fill="#10B981" font-family="sans-serif" font-size="10">Done</text>
+  <rect x="288" y="160" width="288" height="24" rx="6" fill="#10B981" opacity="0.3"/>
+  <rect x="288" y="160" width="288" height="24" rx="6" fill="none" stroke="#10B981" stroke-width="1"/>
+  <text x="432" y="176" fill="#10B981" font-family="sans-serif" font-size="10" text-anchor="middle">Completed</text>
+
+  <!-- Task 2 -->
+  <text x="40" y="225" fill="white" font-family="sans-serif" font-size="12">User Profile Page</text>
+  <text x="40" y="240" fill="#10B981" font-family="sans-serif" font-size="10">Done</text>
+  <rect x="384" y="210" width="192" height="24" rx="6" fill="#10B981" opacity="0.3"/>
+  <rect x="384" y="210" width="192" height="24" rx="6" fill="none" stroke="#10B981" stroke-width="1"/>
+
+  <!-- Task 3 -->
+  <text x="40" y="275" fill="white" font-family="sans-serif" font-size="12">Notification System</text>
+  <text x="40" y="290" fill="#3B82F6" font-family="sans-serif" font-size="10">In Progress</text>
+  <rect x="576" y="260" width="384" height="24" rx="6" fill="#3B82F6" opacity="0.2"/>
+  <rect x="576" y="260" width="288" height="24" rx="6" fill="#3B82F6" opacity="0.4"/>
+  <rect x="576" y="260" width="384" height="24" rx="6" fill="none" stroke="#3B82F6" stroke-width="1"/>
+
+  <!-- Task 4 -->
+  <text x="40" y="325" fill="white" font-family="sans-serif" font-size="12">DB Migration v3</text>
+  <text x="40" y="340" fill="#3B82F6" font-family="sans-serif" font-size="10">In Progress</text>
+  <rect x="672" y="310" width="384" height="24" rx="6" fill="#3B82F6" opacity="0.2"/>
+  <rect x="672" y="310" width="288" height="24" rx="6" fill="#3B82F6" opacity="0.4"/>
+  <rect x="672" y="310" width="384" height="24" rx="6" fill="none" stroke="#3B82F6" stroke-width="1"/>
+
+  <!-- Task 5 -->
+  <text x="40" y="375" fill="white" font-family="sans-serif" font-size="12">Auth Token Fix</text>
+  <text x="40" y="390" fill="#F59E0B" font-family="sans-serif" font-size="10">To Do</text>
+  <rect x="864" y="360" width="288" height="24" rx="6" fill="#F59E0B" opacity="0.15"/>
+  <rect x="864" y="360" width="288" height="24" rx="6" fill="none" stroke="#F59E0B" stroke-width="1" stroke-dasharray="4"/>
+
+  <!-- Task 6 -->
+  <text x="40" y="425" fill="white" font-family="sans-serif" font-size="12">Onboarding Redesign</text>
+  <text x="40" y="440" fill="#F59E0B" font-family="sans-serif" font-size="10">To Do</text>
+  <rect x="960" y="410" width="192" height="24" rx="6" fill="#F59E0B" opacity="0.15"/>
+  <rect x="960" y="410" width="192" height="24" rx="6" fill="none" stroke="#F59E0B" stroke-width="1" stroke-dasharray="4"/>
+
+  <!-- Velocity Chart -->
+  <rect x="40" y="490" width="550" height="280" rx="12" fill="#1a1a1a" stroke="#333" stroke-width="1"/>
+  <text x="60" y="520" fill="white" font-family="sans-serif" font-size="14" font-weight="600">Team Velocity</text>
+  <text x="560" y="520" fill="#a3a3a3" font-family="sans-serif" font-size="11" text-anchor="end">Last 6 sprints</text>
+  <!-- Bars -->
+  <rect x="80" y="600" width="60" height="120" rx="4" fill="#d76542" opacity="0.4"/>
+  <text x="110" y="740" fill="#555" font-family="sans-serif" font-size="10" text-anchor="middle">S9</text>
+  <text x="110" y="595" fill="#a3a3a3" font-family="sans-serif" font-size="10" text-anchor="middle">18</text>
+  <rect x="160" y="570" width="60" height="150" rx="4" fill="#d76542" opacity="0.5"/>
+  <text x="190" y="740" fill="#555" font-family="sans-serif" font-size="10" text-anchor="middle">S10</text>
+  <text x="190" y="565" fill="#a3a3a3" font-family="sans-serif" font-size="10" text-anchor="middle">22</text>
+  <rect x="240" y="560" width="60" height="160" rx="4" fill="#d76542" opacity="0.6"/>
+  <text x="270" y="740" fill="#555" font-family="sans-serif" font-size="10" text-anchor="middle">S11</text>
+  <rect x="320" y="550" width="60" height="170" rx="4" fill="#d76542" opacity="0.7"/>
+  <text x="350" y="740" fill="#555" font-family="sans-serif" font-size="10" text-anchor="middle">S12</text>
+  <rect x="400" y="540" width="60" height="180" rx="4" fill="#d76542" opacity="0.8"/>
+  <text x="430" y="740" fill="#555" font-family="sans-serif" font-size="10" text-anchor="middle">S13</text>
+  <rect x="480" y="555" width="60" height="165" rx="4" fill="#d76542"/>
+  <text x="510" y="740" fill="#d76542" font-family="sans-serif" font-size="10" text-anchor="middle" font-weight="bold">S14</text>
+  <text x="510" y="550" fill="#d76542" font-family="sans-serif" font-size="10" text-anchor="middle">55%</text>
+
+  <!-- Team members -->
+  <rect x="610" y="490" width="550" height="280" rx="12" fill="#1a1a1a" stroke="#333" stroke-width="1"/>
+  <text x="630" y="520" fill="white" font-family="sans-serif" font-size="14" font-weight="600">Team Workload</text>
+  <!-- Member 1 -->
+  <circle cx="650" cy="560" r="14" fill="#d76542" opacity="0.3"/>
+  <text x="646" y="564" fill="#d76542" font-family="sans-serif" font-size="10" text-anchor="middle">JK</text>
+  <text x="680" y="556" fill="white" font-family="sans-serif" font-size="12">JT King</text>
+  <text x="680" y="572" fill="#a3a3a3" font-family="sans-serif" font-size="10">3 tasks assigned</text>
+  <rect x="820" y="552" width="300" height="6" rx="3" fill="#2a2a2a"/>
+  <rect x="820" y="552" width="200" height="6" rx="3" fill="#d76542"/>
+
+  <circle cx="650" cy="610" r="14" fill="#3B82F6" opacity="0.3"/>
+  <text x="646" y="614" fill="#3B82F6" font-family="sans-serif" font-size="10" text-anchor="middle">AS</text>
+  <text x="680" y="606" fill="white" font-family="sans-serif" font-size="12">Alex Smith</text>
+  <text x="680" y="622" fill="#a3a3a3" font-family="sans-serif" font-size="10">4 tasks assigned</text>
+  <rect x="820" y="602" width="300" height="6" rx="3" fill="#2a2a2a"/>
+  <rect x="820" y="602" width="260" height="6" rx="3" fill="#3B82F6"/>
+
+  <circle cx="650" cy="660" r="14" fill="#10B981" opacity="0.3"/>
+  <text x="646" y="664" fill="#10B981" font-family="sans-serif" font-size="10" text-anchor="middle">ML</text>
+  <text x="680" y="656" fill="white" font-family="sans-serif" font-size="12">Maya Lee</text>
+  <text x="680" y="672" fill="#a3a3a3" font-family="sans-serif" font-size="10">2 tasks assigned</text>
+  <rect x="820" y="652" width="300" height="6" rx="3" fill="#2a2a2a"/>
+  <rect x="820" y="652" width="130" height="6" rx="3" fill="#10B981"/>
+
+  <circle cx="650" cy="710" r="14" fill="#F59E0B" opacity="0.3"/>
+  <text x="646" y="714" fill="#F59E0B" font-family="sans-serif" font-size="10" text-anchor="middle">RJ</text>
+  <text x="680" y="706" fill="white" font-family="sans-serif" font-size="12">Ryan Jones</text>
+  <text x="680" y="722" fill="#a3a3a3" font-family="sans-serif" font-size="10">3 tasks assigned</text>
+  <rect x="820" y="702" width="300" height="6" rx="3" fill="#2a2a2a"/>
+  <rect x="820" y="702" width="190" height="6" rx="3" fill="#F59E0B"/>
+</svg>

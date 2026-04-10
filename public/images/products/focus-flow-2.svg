@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800">
+  <rect width="1200" height="800" fill="#0A0A0A"/>
+  <!-- Top bar -->
+  <rect width="1200" height="48" fill="#111111"/>
+  <rect x="0" y="48" width="1200" height="1" fill="#333"/>
+  <circle cx="20" cy="24" r="6" fill="#d76542"/>
+  <text x="40" y="30" fill="white" font-family="sans-serif" font-size="16" font-weight="bold">Focus Flow</text>
+  <text x="180" y="30" fill="#a3a3a3" font-family="sans-serif" font-size="12">/ Standup Notes</text>
+
+  <!-- Standup Meeting View -->
+  <rect x="40" y="70" width="740" height="700" rx="12" fill="#1a1a1a" stroke="#333" stroke-width="1"/>
+  <text x="60" y="100" fill="white" font-family="sans-serif" font-size="16" font-weight="600">Daily Standup - Apr 8</text>
+  <text x="750" y="100" fill="#d76542" font-family="sans-serif" font-size="12" text-anchor="end">9:30 AM</text>
+
+  <!-- Person 1 -->
+  <rect x="60" y="120" width="700" height="140" rx="8" fill="#0A0A0A" stroke="#333" stroke-width="1"/>
+  <circle cx="90" cy="150" r="16" fill="#d76542" opacity="0.3"/>
+  <text x="86" y="154" fill="#d76542" font-family="sans-serif" font-size="11" text-anchor="middle">JK</text>
+  <text x="116" y="148" fill="white" font-family="sans-serif" font-size="13" font-weight="500">JT King</text>
+  <text x="116" y="165" fill="#a3a3a3" font-family="sans-serif" font-size="11">Frontend Lead</text>
+  <text x="80" y="190" fill="#10B981" font-family="sans-serif" font-size="11" font-weight="500">Yesterday:</text>
+  <text x="160" y="190" fill="#a3a3a3" font-family="sans-serif" font-size="11">Completed dark mode toggle, merged PR #47</text>
+  <text x="80" y="210" fill="#3B82F6" font-family="sans-serif" font-size="11" font-weight="500">Today:</text>
+  <text x="160" y="210" fill="#a3a3a3" font-family="sans-serif" font-size="11">Starting notification system UI components</text>
+  <text x="80" y="230" fill="#EF4444" font-family="sans-serif" font-size="11" font-weight="500">Blockers:</text>
+  <text x="160" y="230" fill="#a3a3a3" font-family="sans-serif" font-size="11">Waiting for API endpoint spec from backend</text>
+  <rect x="160" y="240" width="52" height="16" rx="4" fill="#EF4444" opacity="0.2"/>
+  <text x="186" y="252" fill="#EF4444" font-family="sans-serif" font-size="9" text-anchor="middle">Blocked</text>
+
+  <!-- Person 2 -->
+  <rect x="60" y="270" width="700" height="140" rx="8" fill="#0A0A0A" stroke="#333" stroke-width="1"/>
+  <circle cx="90" cy="300" r="16" fill="#3B82F6" opacity="0.3"/>
+  <text x="86" y="304" fill="#3B82F6" font-family="sans-serif" font-size="11" text-anchor="middle">AS</text>
+  <text x="116" y="298" fill="white" font-family="sans-serif" font-size="13" font-weight="500">Alex Smith</text>
+  <text x="116" y="315" fill="#a3a3a3" font-family="sans-serif" font-size="11">Backend Engineer</text>
+  <text x="80" y="340" fill="#10B981" font-family="sans-serif" font-size="11" font-weight="500">Yesterday:</text>
+  <text x="160" y="340" fill="#a3a3a3" font-family="sans-serif" font-size="11">Database migration script 60% done</text>
+  <text x="80" y="360" fill="#3B82F6" font-family="sans-serif" font-size="11" font-weight="500">Today:</text>
+  <text x="160" y="360" fill="#a3a3a3" font-family="sans-serif" font-size="11">Finish migration, write notification API spec</text>
+  <text x="80" y="380" fill="#10B981" font-family="sans-serif" font-size="11" font-weight="500">Blockers:</text>
+  <text x="160" y="380" fill="#a3a3a3" font-family="sans-serif" font-size="11">None</text>
+
+  <!-- Person 3 -->
+  <rect x="60" y="420" width="700" height="140" rx="8" fill="#0A0A0A" stroke="#333" stroke-width="1"/>
+  <circle cx="90" cy="450" r="16" fill="#10B981" opacity="0.3"/>
+  <text x="86" y="454" fill="#10B981" font-family="sans-serif" font-size="11" text-anchor="middle">ML</text>
+  <text x="116" y="448" fill="white" font-family="sans-serif" font-size="13" font-weight="500">Maya Lee</text>
+  <text x="116" y="465" fill="#a3a3a3" font-family="sans-serif" font-size="11">Designer</text>
+  <text x="80" y="490" fill="#10B981" font-family="sans-serif" font-size="11" font-weight="500">Yesterday:</text>
+  <text x="160" y="490" fill="#a3a3a3" font-family="sans-serif" font-size="11">Finished onboarding wireframes, shared Figma link</text>
+  <text x="80" y="510" fill="#3B82F6" font-family="sans-serif" font-size="11" font-weight="500">Today:</text>
+  <text x="160" y="510" fill="#a3a3a3" font-family="sans-serif" font-size="11">High-fidelity mockups for onboarding flow</text>
+  <text x="80" y="530" fill="#10B981" font-family="sans-serif" font-size="11" font-weight="500">Blockers:</text>
+  <text x="160" y="530" fill="#a3a3a3" font-family="sans-serif" font-size="11">Need copy from marketing team</text>
+
+  <!-- AI Summary -->
+  <rect x="60" y="580" width="700" height="100" rx="8" fill="#0A0A0A" stroke="#d76542" stroke-width="1.5"/>
+  <text x="80" y="605" fill="#d76542" font-family="sans-serif" font-size="12" font-weight="600">AI Standup Summary</text>
+  <text x="80" y="625" fill="#a3a3a3" font-family="sans-serif" font-size="11">Key dependency: JK needs API spec from AS (ETA: today afternoon)</text>
+  <text x="80" y="645" fill="#a3a3a3" font-family="sans-serif" font-size="11">Sprint health: On track. 5/12 tasks done, 3 in progress.</text>
+  <text x="80" y="665" fill="#a3a3a3" font-family="sans-serif" font-size="11">Risk: Onboarding copy dependency could delay ML's task by 1 day.</text>
+
+  <!-- Right sidebar - Action items -->
+  <rect x="800" y="70" width="360" height="700" rx="12" fill="#1a1a1a" stroke="#333" stroke-width="1"/>
+  <text x="820" y="100" fill="white" font-family="sans-serif" font-size="14" font-weight="600">Action Items</text>
+
+  <rect x="820" y="120" width="320" height="50" rx="6" fill="#0A0A0A" stroke="#333" stroke-width="1"/>
+  <rect x="830" y="132" width="14" height="14" rx="3" fill="none" stroke="#d76542" stroke-width="1.5"/>
+  <text x="854" y="143" fill="white" font-family="sans-serif" font-size="11">AS: Send notification API spec to JK</text>
+  <text x="854" y="160" fill="#EF4444" font-family="sans-serif" font-size="10">Priority: High</text>
+
+  <rect x="820" y="180" width="320" height="50" rx="6" fill="#0A0A0A" stroke="#333" stroke-width="1"/>
+  <rect x="830" y="192" width="14" height="14" rx="3" fill="none" stroke="#333" stroke-width="1.5"/>
+  <text x="854" y="203" fill="white" font-family="sans-serif" font-size="11">ML: Request copy from marketing</text>
+  <text x="854" y="220" fill="#F59E0B" font-family="sans-serif" font-size="10">Priority: Medium</text>
+
+  <rect x="820" y="240" width="320" height="50" rx="6" fill="#0A0A0A" stroke="#333" stroke-width="1"/>
+  <rect x="830" y="252" width="14" height="14" rx="3" fill="none" stroke="#333" stroke-width="1.5"/>
+  <text x="854" y="263" fill="white" font-family="sans-serif" font-size="11">JK: Review PR #48 (profile page)</text>
+  <text x="854" y="280" fill="#3B82F6" font-family="sans-serif" font-size="10">Priority: Normal</text>
+
+  <rect x="820" y="300" width="320" height="50" rx="6" fill="#0A0A0A" stroke="#10B981" stroke-width="1"/>
+  <rect x="830" y="312" width="14" height="14" rx="3" fill="#10B981"/>
+  <text x="854" y="323" fill="#a3a3a3" font-family="sans-serif" font-size="11" text-decoration="line-through">AS: Merge CI/CD pipeline PR</text>
+  <text x="854" y="340" fill="#10B981" font-family="sans-serif" font-size="10">Completed</text>
+
+  <!-- Mood check -->
+  <text x="820" y="390" fill="white" font-family="sans-serif" font-size="14" font-weight="600">Team Mood</text>
+  <text x="820" y="420" fill="#a3a3a3" font-family="sans-serif" font-size="12">JK</text>
+  <rect x="860" y="408" width="100" height="16" rx="8" fill="#10B981" opacity="0.2"/>
+  <text x="910" y="420" fill="#10B981" font-family="sans-serif" font-size="10" text-anchor="middle">Motivated</text>
+  <text x="820" y="445" fill="#a3a3a3" font-family="sans-serif" font-size="12">AS</text>
+  <rect x="860" y="433" width="80" height="16" rx="8" fill="#3B82F6" opacity="0.2"/>
+  <text x="900" y="445" fill="#3B82F6" font-family="sans-serif" font-size="10" text-anchor="middle">Focused</text>
+  <text x="820" y="470" fill="#a3a3a3" font-family="sans-serif" font-size="12">ML</text>
+  <rect x="860" y="458" width="80" height="16" rx="8" fill="#F59E0B" opacity="0.2"/>
+  <text x="900" y="470" fill="#F59E0B" font-family="sans-serif" font-size="10" text-anchor="middle">Neutral</text>
+</svg>

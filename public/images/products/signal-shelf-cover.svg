@@ -1,0 +1,180 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800">
+  <rect width="1200" height="800" fill="#0A0A0A"/>
+  <rect width="1200" height="48" fill="#111111"/>
+  <rect x="0" y="48" width="1200" height="1" fill="#333"/>
+  <circle cx="20" cy="24" r="6" fill="#d76542"/>
+  <text x="40" y="30" fill="white" font-family="sans-serif" font-size="16" font-weight="bold">Signal Shelf</text>
+  <rect x="1060" y="12" width="100" height="24" rx="6" fill="#d76542"/>
+  <text x="1110" y="28" fill="white" font-family="sans-serif" font-size="11" text-anchor="middle">+ Add Signal</text>
+
+  <!-- Left sidebar - Filters -->
+  <rect x="40" y="70" width="220" height="700" rx="12" fill="#1a1a1a" stroke="#333" stroke-width="1"/>
+  <text x="60" y="100" fill="white" font-family="sans-serif" font-size="14" font-weight="600">Filters</text>
+
+  <text x="60" y="130" fill="#a3a3a3" font-family="sans-serif" font-size="11" font-weight="500">Sources</text>
+  <rect x="60" y="140" width="14" height="14" rx="3" fill="#d76542"/>
+  <text x="84" y="152" fill="white" font-family="sans-serif" font-size="11">Twitter/X</text>
+  <rect x="60" y="162" width="14" height="14" rx="3" fill="#d76542"/>
+  <text x="84" y="174" fill="white" font-family="sans-serif" font-size="11">Reddit</text>
+  <rect x="60" y="184" width="14" height="14" rx="3" fill="#d76542"/>
+  <text x="84" y="196" fill="white" font-family="sans-serif" font-size="11">Hacker News</text>
+  <rect x="60" y="206" width="14" height="14" rx="3" fill="none" stroke="#333" stroke-width="1.5"/>
+  <text x="84" y="218" fill="#a3a3a3" font-family="sans-serif" font-size="11">Product Hunt</text>
+  <rect x="60" y="228" width="14" height="14" rx="3" fill="none" stroke="#333" stroke-width="1.5"/>
+  <text x="84" y="240" fill="#a3a3a3" font-family="sans-serif" font-size="11">Dev.to</text>
+
+  <rect x="60" y="265" width="180" height="1" fill="#333"/>
+
+  <text x="60" y="290" fill="#a3a3a3" font-family="sans-serif" font-size="11" font-weight="500">Categories</text>
+  <rect x="60" y="300" width="60" height="20" rx="4" fill="#d76542" opacity="0.2"/>
+  <text x="90" y="314" fill="#d76542" font-family="sans-serif" font-size="9" text-anchor="middle">AI/ML</text>
+  <rect x="128" y="300" width="60" height="20" rx="4" fill="#2a2a2a"/>
+  <text x="158" y="314" fill="#a3a3a3" font-family="sans-serif" font-size="9" text-anchor="middle">Web Dev</text>
+  <rect x="60" y="328" width="60" height="20" rx="4" fill="#2a2a2a"/>
+  <text x="90" y="342" fill="#a3a3a3" font-family="sans-serif" font-size="9" text-anchor="middle">DevOps</text>
+  <rect x="128" y="328" width="55" height="20" rx="4" fill="#2a2a2a"/>
+  <text x="155" y="342" fill="#a3a3a3" font-family="sans-serif" font-size="9" text-anchor="middle">Mobile</text>
+  <rect x="60" y="356" width="75" height="20" rx="4" fill="#2a2a2a"/>
+  <text x="97" y="370" fill="#a3a3a3" font-family="sans-serif" font-size="9" text-anchor="middle">Open Source</text>
+  <rect x="143" y="356" width="60" height="20" rx="4" fill="#2a2a2a"/>
+  <text x="173" y="370" fill="#a3a3a3" font-family="sans-serif" font-size="9" text-anchor="middle">Startup</text>
+
+  <rect x="60" y="395" width="180" height="1" fill="#333"/>
+
+  <text x="60" y="420" fill="#a3a3a3" font-family="sans-serif" font-size="11" font-weight="500">Sentiment</text>
+  <rect x="60" y="432" width="14" height="14" rx="3" fill="#d76542"/>
+  <text x="84" y="444" fill="#10B981" font-family="sans-serif" font-size="11">Positive</text>
+  <rect x="60" y="454" width="14" height="14" rx="3" fill="#d76542"/>
+  <text x="84" y="466" fill="#a3a3a3" font-family="sans-serif" font-size="11">Neutral</text>
+  <rect x="60" y="476" width="14" height="14" rx="3" fill="#d76542"/>
+  <text x="84" y="488" fill="#EF4444" font-family="sans-serif" font-size="11">Negative</text>
+
+  <rect x="60" y="510" width="180" height="1" fill="#333"/>
+  <text x="60" y="535" fill="#a3a3a3" font-family="sans-serif" font-size="11" font-weight="500">Time Range</text>
+  <rect x="60" y="545" width="80" height="24" rx="4" fill="#d76542" opacity="0.2" stroke="#d76542" stroke-width="1"/>
+  <text x="100" y="561" fill="#d76542" font-family="sans-serif" font-size="10" text-anchor="middle">24 hours</text>
+  <rect x="148" y="545" width="80" height="24" rx="4" fill="#2a2a2a"/>
+  <text x="188" y="561" fill="#a3a3a3" font-family="sans-serif" font-size="10" text-anchor="middle">7 days</text>
+
+  <!-- Main content - Card grid -->
+  <text x="280" y="90" fill="white" font-family="sans-serif" font-size="16" font-weight="600">Community Signals</text>
+  <text x="1130" y="90" fill="#a3a3a3" font-family="sans-serif" font-size="11" text-anchor="end">142 signals found</text>
+
+  <!-- Card row 1 -->
+  <rect x="280" y="108" width="275" height="180" rx="10" fill="#1a1a1a" stroke="#333" stroke-width="1"/>
+  <rect x="296" y="124" width="20" height="20" rx="4" fill="#1DA1F2" opacity="0.2"/>
+  <text x="306" y="138" fill="#1DA1F2" font-family="sans-serif" font-size="10" text-anchor="middle">X</text>
+  <text x="324" y="138" fill="#a3a3a3" font-family="sans-serif" font-size="10">@karpathy - 2h ago</text>
+  <text x="296" y="162" fill="white" font-family="sans-serif" font-size="12" font-weight="500">New approach to RL with</text>
+  <text x="296" y="178" fill="white" font-family="sans-serif" font-size="12" font-weight="500">minimal data requirements</text>
+  <text x="296" y="200" fill="#a3a3a3" font-family="sans-serif" font-size="10">Interesting paper on sample-efficient RL...</text>
+  <rect x="296" y="215" width="40" height="16" rx="4" fill="#d76542" opacity="0.15"/>
+  <text x="316" y="227" fill="#d76542" font-family="sans-serif" font-size="8" text-anchor="middle">AI/ML</text>
+  <circle cx="530" y="228" r="5" fill="#10B981"/>
+  <text x="520" y="232" fill="#10B981" font-family="sans-serif" font-size="9" text-anchor="end">Positive</text>
+  <text x="296" y="270" fill="#555" font-family="sans-serif" font-size="10">1.2K likes - 340 retweets</text>
+
+  <rect x="565" y="108" width="275" height="180" rx="10" fill="#1a1a1a" stroke="#333" stroke-width="1"/>
+  <rect x="581" y="124" width="20" height="20" rx="4" fill="#FF4500" opacity="0.2"/>
+  <text x="591" y="138" fill="#FF4500" font-family="sans-serif" font-size="10" text-anchor="middle">R</text>
+  <text x="609" y="138" fill="#a3a3a3" font-family="sans-serif" font-size="10">r/programming - 4h ago</text>
+  <text x="581" y="162" fill="white" font-family="sans-serif" font-size="12" font-weight="500">Why I switched from React</text>
+  <text x="581" y="178" fill="white" font-family="sans-serif" font-size="12" font-weight="500">to Solid.js in production</text>
+  <text x="581" y="200" fill="#a3a3a3" font-family="sans-serif" font-size="10">After 6 months of comparison testing...</text>
+  <rect x="581" y="215" width="55" height="16" rx="4" fill="#3B82F6" opacity="0.15"/>
+  <text x="608" y="227" fill="#3B82F6" font-family="sans-serif" font-size="8" text-anchor="middle">Web Dev</text>
+  <circle cx="815" y="228" r="5" fill="#a3a3a3"/>
+  <text x="805" y="232" fill="#a3a3a3" font-family="sans-serif" font-size="9" text-anchor="end">Neutral</text>
+  <text x="581" y="270" fill="#555" font-family="sans-serif" font-size="10">847 upvotes - 234 comments</text>
+
+  <rect x="850" y="108" width="310" height="180" rx="10" fill="#1a1a1a" stroke="#d76542" stroke-width="1.5"/>
+  <rect x="866" y="124" width="20" height="20" rx="4" fill="#FF6600" opacity="0.2"/>
+  <text x="876" y="138" fill="#FF6600" font-family="sans-serif" font-size="10" text-anchor="middle">Y</text>
+  <text x="894" y="138" fill="#a3a3a3" font-family="sans-serif" font-size="10">Hacker News - 1h ago</text>
+  <rect x="1100" y="124" width="40" height="16" rx="4" fill="#d76542" opacity="0.3"/>
+  <text x="1120" y="136" fill="#d76542" font-family="sans-serif" font-size="8" text-anchor="middle">HOT</text>
+  <text x="866" y="162" fill="white" font-family="sans-serif" font-size="12" font-weight="500">Show HN: Open source LLM</text>
+  <text x="866" y="178" fill="white" font-family="sans-serif" font-size="12" font-weight="500">agent framework in Rust</text>
+  <text x="866" y="200" fill="#a3a3a3" font-family="sans-serif" font-size="10">Zero-dependency, blazing fast agent runner...</text>
+  <rect x="866" y="215" width="40" height="16" rx="4" fill="#d76542" opacity="0.15"/>
+  <text x="886" y="227" fill="#d76542" font-family="sans-serif" font-size="8" text-anchor="middle">AI/ML</text>
+  <rect x="912" y="215" width="65" height="16" rx="4" fill="#10B981" opacity="0.15"/>
+  <text x="944" y="227" fill="#10B981" font-family="sans-serif" font-size="8" text-anchor="middle">Open Source</text>
+  <circle cx="1135" y="228" r="5" fill="#10B981"/>
+  <text x="866" y="270" fill="#555" font-family="sans-serif" font-size="10">423 points - 89 comments</text>
+
+  <!-- Card row 2 -->
+  <rect x="280" y="298" width="275" height="180" rx="10" fill="#1a1a1a" stroke="#333" stroke-width="1"/>
+  <rect x="296" y="314" width="20" height="20" rx="4" fill="#FF4500" opacity="0.2"/>
+  <text x="306" y="328" fill="#FF4500" font-family="sans-serif" font-size="10" text-anchor="middle">R</text>
+  <text x="324" y="328" fill="#a3a3a3" font-family="sans-serif" font-size="10">r/startups - 6h ago</text>
+  <text x="296" y="352" fill="white" font-family="sans-serif" font-size="12" font-weight="500">Our startup just hit $1M ARR</text>
+  <text x="296" y="368" fill="white" font-family="sans-serif" font-size="12" font-weight="500">with zero funding - AMA</text>
+  <text x="296" y="390" fill="#a3a3a3" font-family="sans-serif" font-size="10">Bootstrap story, lessons learned...</text>
+  <rect x="296" y="405" width="50" height="16" rx="4" fill="#F59E0B" opacity="0.15"/>
+  <text x="321" y="417" fill="#F59E0B" font-family="sans-serif" font-size="8" text-anchor="middle">Startup</text>
+  <circle cx="530" y="418" r="5" fill="#10B981"/>
+  <text x="296" y="460" fill="#555" font-family="sans-serif" font-size="10">1.5K upvotes - 412 comments</text>
+
+  <rect x="565" y="298" width="275" height="180" rx="10" fill="#1a1a1a" stroke="#333" stroke-width="1"/>
+  <rect x="581" y="314" width="20" height="20" rx="4" fill="#1DA1F2" opacity="0.2"/>
+  <text x="591" y="328" fill="#1DA1F2" font-family="sans-serif" font-size="10" text-anchor="middle">X</text>
+  <text x="609" y="328" fill="#a3a3a3" font-family="sans-serif" font-size="10">@kelseyhightower - 3h</text>
+  <text x="581" y="352" fill="white" font-family="sans-serif" font-size="12" font-weight="500">Kubernetes is overkill for</text>
+  <text x="581" y="368" fill="white" font-family="sans-serif" font-size="12" font-weight="500">95% of applications</text>
+  <text x="581" y="390" fill="#a3a3a3" font-family="sans-serif" font-size="10">Hot take on cloud infrastructure...</text>
+  <rect x="581" y="405" width="55" height="16" rx="4" fill="#8B5CF6" opacity="0.15"/>
+  <text x="608" y="417" fill="#8B5CF6" font-family="sans-serif" font-size="8" text-anchor="middle">DevOps</text>
+  <circle cx="815" y="418" r="5" fill="#EF4444"/>
+  <text x="805" y="422" fill="#EF4444" font-family="sans-serif" font-size="9" text-anchor="end">Debate</text>
+  <text x="581" y="460" fill="#555" font-family="sans-serif" font-size="10">3.4K likes - 890 replies</text>
+
+  <rect x="850" y="298" width="310" height="180" rx="10" fill="#1a1a1a" stroke="#333" stroke-width="1"/>
+  <rect x="866" y="314" width="20" height="20" rx="4" fill="#FF6600" opacity="0.2"/>
+  <text x="876" y="328" fill="#FF6600" font-family="sans-serif" font-size="10" text-anchor="middle">Y</text>
+  <text x="894" y="328" fill="#a3a3a3" font-family="sans-serif" font-size="10">Hacker News - 5h ago</text>
+  <text x="866" y="352" fill="white" font-family="sans-serif" font-size="12" font-weight="500">SQLite as a production</text>
+  <text x="866" y="368" fill="white" font-family="sans-serif" font-size="12" font-weight="500">database: lessons after 2 years</text>
+  <text x="866" y="390" fill="#a3a3a3" font-family="sans-serif" font-size="10">Performance, scaling, and gotchas...</text>
+  <rect x="866" y="405" width="55" height="16" rx="4" fill="#3B82F6" opacity="0.15"/>
+  <text x="893" y="417" fill="#3B82F6" font-family="sans-serif" font-size="8" text-anchor="middle">Web Dev</text>
+  <circle cx="1135" y="418" r="5" fill="#10B981"/>
+  <text x="866" y="460" fill="#555" font-family="sans-serif" font-size="10">312 points - 156 comments</text>
+
+  <!-- Insight Summary Panel -->
+  <rect x="280" y="498" width="880" height="272" rx="12" fill="#1a1a1a" stroke="#333" stroke-width="1"/>
+  <text x="300" y="528" fill="white" font-family="sans-serif" font-size="14" font-weight="600">AI Insight Summary</text>
+  <text x="1130" y="528" fill="#a3a3a3" font-family="sans-serif" font-size="11" text-anchor="end">Last 24 hours</text>
+
+  <!-- Trending topics -->
+  <text x="300" y="560" fill="#d76542" font-family="sans-serif" font-size="12" font-weight="500">Trending Topics</text>
+  <rect x="300" y="575" width="250" height="30" rx="6" fill="#0A0A0A"/>
+  <text x="315" y="594" fill="white" font-family="sans-serif" font-size="11">1. LLM Agent Frameworks</text>
+  <text x="535" y="594" fill="#d76542" font-family="sans-serif" font-size="10" text-anchor="end">+240%</text>
+  <rect x="300" y="610" width="250" height="30" rx="6" fill="#0A0A0A"/>
+  <text x="315" y="629" fill="white" font-family="sans-serif" font-size="11">2. Frontend Framework Wars</text>
+  <text x="535" y="629" fill="#F59E0B" font-family="sans-serif" font-size="10" text-anchor="end">+85%</text>
+  <rect x="300" y="645" width="250" height="30" rx="6" fill="#0A0A0A"/>
+  <text x="315" y="664" fill="white" font-family="sans-serif" font-size="11">3. Bootstrapped Startups</text>
+  <text x="535" y="664" fill="#10B981" font-family="sans-serif" font-size="10" text-anchor="end">+60%</text>
+
+  <!-- Sentiment overview -->
+  <text x="600" y="560" fill="#a3a3a3" font-family="sans-serif" font-size="12" font-weight="500">Overall Sentiment</text>
+  <rect x="600" y="575" width="540" height="20" rx="4" fill="#0A0A0A"/>
+  <rect x="600" y="575" width="310" height="20" rx="4" fill="#10B981" opacity="0.3"/>
+  <rect x="910" y="575" width="150" height="20" rx="0" fill="#a3a3a3" opacity="0.15"/>
+  <rect x="1060" y="575" width="80" height="20" rx="0 4 4 0" fill="#EF4444" opacity="0.2"/>
+  <text x="755" y="589" fill="#10B981" font-family="sans-serif" font-size="9" text-anchor="middle">Positive 58%</text>
+  <text x="985" y="589" fill="#a3a3a3" font-family="sans-serif" font-size="9" text-anchor="middle">Neutral 28%</text>
+  <text x="1100" y="589" fill="#EF4444" font-family="sans-serif" font-size="9" text-anchor="middle">14%</text>
+
+  <text x="600" y="630" fill="#a3a3a3" font-family="sans-serif" font-size="12" font-weight="500">Key Insight</text>
+  <text x="600" y="650" fill="#a3a3a3" font-family="sans-serif" font-size="11">Strong community interest in Rust-based AI tooling.</text>
+  <text x="600" y="670" fill="#a3a3a3" font-family="sans-serif" font-size="11">The "Show HN" post is gaining traction fast - consider</text>
+  <text x="600" y="690" fill="#a3a3a3" font-family="sans-serif" font-size="11">bookmarking for deeper research.</text>
+
+  <rect x="600" y="710" width="120" height="28" rx="6" fill="#d76542"/>
+  <text x="660" y="728" fill="white" font-family="sans-serif" font-size="11" text-anchor="middle">Export Report</text>
+  <rect x="730" y="710" width="120" height="28" rx="6" fill="#2a2a2a" stroke="#333" stroke-width="1"/>
+  <text x="790" y="728" fill="#a3a3a3" font-family="sans-serif" font-size="11" text-anchor="middle">Set Alert</text>
+</svg>
