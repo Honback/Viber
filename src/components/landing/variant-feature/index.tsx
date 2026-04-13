@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import {
   ArrowRight,
@@ -58,30 +58,26 @@ function HeroLogo() {
   );
 }
 
-/* ── custom hook: scroll animation ── */
-function useScrollAnimation(threshold = 0.15) {
-  const ref = useRef<HTMLDivElement>(null);
+/* ── custom hook: scroll animation (callback-ref) ── */
+function useScrollAnimation(threshold = 0.15): [isVisible: boolean, ref: (node: HTMLDivElement | null) => void] {
   const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.unobserve(el);
-        }
-      },
-      { threshold }
-    );
-
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, [threshold]);
-
-  return { ref, isVisible };
+  const ref = useCallback(
+    (node: HTMLDivElement | null) => {
+      if (!node) return;
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            setIsVisible(true);
+            observer.unobserve(node);
+          }
+        },
+        { threshold },
+      );
+      observer.observe(node);
+    },
+    [threshold],
+  );
+  return [isVisible, ref];
 }
 
 /* ── category config ── */
@@ -177,21 +173,21 @@ export function VariantFeature({ data, viewer }: LandingVariantProps) {
   const feedbackProjects = hasData ? data.feedback : [];
 
   /* ── scroll animation refs ── */
-  const heroAnim = useScrollAnimation(0.1);
-  const trendingAnim = useScrollAnimation();
-  const newAnim = useScrollAnimation();
-  const feedbackAnim = useScrollAnimation();
-  const statsAnim = useScrollAnimation();
-  const ctaAnim = useScrollAnimation();
+  const [heroVisible, heroRef] = useScrollAnimation(0.1);
+  const [trendingVisible, trendingRef] = useScrollAnimation();
+  const [newVisible, newRef] = useScrollAnimation();
+  const [feedbackVisible, feedbackRef] = useScrollAnimation();
+  const [statsVisible, statsRef] = useScrollAnimation();
+  const [ctaVisible, ctaRef] = useScrollAnimation();
 
   return (
     <div className="min-h-screen bg-[#0A0A0A] text-white">
       {/* ── Hero ── */}
       <section className="relative overflow-hidden bg-[#0A0A0A] px-4 pb-12 pt-16 text-center sm:pb-16 sm:pt-24">
         <div
-          ref={heroAnim.ref}
+          ref={heroRef}
           className={`relative mx-auto max-w-3xl transition-all duration-700 ${
-            heroAnim.isVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
+            heroVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
           }`}
         >
           <h1 className="flex justify-center text-6xl sm:text-7xl lg:text-8xl">
@@ -260,9 +256,9 @@ export function VariantFeature({ data, viewer }: LandingVariantProps) {
       {/* ── Trending ── */}
       <section className="bg-[#111111] px-4 py-16 sm:px-6">
         <div
-          ref={trendingAnim.ref}
+          ref={trendingRef}
           className={`mx-auto max-w-5xl transition-all duration-700 delay-100 ${
-            trendingAnim.isVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
+            trendingVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
           }`}
         >
           <h2 className="flex items-center gap-2 text-2xl font-bold tracking-tight sm:text-3xl">
@@ -309,9 +305,9 @@ export function VariantFeature({ data, viewer }: LandingVariantProps) {
       {/* ── New Projects ── */}
       <section className="bg-[#0A0A0A] px-4 py-16 sm:px-6">
         <div
-          ref={newAnim.ref}
+          ref={newRef}
           className={`mx-auto max-w-5xl transition-all duration-700 delay-100 ${
-            newAnim.isVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
+            newVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
           }`}
         >
           <div className="flex items-end justify-between">
@@ -334,9 +330,9 @@ export function VariantFeature({ data, viewer }: LandingVariantProps) {
       {/* ── Feedback ── */}
       <section className="bg-[#111111] px-4 py-16 sm:px-6">
         <div
-          ref={feedbackAnim.ref}
+          ref={feedbackRef}
           className={`mx-auto max-w-5xl transition-all duration-700 delay-100 ${
-            feedbackAnim.isVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
+            feedbackVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
           }`}
         >
           <h2 className="flex items-center gap-2 text-2xl font-bold tracking-tight sm:text-3xl">
@@ -357,9 +353,9 @@ export function VariantFeature({ data, viewer }: LandingVariantProps) {
       {/* ── Stats ── */}
       <section className="bg-[#0A0A0A] px-4 py-16 sm:px-6">
         <div
-          ref={statsAnim.ref}
+          ref={statsRef}
           className={`mx-auto max-w-5xl transition-all duration-700 delay-100 ${
-            statsAnim.isVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
+            statsVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
           }`}
         >
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
@@ -391,9 +387,9 @@ export function VariantFeature({ data, viewer }: LandingVariantProps) {
       {/* ── CTA ── */}
       <section className="bg-[#111111] px-4 py-16 sm:px-6">
         <div
-          ref={ctaAnim.ref}
+          ref={ctaRef}
           className={`mx-auto max-w-5xl transition-all duration-700 delay-100 ${
-            ctaAnim.isVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
+            ctaVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
           }`}
         >
           <div className="rounded-3xl border border-neutral-800 bg-[#0A0A0A] px-6 py-16 text-center sm:px-12">

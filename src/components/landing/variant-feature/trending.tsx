@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useCallback } from "react";
 import Link from "next/link";
 import { useVariantNav } from "../landing-variant-switcher";
 import { useLocale } from "@/lib/i18n/locale-context";
@@ -19,28 +19,26 @@ import { DEMO_PROJECTS, toFeatureShape, CATEGORY_COLORS as SHARED_COLORS } from 
 const ACCENT = "#d76542";
 
 
-/* ── scroll animation hook ── */
-function useScrollAnimation(threshold = 0.15) {
-  const ref = useRef<HTMLDivElement>(null);
+/* ── scroll animation hook (callback-ref) ── */
+function useScrollAnimation(threshold = 0.15): [isVisible: boolean, ref: (node: HTMLDivElement | null) => void] {
   const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.unobserve(el);
-        }
-      },
-      { threshold }
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, [threshold]);
-
-  return { ref, isVisible };
+  const ref = useCallback(
+    (node: HTMLDivElement | null) => {
+      if (!node) return;
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            setIsVisible(true);
+            observer.unobserve(node);
+          }
+        },
+        { threshold },
+      );
+      observer.observe(node);
+    },
+    [threshold],
+  );
+  return [isVisible, ref];
 }
 
 /* ── category colors ── */
@@ -91,9 +89,9 @@ export function FeatureTrending() {
     { page: "feedback" as const, label: t.nav.feedback },
   ];
 
-  const heroAnim = useScrollAnimation(0.1);
-  const topAnim = useScrollAnimation();
-  const listAnim = useScrollAnimation();
+  const [heroVisible, heroRef] = useScrollAnimation(0.1);
+  const [topVisible, topRef] = useScrollAnimation();
+  const [listVisible, listRef] = useScrollAnimation();
 
   /* sort by votes desc */
   const sorted = [...DUMMY_PROJECTS].sort((a, b) => b.votes - a.votes);
@@ -105,9 +103,9 @@ export function FeatureTrending() {
       {/* ── Gradient Hero ── */}
       <section className="relative overflow-hidden bg-[#0A0A0A] px-4 pb-10 pt-12 text-center sm:pb-14 sm:pt-16">
         <div
-          ref={heroAnim.ref}
+          ref={heroRef}
           className={`relative mx-auto max-w-3xl transition-all duration-700 ${
-            heroAnim.isVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
+            heroVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
           }`}
         >
           <span
@@ -146,9 +144,9 @@ export function FeatureTrending() {
       {/* ── Top 3 Podium ── */}
       <section className="bg-[#111111] px-4 py-16 sm:px-6">
         <div
-          ref={topAnim.ref}
+          ref={topRef}
           className={`mx-auto max-w-5xl transition-all duration-700 delay-100 ${
-            topAnim.isVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
+            topVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
           }`}
         >
           <h2 className="flex items-center gap-2 text-2xl font-bold tracking-tight sm:text-3xl">
@@ -228,9 +226,9 @@ export function FeatureTrending() {
       {/* ── Ranking List ── */}
       <section className="bg-[#0A0A0A] px-4 py-16 sm:px-6">
         <div
-          ref={listAnim.ref}
+          ref={listRef}
           className={`mx-auto max-w-5xl transition-all duration-700 delay-100 ${
-            listAnim.isVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
+            listVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
           }`}
         >
           <h2 className="flex items-center gap-2 text-2xl font-bold tracking-tight sm:text-3xl">

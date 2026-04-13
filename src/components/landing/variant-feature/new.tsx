@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useCallback } from "react";
 import Link from "next/link";
 import { useVariantNav } from "../landing-variant-switcher";
 import { useLocale } from "@/lib/i18n/locale-context";
@@ -17,28 +17,26 @@ import { DEMO_PROJECTS, toFeatureShape, CATEGORY_COLORS as SHARED_COLORS } from 
 const ACCENT = "#d76542";
 
 
-/* ── scroll animation hook ── */
-function useScrollAnimation(threshold = 0.15) {
-  const ref = useRef<HTMLDivElement>(null);
+/* ── scroll animation hook (callback-ref) ── */
+function useScrollAnimation(threshold = 0.15): [isVisible: boolean, ref: (node: HTMLDivElement | null) => void] {
   const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.unobserve(el);
-        }
-      },
-      { threshold }
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, [threshold]);
-
-  return { ref, isVisible };
+  const ref = useCallback(
+    (node: HTMLDivElement | null) => {
+      if (!node) return;
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            setIsVisible(true);
+            observer.unobserve(node);
+          }
+        },
+        { threshold },
+      );
+      observer.observe(node);
+    },
+    [threshold],
+  );
+  return [isVisible, ref];
 }
 
 /* ── category colors ── */
@@ -95,9 +93,9 @@ export function FeatureNew() {
     { page: "feedback" as const, label: t.nav.feedback },
   ];
 
-  const heroAnim = useScrollAnimation(0.1);
-  const timelineAnim = useScrollAnimation();
-  const ctaAnim = useScrollAnimation();
+  const [heroVisible, heroRef] = useScrollAnimation(0.1);
+  const [timelineVisible, timelineRef] = useScrollAnimation();
+  const [ctaVisible, ctaRef] = useScrollAnimation();
 
   const dateGroups = groupByDate(DUMMY_PROJECTS);
 
@@ -106,9 +104,9 @@ export function FeatureNew() {
       {/* ── Gradient Hero ── */}
       <section className="relative overflow-hidden bg-[#0A0A0A] px-4 pb-10 pt-12 text-center sm:pb-14 sm:pt-16">
         <div
-          ref={heroAnim.ref}
+          ref={heroRef}
           className={`relative mx-auto max-w-3xl transition-all duration-700 ${
-            heroAnim.isVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
+            heroVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
           }`}
         >
           <span
@@ -138,9 +136,9 @@ export function FeatureNew() {
       {/* ── Timeline ── */}
       <section className="bg-[#111111] px-4 py-16 sm:px-6">
         <div
-          ref={timelineAnim.ref}
+          ref={timelineRef}
           className={`mx-auto max-w-4xl transition-all duration-700 delay-100 ${
-            timelineAnim.isVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
+            timelineVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
           }`}
         >
           {dateGroups.map(([date, projects], gi) => (
@@ -234,9 +232,9 @@ export function FeatureNew() {
       {/* ── CTA ── */}
       <section className="bg-[#0A0A0A] px-4 py-16 sm:px-6">
         <div
-          ref={ctaAnim.ref}
+          ref={ctaRef}
           className={`mx-auto max-w-5xl transition-all duration-700 delay-100 ${
-            ctaAnim.isVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
+            ctaVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
           }`}
         >
           <div className="rounded-3xl border border-neutral-800 bg-[#111111] px-6 py-16 text-center sm:px-12">

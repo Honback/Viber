@@ -1,34 +1,32 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
+import { useCallback, useState } from "react";
 import Link from "next/link";
 import { ArrowRight, Rocket } from "lucide-react";
-import { useLocale } from "@/lib/i18n/locale-context";
-
 const ACCENT = "#d76542";
 
-/* ── scroll animation hook ── */
-function useScrollAnimation(threshold = 0.15) {
-  const ref = useRef<HTMLDivElement>(null);
+/* ── scroll animation hook (callback-ref pattern for React 19) ── */
+function useScrollAnimation(threshold = 0.15): [isVisible: boolean, ref: (node: HTMLDivElement | null) => void] {
   const [isVisible, setIsVisible] = useState(false);
 
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.unobserve(el);
-        }
-      },
-      { threshold },
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, [threshold]);
+  const ref = useCallback(
+    (node: HTMLDivElement | null) => {
+      if (!node) return;
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            setIsVisible(true);
+            observer.unobserve(node);
+          }
+        },
+        { threshold },
+      );
+      observer.observe(node);
+    },
+    [threshold],
+  );
 
-  return { ref, isVisible };
+  return [isVisible, ref];
 }
 
 type Option = { value: string; label: string };
@@ -50,24 +48,22 @@ export function SubmitPageClient({
   pricingOptions,
   stageOptions,
 }: SubmitPageClientProps) {
-  const { t } = useLocale();
-
-  const heroAnim = useScrollAnimation(0.1);
-  const infoAnim = useScrollAnimation();
-  const basicAnim = useScrollAnimation();
-  const linkAnim = useScrollAnimation();
-  const descAnim = useScrollAnimation();
-  const ownerAnim = useScrollAnimation();
-  const optionalAnim = useScrollAnimation();
+  const [heroVisible, heroRef] = useScrollAnimation(0.1);
+  const [infoVisible, infoRef] = useScrollAnimation();
+  const [basicVisible, basicRef] = useScrollAnimation();
+  const [linkVisible, linkRef] = useScrollAnimation();
+  const [descVisible, descRef] = useScrollAnimation();
+  const [ownerVisible, ownerRef] = useScrollAnimation();
+  const [optionalVisible, optionalRef] = useScrollAnimation();
 
   return (
     <div className="min-h-screen bg-[#0A0A0A] text-white">
       {/* ── Hero ── */}
       <section className="bg-[#0A0A0A] px-4 pb-10 pt-16 text-center sm:pb-14 sm:pt-20">
         <div
-          ref={heroAnim.ref}
+          ref={heroRef}
           className={`mx-auto max-w-3xl transition-all duration-700 ${
-            heroAnim.isVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
+            heroVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
           }`}
         >
           <h1
@@ -91,9 +87,9 @@ export function SubmitPageClient({
       {/* ── Info Cards ── */}
       <section className="bg-[#111111] px-4 py-12 sm:px-6">
         <div
-          ref={infoAnim.ref}
+          ref={infoRef}
           className={`mx-auto grid max-w-5xl gap-4 sm:grid-cols-2 transition-all duration-700 delay-100 ${
-            infoAnim.isVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
+            infoVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
           }`}
         >
           <div className="rounded-2xl border border-neutral-800 bg-neutral-900/50 p-6">
@@ -130,9 +126,9 @@ export function SubmitPageClient({
 
             {/* 기본 정보 */}
             <div
-              ref={basicAnim.ref}
+              ref={basicRef}
               className={`rounded-2xl border border-neutral-800 bg-[#111111] p-6 transition-all duration-700 ${
-                basicAnim.isVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
+                basicVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
               }`}
             >
               <h2 className="text-lg font-bold tracking-tight">프로젝트 기본 정보</h2>
@@ -162,9 +158,9 @@ export function SubmitPageClient({
 
             {/* 링크 & 카테고리 */}
             <div
-              ref={linkAnim.ref}
+              ref={linkRef}
               className={`rounded-2xl border border-neutral-800 bg-[#111111] p-6 transition-all duration-700 ${
-                linkAnim.isVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
+                linkVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
               }`}
             >
               <h2 className="text-lg font-bold tracking-tight">바로 눌러볼 링크</h2>
@@ -212,9 +208,9 @@ export function SubmitPageClient({
 
             {/* 프로젝트 설명 */}
             <div
-              ref={descAnim.ref}
+              ref={descRef}
               className={`rounded-2xl border border-neutral-800 bg-[#111111] p-6 transition-all duration-700 ${
-                descAnim.isVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
+                descVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
               }`}
             >
               <h2 className="text-lg font-bold tracking-tight">무엇을 하는 프로젝트인가요?</h2>
@@ -236,9 +232,9 @@ export function SubmitPageClient({
 
             {/* 소유권 */}
             <div
-              ref={ownerAnim.ref}
+              ref={ownerRef}
               className={`rounded-2xl border border-neutral-800 bg-[#111111] p-6 transition-all duration-700 ${
-                ownerAnim.isVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
+                ownerVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
               }`}
             >
               <h2 className="text-lg font-bold tracking-tight">소유권 연결</h2>
@@ -265,9 +261,9 @@ export function SubmitPageClient({
 
             {/* 선택 입력 */}
             <div
-              ref={optionalAnim.ref}
+              ref={optionalRef}
               className={`transition-all duration-700 ${
-                optionalAnim.isVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
+                optionalVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
               }`}
             >
               <details className="rounded-2xl border border-neutral-800 bg-[#111111] p-6">

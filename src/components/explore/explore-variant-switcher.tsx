@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import type { ExploreVariantProps } from "./types";
 import { VariantList } from "./variant-list";
@@ -20,17 +20,16 @@ const VARIANTS = [
 const STORAGE_KEY = "explore-variant";
 
 export function ExploreVariantSwitcher(props: ExploreVariantProps) {
-  const [active, setActive] = useState(0);
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
+  const [active, setActive] = useState(() => {
+    if (typeof window === "undefined") return 0;
     const stored = localStorage.getItem(STORAGE_KEY);
     if (stored) {
       const idx = parseInt(stored, 10);
-      if (idx >= 0 && idx < VARIANTS.length) setActive(idx);
+      if (idx >= 0 && idx < VARIANTS.length) return idx;
     }
-    setMounted(true);
-  }, []);
+    return 0;
+  });
+  const [mounted] = useState(() => typeof window !== "undefined");
 
   const handleSelect = (idx: number) => {
     setActive(idx);

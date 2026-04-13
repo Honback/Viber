@@ -1,5 +1,8 @@
 /* ── 10 showcase demo projects (single source of truth) ── */
 
+/** Base URL for demo servers — change this single value when the server IP changes */
+const DEMO_HOST = process.env.NEXT_PUBLIC_DEMO_HOST || "http://134.185.113.46";
+
 export type DemoProject = {
   slug: string;
   title: string;
@@ -54,7 +57,7 @@ export const DEMO_PROJECTS: DemoProject[] = [
     targetUsers: "코딩을 배우는 학생, 빠르게 프로토타이핑하려는 개발자",
     makerName: "Vibe Studio",
     accentGradient: "from-purple-600 to-indigo-600",
-    liveUrl: "http://134.185.113.46:7100",
+    liveUrl: `${DEMO_HOST}:7100`,
   },
   {
     slug: "pixelforge",
@@ -81,7 +84,7 @@ export const DEMO_PROJECTS: DemoProject[] = [
     targetUsers: "인디 게임 개발자, 픽셀아트 입문자, 디자이너",
     makerName: "Pixel Labs",
     accentGradient: "from-cyan-500 to-blue-600",
-    liveUrl: "http://134.185.113.46:7101",
+    liveUrl: `${DEMO_HOST}:7101`,
   },
   {
     slug: "datapulse",
@@ -108,7 +111,7 @@ export const DEMO_PROJECTS: DemoProject[] = [
     targetUsers: "데이터 엔지니어, 스타트업 PM, DevOps 엔지니어",
     makerName: "Data Studio",
     accentGradient: "from-teal-500 to-emerald-600",
-    liveUrl: "http://134.185.113.46:7102",
+    liveUrl: `${DEMO_HOST}:7102`,
   },
   {
     slug: "indiecraft",
@@ -135,7 +138,7 @@ export const DEMO_PROJECTS: DemoProject[] = [
     targetUsers: "인디 게임 팬, 게임 개발 입문자, 캐주얼 게이머",
     makerName: "Indie Forge",
     accentGradient: "from-pink-500 to-rose-600",
-    liveUrl: "http://134.185.113.46:7103",
+    liveUrl: `${DEMO_HOST}:7103`,
   },
   {
     slug: "formflow",
@@ -162,7 +165,7 @@ export const DEMO_PROJECTS: DemoProject[] = [
     targetUsers: "마케터, 비개발자, 소규모 사업자",
     makerName: "Flow Works",
     accentGradient: "from-amber-500 to-orange-600",
-    liveUrl: "http://134.185.113.46:7104",
+    liveUrl: `${DEMO_HOST}:7104`,
   },
   {
     slug: "markdownpro",
@@ -189,7 +192,7 @@ export const DEMO_PROJECTS: DemoProject[] = [
     targetUsers: "블로거, 개발자, 기술 문서 작성자",
     makerName: "Write Labs",
     accentGradient: "from-yellow-500 to-amber-600",
-    liveUrl: "http://134.185.113.46:7105",
+    liveUrl: `${DEMO_HOST}:7105`,
   },
   {
     slug: "tinyanalytics",
@@ -216,7 +219,7 @@ export const DEMO_PROJECTS: DemoProject[] = [
     targetUsers: "인디 메이커, 블로거, 프라이버시 중시 사이트 운영자",
     makerName: "Tiny Tools",
     accentGradient: "from-indigo-500 to-violet-600",
-    liveUrl: "http://134.185.113.46:7106",
+    liveUrl: `${DEMO_HOST}:7106`,
   },
   {
     slug: "soundscape",
@@ -243,7 +246,7 @@ export const DEMO_PROJECTS: DemoProject[] = [
     targetUsers: "재택근무자, 학생, 명상/수면에 배경음이 필요한 사람",
     makerName: "Sound Lab",
     accentGradient: "from-purple-500 to-fuchsia-600",
-    liveUrl: "http://134.185.113.46:7107",
+    liveUrl: `${DEMO_HOST}:7107`,
   },
   {
     slug: "quizmaker",
@@ -270,7 +273,7 @@ export const DEMO_PROJECTS: DemoProject[] = [
     targetUsers: "교사, 교육 콘텐츠 제작자, 스터디 그룹",
     makerName: "Quiz Studio",
     accentGradient: "from-cyan-500 to-teal-600",
-    liveUrl: "http://134.185.113.46:7108",
+    liveUrl: `${DEMO_HOST}:7108`,
   },
   {
     slug: "paletteai",
@@ -297,7 +300,7 @@ export const DEMO_PROJECTS: DemoProject[] = [
     targetUsers: "웹 디자이너, 브랜딩 담당자, 인디 메이커",
     makerName: "Color AI",
     accentGradient: "from-rose-500 to-pink-600",
-    liveUrl: "http://134.185.113.46:7109",
+    liveUrl: `${DEMO_HOST}:7109`,
   },
 ];
 

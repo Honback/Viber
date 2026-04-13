@@ -6,7 +6,7 @@ services:
     environment:
       POSTGRES_DB: vibe_showcase
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD is required}
     volumes:
       - vibeollio_postgres:/var/lib/postgresql/data
     healthcheck:
@@ -25,7 +25,7 @@ services:
         node_modules/.bin/tsx scripts/seed.ts
       "
     environment:
-      DATABASE_URL: postgres://postgres:${POSTGRES_PASSWORD:-postgres}@postgres:5432/vibe_showcase
+      DATABASE_URL: postgres://postgres:${POSTGRES_PASSWORD:?POSTGRES_PASSWORD is required}@postgres:5432/vibe_showcase
     depends_on:
       postgres:
         condition: service_healthy

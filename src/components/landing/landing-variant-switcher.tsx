@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback, createContext, useContext } from "react";
+import { useCallback, createContext, useContext, useSyncExternalStore } from "react";
 import { useRouter } from "next/navigation";
 
 import type { LandingVariantProps } from "./types";
@@ -48,8 +48,7 @@ export function LandingVariantSwitcher({ activeSubPage, ...props }: SwitcherProp
       ? (activeSubPage as SubPage)
       : "home";
 
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
+  const mounted = useSyncExternalStore(() => () => {}, () => true, () => false);
 
   const handleNavigate = useCallback(
     (page: SubPage) => {
